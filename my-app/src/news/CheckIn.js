@@ -31,6 +31,7 @@ function CheckIn() {
         }
       })
       .finally(() => {
+        initList.current = true
         let l = []
         for (let index = 0; index < countCheckin; index++) {
           l = l.concat({
