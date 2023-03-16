@@ -10,6 +10,9 @@ function Stepprocess(props) {
             className={`step ${location.pathname === '/cart' ? 'active' : ''}
             ${location.pathname === '/cart/cart02' ? 'complete' : ''}
             ${location.pathname === '/cart/cart03' ? 'complete' : ''}`}
+            onClick={() => {
+              localStorage.removeItem('selectedSids')
+            }}
             to="/cart"
           >
             <h1>1</h1>

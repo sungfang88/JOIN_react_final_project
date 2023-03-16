@@ -5,6 +5,7 @@ import Classstepprocess from './components/Classstepprocess'
 import Completion from './components/Completion'
 import AuthContext from '../Context/AuthContext'
 import { MEMBER_DATA, CLASS_DATA, CLASSORDER_DATA } from './api_comfig'
+import { Link } from 'react-router-dom'
 function Classsec() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
@@ -64,7 +65,7 @@ function Classsec() {
       <section className="container-fluid orderTable">
         <div className="container">
           <div
-            className="headTitle h3 j-deepSec mb-3 d-flex justify-content-between"
+            className="headTitle h3 j-deepSec mb-3 d-flex justify-content-between element-class"
             onClick={toggleTable}
           >
             <p className="m-0">課程訂單明細</p>
@@ -136,22 +137,24 @@ function Classsec() {
       {/* 返回按鈕  */}
       <section className="container-fluid">
         <div className="text-center">
-          <button
+          <Link
             className="gray-line-btn j-h3 title-button me-2"
+            to="/member/orderclass"
             onClick={() => {
               localStorage.removeItem('orderId')
             }}
           >
             查看歷史訂單
-          </button>
-          <button
+          </Link>
+          <Link
+            to="/class"
             className="g-line-btn j-h3 title-button"
             onClick={() => {
               localStorage.removeItem('orderId')
             }}
           >
             繼續購物
-          </button>
+          </Link>
         </div>
       </section>
     </>

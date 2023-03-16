@@ -5,7 +5,7 @@ function List(props) {
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
-  const { data, setData } = props
+  const { data, setData, handleCheckboxChange } = props
 
   // btnGroup array {text: 按鍵字, handle: onclick function}
   const openDupBtnPopup = (sid, product_ch) => {
@@ -54,6 +54,7 @@ function List(props) {
       openPopup() //可以直接打開pop up
     }
   }, [popupProps])
+
   return (
     <>
       <div className="container">
@@ -74,9 +75,16 @@ function List(props) {
             return (
               <div className="d-flex tableTbody mb-2 orderBottomLine">
                 <li className="col-md-2 col-6 text-center" key={i}>
+                  <input
+                    type="checkbox"
+                    name="food"
+                    value="1"
+                    className="j-checkbox me-3"
+                    onChange={(e) => handleCheckboxChange(e, r.sid)}
+                  />
                   <img
                     className="orderImg pe-2"
-                    src={require('../img/001.webp')} // {`http://192.168.21.179/product/${r.product_img}`}
+                    src={`http://localhost:3008/product_img/${r.product_img}`}
                     alt=""
                   />
                 </li>

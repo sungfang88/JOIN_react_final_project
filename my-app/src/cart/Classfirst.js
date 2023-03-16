@@ -133,9 +133,7 @@ function Classfirst() {
 
   //按下一步後將資料傳送到updateClassItem
   const handleNext = () => {
-    data.forEach((item) => {
-      updateForm(item)
-    })
+    updateForm()
     upDataCoupon(couponsData)
   }
   //送出課程訂單
@@ -148,7 +146,7 @@ function Classfirst() {
         `${UPDATED_CLASSFORM}${class_form_sid}`,
         {
           orderId: orderId,
-          m_id: 1,
+          m_id: myAuth.sid,
           class_form_sid: class_form_sid, //
           amount: discountedPrice, //
         },
@@ -190,8 +188,6 @@ function Classfirst() {
     getClassData()
     getMemberData()
     upDataCoupon()
-    // getFormData()
-    updateForm()
     getCouponData()
     return () => {
       //解除功能
@@ -370,7 +366,7 @@ function Classfirst() {
 
             <div className="text-center">
               <Link
-                to="/class" //尚未確認
+                to="/class/Classsec" //尚未確認
                 className="gray-line-btn j-h3 title-button me-2"
               >
                 回課程資訊
@@ -381,7 +377,7 @@ function Classfirst() {
                 onClick={handleSubmit}
                 type="submit"
               >
-                下一步
+                送出訂單
               </Link>
             </div>
           </form>

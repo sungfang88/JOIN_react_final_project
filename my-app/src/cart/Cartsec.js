@@ -19,11 +19,12 @@ const options2 = [
 function Cartsec() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
-  //取得購物車資料
+  //取得勾選到得購物車資料
   const [data, setData] = useState([{}])
   const getCartData = async () => {
     try {
-      const response = await axios.get(`${CART_DATA}${myAuth.sid}`, {
+      const storedSids = JSON.parse(localStorage.getItem('selectedSids')) || []
+      const response = await axios.get(`${CART_DATA}${storedSids.join('/')}`, {
         withCredentials: true,
       })
       setData(response.data)
@@ -515,7 +516,13 @@ function Cartsec() {
               </div>
             </div>
             <div className="text-center">
-              <Link className="gray-line-btn j-h3 title-button me-3" to="/cart">
+              <Link
+                className="gray-line-btn j-h3 title-button me-3"
+                to="/cart"
+                onClick={() => {
+                  localStorage.removeItem('selectedSids')
+                }}
+              >
                 上一步
               </Link>
               <Link

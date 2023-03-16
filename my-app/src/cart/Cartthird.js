@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { CART_DATA, ORDER_DATA } from './api_comfig'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Stepprocess from './components/Stepprocess'
 import Listopen from './components/Listopen'
@@ -9,11 +10,12 @@ import AuthContext from '../Context/AuthContext'
 function Cartthird() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
-  //取得購物車資料
+  //取得勾選到得購物車資料
   const [data, setData] = useState([{}])
   const getCartData = async () => {
     try {
-      const response = await axios.get(`${CART_DATA}${myAuth.sid}`, {
+      const storedSids = JSON.parse(localStorage.getItem('selectedSids')) || []
+      const response = await axios.get(`${CART_DATA}${storedSids.join('/')}`, {
         withCredentials: true,
       })
       setData(response.data)
@@ -122,22 +124,24 @@ function Cartthird() {
       {/* 返回按鈕 */}
       <section className="container-fluid px-5">
         <div className="text-center">
-          <button
+          <Link
+            to="/member/orderlist"
             className="gray-line-btn j-h3 title-button me-3"
             onClick={() => {
               localStorage.removeItem('orderData')
             }}
           >
             查看歷史訂單
-          </button>
-          <button
+          </Link>
+          <Link
+            to="/product"
             className="g-line-btn j-h3 title-button"
             onClick={() => {
               localStorage.removeItem('orderData')
             }}
           >
             繼續購物
-          </button>
+          </Link>
         </div>
       </section>
     </>

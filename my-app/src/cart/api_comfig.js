@@ -3,6 +3,9 @@ export const HOST = 'http://localhost:3008'
 //CART GET:
 export const CART_DATA = `${HOST}/cart/cart01/`
 
+//GET
+export const GETCART_DATA = `${HOST}/cart/getcart/`
+
 //CART  DELETE:
 export const DELETE_DATA = `${HOST}/cart/cart01/`
 
