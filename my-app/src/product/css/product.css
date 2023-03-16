@@ -120,7 +120,7 @@ min-width: 10%;
         height: 100%;
     }
     .box {
-        /* height: 100px; */
+        height: auto;
         width: 100%;
         position: relative;
         overflow: visible; /* 設定為可視範圍外 */
@@ -128,7 +128,7 @@ min-width: 10%;
       }
       
       .inner-box {
-        position: absolute;
+        position: relative;
         width: 110%; /* 或是 calc(100% + 50px) */
         /* height: 100px; */
       }

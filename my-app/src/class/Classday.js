@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import Calendar from 'react-calendar'
 import './css/Calendar.css'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 const initialpeople = [
   {
@@ -36,7 +37,18 @@ const initialpeople = [
 ]
 
 function Classday() {
-  const [value, onChange] = useState(new Date())
+  const [value, onChange] = useState()
+
+  const myChange = (date) => {
+    const allowDays = [2, 4, 6]
+    const day = date.getDay()
+    if (allowDays.includes(day)) {
+      console.log('good')
+      onChange(date)
+    } else {
+      console.log('bad')
+    }
+  }
 
   const [classtime, setClasstime] = useState([
     { sid: 0, classtime: '', time: '', created: '' },
@@ -46,13 +58,13 @@ function Classday() {
   const [totalPrice, setTotalPrice] = useState(initialpeople[0].count) // 初始總金額為 2400
 
   const [data, setTime] = useState('')
-  const [data2, setclass_date] = useState('')
-  const [data3, setclass_prople] = useState('')
+  const [data2, setclass_prople] = useState('')
+
   const Submit = function () {
     const alldata = {
+      class_date: dayjs(value).format('YYYY-MM-DD'),
       classtime: data,
-      class_date: data2,
-      class_prople: data3,
+      class_prople: selectedPeople,
     }
 
     localStorage.setItem('key3', JSON.stringify(alldata))
@@ -121,12 +133,8 @@ function Classday() {
             </div>
           </div>
           <div> */}
-          <Calendar
-            onChange={onChange}
-            onClick={(e) => {
-              setclass_date(e.target.value)
-            }}
-          />
+          <Calendar onChange={myChange} value={value} />
+
           {/* </div> */}
         </div>
         <div class="col container ps-5 ">

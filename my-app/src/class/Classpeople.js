@@ -6,11 +6,14 @@ function Classpeople() {
   const [Classbooking, setClassbooking] = useState([])
   const [s1, sets1] = useState('')
   const [p1, setp1] = useState('')
-
+  const [data, setdata] = useState('')
+  const [data2, setdata2] = useState('')
   const Submit = () => {
     const alldata = {
       s1: s1,
       p1: p1,
+      data: data,
+      data2: data2,
     }
 
     localStorage.setItem('key4', JSON.stringify(alldata))
@@ -115,8 +118,10 @@ function Classpeople() {
               <input
                 type="text"
                 class="input-text"
+                value={data}
                 required
                 placeholder="ex.王小明"
+                onChange={(e) => setdata(e.target.value)}
               />
             </div>
           </div>
@@ -128,9 +133,11 @@ function Classpeople() {
             <div class="">
               <input
                 type="tel"
-                class="input-text"
+                class="inpu2t-text"
+                value={data2}
                 required
                 placeholder="ex.0912345678"
+                onChange={(e) => setdata2(e.target.value)}
               />
             </div>
           </div>
@@ -151,7 +158,7 @@ function Classpeople() {
 
           <Link
             class="o-long-btn j-h3 btnCall "
-            to="/class/classOrder01"
+            to="/cart/classOrder01"
             onClick={Submit}
           >
             立即購買
