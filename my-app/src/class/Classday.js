@@ -42,6 +42,7 @@ function Classday() {
   const myChange = (date) => {
     const allowDays = [2, 4, 6]
     const day = date.getDay()
+
     if (allowDays.includes(day)) {
       console.log('good')
       onChange(date)
@@ -153,7 +154,7 @@ function Classday() {
                     setTime(e.target.value)
                   }}
                 />
-                {v.classtime}
+                {v.time}
               </label>
             ))}
             {/* <label class=" align-items-center">
