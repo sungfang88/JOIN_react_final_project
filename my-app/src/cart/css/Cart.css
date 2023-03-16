@@ -1,0 +1,132 @@
+/* order自行定義的style */
+ol, ul {
+    list-style: none;
+}
+ul,li {
+    margin: 0;
+    padding: 0;
+}
+
+.headTitle{
+    width: 100%;
+    background-color: #FFF0DF;
+    padding: 0.8rem;
+}
+
+.bottomLine {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #E1E1E1;
+}
+
+.bottomPadding {
+    padding: 0.8rem 0;
+}
+
+.myWidth {
+    width: 100%;
+}
+
+/* 分隔線  */
+.line{
+    border-top: 2px solid #838383;
+    margin-top: 17px;
+    width: 17%;
+}
+
+/* table */
+.thead,.tbody{
+    display: table-header-group;
+}
+
+.tr{
+    display: table-row;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 26px;
+        margin-bottom: 0;
+}
+
+
+
+.tableTitle li{
+    color: #D86C08;
+}
+
+
+.tableTbody li {
+    padding: 0.2rem 0;
+    color: #838383;
+    border-top:none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+ .orderTable li {
+     font-family: Noto Serif TC;
+     font-size: 16px;
+     font-weight: 700;
+     line-height: 20px;
+     margin-bottom: 0;
+    text-align: flex-start;
+ }
+
+.orderImg  {
+    height: 100%;
+    overflow: hidden;
+    object-fit: cover;
+    width: auto;
+   }
+
+.fs-7{
+    font-size: 0.2rem;
+   }
+
+.orderBottomLine{
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #E1E1E1;
+}
+
+@media screen and (min-width: 391px) {
+    .myWidth{
+        width: 50%;
+    }
+    .orderTable li{
+        font-family: Noto Serif TC;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 26px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+    .tableTbody li{
+        padding: 0.8rem 0;
+        border-top: 1px solid #E1E1E1;
+        color: #838383;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       
+    }
+    .orderImg{
+        overflow: hidden;
+        object-fit: cover;
+        width: auto;
+        height: 100px;
+    }
+    .orderBottomLine {
+        padding: 0;
+        border-bottom: none;
+    }
+    
+}
+
+
+.red{
+    color:red
+}
+
+/* 摺疊式選單 */
+.hide {
+    display: none;
+  }

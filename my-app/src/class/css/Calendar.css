@@ -1,0 +1,146 @@
+  /* 表格 */
+  .react-calendar {
+    width: 100%;
+    height: auto;
+    border: 1px solid #a0a096;
+    border-radius: 2px;
+    line-height: 2em;
+  }
+ .react-calendar--doubleView {
+     width: 700px; 
+  } 
+  .react-calendar--doubleView .react-calendar__viewContainer {
+    display: flex;
+    margin: -0.5em;
+  }
+  .react-calendar--doubleView .react-calendar__viewContainer > * {
+    width: 50%;
+    margin: 0.5em;
+  }
+  .react-calendar,
+  .react-calendar *,
+  .react-calendar *:before,
+  .react-calendar *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    
+  }
+  .react-calendar button {
+    margin: 0;
+    border: 0;
+    outline: none;
+  }
+  .react-calendar button:enabled:hover {
+    cursor: pointer;
+  }
+    /* 年月列表背景 */
+  .react-calendar__navigation {
+    display: flex;
+    height: 44px;
+    margin-bottom: 1em;
+  }
+  /* 年月列表*/
+  .react-calendar__navigation button {
+    color: #F58807;
+    min-width: 44px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .react-calendar__navigation button:disabled {
+    background-color: #f0f0f0;
+  }
+  
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus {
+    background-color: #e6e6e6;
+  }
+
+  /* 星期列表 */
+  .react-calendar__month-view__weekdays {
+    color: #25858B;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 600;
+
+  }
+  .react-calendar__month-view__weekdays__weekday {
+    padding: 0.5em;
+  }
+  .react-calendar__month-view__weekNumbers .react-calendar__tile {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    font-weight: bold;
+  }
+
+  .react-calendar__month-view__days__day--weekend {
+    color: #25858B;
+  }
+
+
+  /* 日期列表 */
+  .react-calendar__tile {
+    color: #F58807;
+    max-width: 100%;
+    padding: 10px 10px;
+    background: none;
+    text-align: center;
+    line-height: 16px;
+    font-weight: bold;
+  }
+  .react-calendar__tile:disabled {
+    background-color: #f0f0f0;
+  }
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    background-color: #e6e6e6;
+  }
+    /* 上下月日期 */
+    .react-calendar__month-view__days__day--neighboringMonth {
+      color: #838383;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .react-calendar__year-view .react-calendar__tile,
+    .react-calendar__decade-view .react-calendar__tile,
+    .react-calendar__century-view .react-calendar__tile {
+      padding: 2em 0.5em;
+    }
+  /* 當天 */
+  .react-calendar__tile--now {
+    color:#000000;
+    background: rgba(245, 136, 7, 0.2);
+  }
+  /* 選取當天 */
+  .react-calendar__tile--now:enabled:hover,
+  .react-calendar__tile--now:enabled:focus {
+    color:#ffffff;
+    background: #fd000021;
+  }
+  /*當月當年 */
+  .react-calendar__tile--hasActive {
+    color:#000000;
+    background: rgba(245, 136, 7, 0.2);
+  }
+  /*選取年月 */
+  .react-calendar__tile--hasActive:enabled:hover,
+  .react-calendar__tile--hasActive:enabled:focus {
+    color:#ffffff;
+    background: #fd000021;
+  }
+  /* 選擇日期 */
+  .react-calendar__tile--active {
+    background: #25858B;
+    color: white;
+  }
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: #25858B;
+  }
+  .react-calendar--selectRange .react-calendar__tile--hover {
+    background-color: #e6e6e6;
+  }

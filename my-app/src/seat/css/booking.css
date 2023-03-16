@@ -1,0 +1,82 @@
+.b-bg {
+  min-height: 25rem;
+  background: url(../img/seat.jpeg);
+  background-size: 100%;
+  background-position-y: 30%;
+  background-repeat: no-repeat;
+}
+
+input[type='date']::before {
+  color: #838383;
+}
+
+/* 訂位表單 */
+.b-bg2 {
+  height: 104vh;
+  background: linear-gradient(
+      to right,
+      rgba(255, 166, 62, 0.6),
+      rgba(231, 126, 126, 0.8)
+    ),
+    url(../img/seat2.jpeg);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: repeat, no-repeat;
+}
+
+.book-form {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  width: 100%;
+}
+
+.book-title {
+  padding: 0 0 0.2rem 0;
+  border-bottom: 0px px solid #25858b;
+  font-family: Noto Serif TC;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+@media screen and (min-width: 768px) {
+  .b-bg2 {
+    height: 100vh;
+  }
+
+  .book-form {
+    width: 65%;
+  }
+  .book-title {
+    border-bottom: 2px solid #25858b;
+    padding: 0 4rem 0.2rem 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+.wine {
+  height: 4rem;
+}
+
+.list-circle {
+  list-style: circle;
+}
+
+.map {
+  width: 100%;
+  background-color: #838383;
+  height: 18rem;
+}
+
+@media screen and (min-width: 768px) {
+  .map {
+    width: 60%;
+    height: 30rem;
+  }
+}
+
+.category {
+  text-align: end;
+  width: 30%;
+  padding-right: 1rem;
+}

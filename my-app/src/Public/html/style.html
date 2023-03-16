@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join style</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <navbar class="navbar container-fluid">
+        <div class="container">
+            <div class="col-auto">
+                <img src="./img/Logo.png">
+            </div>
+            <div class="col-auto d-md-flex align-items-center d-none">
+                <ul class="menu col-auto m-0 j-h3">
+                    <li><a href="./twoColumn.html">商品</a></li>
+                    <li><a href="#">課程</a></li>
+                    <li><a href="#">訂位</a></li>
+                    <li><a href="#">最新消息</a></li>
+                </ul>
+                <div class="col-auto ms-4">
+                    <button class="o-line-btn me-2 j-h3">登入</button>
+                    <button class="o-line-btn j-h3">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="o-line-btn col-auto d-block d-md-none j-primary">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </button>
+
+            <!-- 手機版menu -->
+            <div class="menu-sm d-flex d-md-none">
+                <div class="menu-sm-option">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <h5>消息</h5>
+                </div>
+                <div class="menu-sm-option active">
+                    <i class="fa-solid fa-wine-bottle"></i>
+                    <h5>商品</h5>
+                </div>
+                <div class="menu-sm-option">
+                    <i class="fa-solid fa-champagne-glasses"></i>
+                    <h5>訂位</h5>
+                </div>
+                <div class="menu-sm-option">
+                    <i class="fa-solid fa-chalkboard"></i>
+                    <h5>課程</h5>
+                </div>
+                <div class="menu-sm-option">
+                    <i class="fa-solid fa-user"></i>
+                    <h5>會員</h5>
+                </div>
+            </div>
+        </div>
+    </navbar>
+
+    <!-- Sec-navbar 要用nav-space 空出上面的距離 -->
+    <div class="container-fluid d-none d-md-block nav-space pb-5">
+        <div class="container">
+            <div class="row sec-navbar">
+                <div class="col-auto">
+                    <a href="#" class="me-1">商品</a>/ <a href="#" class="me-1">威士忌</a>
+                    / <a href="#" class="me-1">威士忌</a>/ <a href="#" class="me-1">威士忌</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--內容 第一個section要加nav-space pt-md-0--->
+    <section class="container-fluid nav-space pt-md-0">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 顏色＆字體</span>
+                <div class="title-line d-block d-md-none"></div>
+            </div>
+            <div class="row d-flex">
+                <!-- 顏色 -->
+                <div class="col-auto d-flex">
+                    <div class="col-auto">
+                        <div class="circle j-bg-white"></div>
+                        <div class="circle j-bg-lightGray"></div>
+                        <div class="circle j-bg-deepGray"></div>
+                        <div class="circle j-bg-black"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="circle j-bg-primary"></div>
+                        <div class="circle j-bg-deepPri"></div>
+                        <div class="circle j-bg-lightPri"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="circle j-bg-secondary"></div>
+                        <div class="circle j-bg-deepSec"></div>
+                        <div class="circle j-bg-lightSec"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="circle j-bg-o-grad"></div>
+                        <div class="circle j-bg-p-grad"></div>
+                        <div class="circle j-bg-g-grad"></div>
+                    </div>
+                </div>
+
+                <!-- 字體 -->
+                <div class="col-auto">
+                    <h1>我是H1</h1>
+                    <h2>我是H2</h2>
+                    <h3>我是H3</h3>
+                    <h4>我是H4</h4>
+                    <h5>我是H5</h5>
+                    <div class="j-text">文字文字文字文字</div>
+                </div>
+                <div class="col-auto j-h5">
+                    <div class="icon j-primary j-h2">
+                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-minus"></i>
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <i class="fa-solid fa-heart"></i>
+                        <i class="fa-solid fa-chevron-down"></i>
+                        <i class="fa-solid fa-angles-right"></i>
+                        <i class="fa-solid fa-trash-can"></i>
+                        <i class="fa-solid fa-pen"></i>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i class="fa-solid fa-newspaper"></i>
+                        <i class="fa-solid fa-wine-bottle"></i>
+                        <i class="fa-solid fa-champagne-glasses"></i>
+                        <i class="fa-solid fa-chalkboard"></i>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    如果要用click效果的 可以一開始灰色點了變橘色
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 按鈕 -->
+    <section class="container-fluid">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 按鈕</span>
+                <div class="title-line d-block d-md-none"></div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <button class="o-line-btn j-h3">登入</button>
+                    <button class="g-line-btn j-h3">登入</button>
+                    <button class="gray-line-btn j-h3">取消</button>
+                    <button class="wo-line-btn j-h3">背景深可用</button>
+                </div>
+                <div class="col-auto">
+                    <button class="o-long-btn j-h3">由此進入</button>
+                </div>
+                <!-- <div class="col-auto">
+                    <div class="title j-h1 j-deepSec"> 關於我們</div>
+                </div> -->
+                <div class="col-auto gray-btn j-h3">關於我們</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 卡片A -->
+    <section class="container-fluid">
+        <div class="container ">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 卡片Ａ</span>
+                <div class="title-line d-block d-md-none"></div>
+                <button class="o-line-btn j-h3 d-none  d-md-block">
+                    查看更多 <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2  row-cols-xl-4  g-4 ">
+                <div class="col">
+                    <div class="card card-a">
+                        <img src="./img/test.jpeg" class="card-img-top" alt="...">
+                        <div class="info">
+                            <h3>馬丁尼與夏夜時光特調</h3>
+                            <div class="j-text j-deepSec">Wilbur</div>
+                            <div class="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
+                            <div class="o-long-btn  h3">報名</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card card-a">
+                        <img src="./img/test.jpeg" class="card-img-top" alt="...">
+                        <div class="info">
+                            <h3>馬丁尼與夏夜時光特調</h3>
+                            <div class="j-text j-deepSec">Wilbur</div>
+                            <div class="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
+                            <div class="o-long-btn  h3   ">報名</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card card-a">
+                        <img src="./img/test.jpeg" class="card-img-top" alt="...">
+                        <div class="info">
+                            <h3>馬丁尼與夏夜時光特調</h3>
+                            <div class="j-text j-deepSec">Wilbur</div>
+                            <div class="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
+                            <div class="o-long-btn  h3   ">報名</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card card-a">
+                        <img src="./img/test.jpeg" class="card-img-top" alt="...">
+                        <div class="info">
+                            <h3>馬丁尼與夏夜時光特調</h3>
+                            <div class="j-text j-deepSec">Wilbur</div>
+                            <div class="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
+                            <div class="o-long-btn  h3">報名</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="o-line-btn j-h3 d-block  d-md-none w-100 mt-5">
+                查看更多 <i class="fa-solid fa-angles-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- 卡片B -->
+    <section class="container-fluid">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 卡片B</span>
+                <div class="title-line d-block d-md-none"></div>
+                <button class="o-line-btn j-h3 d-none  d-md-block">
+                    查看更多 <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
+            <div class="row row-cols-2  row-cols-xl-3 row-cols-xxl-4 g-4 g-lg-5 g-xl-5 mt-4">
+                <div class="col">
+                    <a href="#/" alt="Mythrill" target="_blank">
+                        <div class="mycard product">
+                            <div class="wrapper">
+                                <img src="./img/001.webp" class="cover-image" />
+
+                            </div>
+                            <div class="mycard-icon">
+                                <button class="icon-button btn like-btn">
+                                    <i class="fa-regular fa-heart j-primary" data-id="product-1"></i>
+                                </button>
+                            </div>
+                            <div class="origin-color">
+                            </div>
+                            <div class="mycard-title">
+                                <h2 class="mb-0">商品名稱商品名稱商品名稱</h2>
+                                <p class="mb-0"> $2000</p>
+                                <div class="d-grid gap-2 mt-0 mt-md-3">
+                                    <button class="btn wo-line-btn" type="button">加入購物車</button>
+                                </div>
+                            </div>
+                            <img src="./img/001.webp" class="character" />
+                        </div>
+
+
+                    </a>
+                </div>
+
+                <div class="col">
+                    <a href="#/" alt="Mythrill" target="_blank">
+                        <div class="mycard product">
+                            <div class="wrapper">
+                                <img src="./img/001.webp" class="cover-image" />
+
+                            </div>
+                            <div class="mycard-icon">
+                                <button class="icon-button btn like-btn">
+                                    <i class="fa-regular fa-heart j-primary" data-id="product-2"></i>
+                                </button>
+                            </div>
+                            <div class="origin-color">
+                            </div>
+                            <div class="mycard-title">
+                                <h2 class="mb-0">商品名稱商品名稱商品名稱</h2>
+                                <p class="mb-0"> $2000</p>
+                                <div class="d-grid gap-2 mt-0 mt-md-3">
+                                    <button class="btn wo-line-btn" type="button">加入購物車</button>
+                                </div>
+                            </div>
+                            <img src="./img/001.webp" class="character" />
+                        </div>
+
+
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#/" alt="Mythrill" target="_blank">
+                        <div class="mycard product">
+                            <div class="wrapper">
+                                <img src="./img/001.webp" class="cover-image" />
+
+                            </div>
+                            <div class="mycard-icon">
+                                <button class="icon-button btn like-btn">
+                                    <i class="fa-regular fa-heart j-primary" data-id="product-3"></i>
+                                </button>
+                            </div>
+                            <div class="origin-color">
+                            </div>
+                            <div class="mycard-title">
+                                <h2 class="mb-0">商品名稱商品名稱商品名稱</h2>
+                                <p class="mb-0"> $2000</p>
+                                <div class="d-grid gap-2 mt-0 mt-md-3">
+                                    <button class="btn wo-line-btn" type="button">加入購物車</button>
+                                </div>
+                            </div>
+                            <img src="./img/001.webp" class="character" />
+                        </div>
+
+
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#/" alt="Mythrill" target="_blank">
+                        <div class="mycard product">
+                            <div class="wrapper">
+                                <img src="./img/001.webp" class="cover-image" />
+
+                            </div>
+                            <div class="mycard-icon">
+                                <button class="icon-button btn like-btn">
+                                    <i class="fa-regular fa-heart j-primary" data-id="product-4"></i>
+                                </button>
+                            </div>
+                            <div class="origin-color">
+                            </div>
+                            <div class="mycard-title">
+                                <h2 class="mb-0">商品名稱商品名稱商品名稱</h2>
+                                <p class="mb-0"> $2000</p>
+                                <div class="d-grid gap-2 mt-0 mt-md-3">
+                                    <button class="btn wo-line-btn" type="button">加入購物車</button>
+                                </div>
+                            </div>
+                            <img src="./img/001.webp" class="character" />
+                        </div>
+
+
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#/" alt="Mythrill" target="_blank">
+                        <div class="mycard product">
+                            <div class="wrapper">
+                                <img src="./img/001.webp" class="cover-image" />
+
+                            </div>
+                            <div class="mycard-icon">
+                                <button class="icon-button btn like-btn">
+                                    <i class="fa-regular fa-heart j-primary" data-id="product-5"></i>
+                                </button>
+                            </div>
+                            <div class="origin-color">
+                            </div>
+                            <div class="mycard-title">
+                                <h2 class="mb-0">商品名稱商品名稱商品名稱</h2>
+                                <p class="mb-0"> $2000</p>
+                                <div class="d-grid gap-2 mt-0 mt-md-3">
+                                    <button class="btn wo-line-btn" type="button">加入購物車</button>
+                                </div>
+                            </div>
+                            <img src="./img/001.webp" class="character" />
+                        </div>
+
+
+                    </a>
+                </div>
+            </div>
+            <button class="o-line-btn j-h3 d-block  d-md-none w-100">
+                查看更多 <i class="fa-solid fa-angles-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- 表單 -->
+    <section class="container-fluid">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 表單</span>
+                <div class="title-line d-block d-md-none"></div>
+            </div>
+            <div class="row">
+                <form class="col-auto">
+                    <!-- 純文字 -->
+                    <div class="j-input">
+                        <div>
+                            <label for="name">姓名</label>
+                        </div>
+                        <input type="text" class="input-text" required placeholder="ex.王小明">
+
+                    </div>
+                    <div class="j-input">
+                        <div>
+                            <label for="email">信箱</label>
+                        </div>
+                        <input type="email" id='email' class="input-text" required>
+                    </div>
+
+                    <!-- 下拉式選單 -->
+                    <div class="j-input">
+                        <div>
+                            <label for="period">時段</label>
+                        </div>
+                        <div class="dropdown">
+                            <div class="dropdown-toggle">
+                                <span class="dropdown-label" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">請選擇...</span>
+                            </div>
+
+                            <ul class=" dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
+                                <li data-value="1">八點到十點</li>
+                                <li data-value="2">十點到十二點</li>
+                                <li data-value="3">十二點到兩點</li>
+                            </ul>
+                            <input type="hidden" id="selected" name="selected" value="">
+                        </div>
+                    </div>
+                    <div class="j-input">
+                        <div>
+                            <label for="period">時段</label>
+                        </div>
+                        <div class="dropdown">
+                            <div class="dropdown-toggle">
+                                <span class="dropdown-label" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">請選擇...</span>
+                            </div>
+
+                            <ul class=" dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
+                                <li data-value="1">八點到十點</li>
+                                <li data-value="2">十點到十二點</li>
+                                <li data-value="3">十二點到兩點</li>
+                            </ul>
+                            <input type="hidden" id="selected" name="selected" value="">
+                        </div>
+                    </div>
+                    <div class="j-input d-flex flex-row">
+                        <label class="d-flex align-items-center">
+                            <input type="radio" name="table" value="1" class="j-radio"> 吧台
+                        </label>
+                        <label class="d-flex align-items-center">
+                            <input type="radio" name="table" value="2" class="j-radio"> 方桌
+                        </label>
+                        <label class="d-flex align-items-center">
+                            <input type="radio" name="table" value="3" class="j-radio"> 包廂
+                        </label>
+                    </div>
+                    <div class="j-input d-flex flex-row">
+                        <label class="d-flex align-items-center">
+                            <input type="checkbox" name="food" value="1" class="j-checkbox">泰式
+                        </label>
+                        <label class="d-flex align-items-center">
+                            <input type="checkbox" name="food" value="2" class="j-checkbox">美式
+                        </label>
+                        <label class="d-flex align-items-center">
+                            <input type="checkbox" name="food" value="3" class="j-checkbox">法式
+                        </label>
+                    </div>
+                    <div class="j-input">
+                        <textarea name="" cols="30" rows="10"></textarea>
+                    </div>
+                    <input type="submit" class="g-line-btn j-h3 j-white">
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- 表格 -->
+    <section class="container-fluid">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 表格</span>
+                <div class="title-line d-block d-md-none"></div>
+            </div>
+            <table>
+                <thead class="j-deepPri d-none d-md-table-header-group">
+                    <tr>
+                        <td>check</td>
+                        <td>姓名</td>
+                        <td>數量</td>
+                        <td>編輯</td>
+                        <td>刪除</td>
+                    </tr>
+                </thead>
+                <tbody class="j-deepGray">
+                    <tr>
+                        <td><input type="checkbox" name="food" value="1" class="j-checkbox"></td>
+                        <td>王小明</td>
+                        <td>
+                            <i class="fa-solid fa-square-minus"></i>
+                            <span class="px-4">2</span>
+                            <i class="fa-solid fa-square-plus"></i>
+                        </td>
+                        <td><i class="fa-solid fa-pen"></i></td>
+                        <td><i class="fa-solid fa-trash-can"></i></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="food" value="1" class="j-checkbox"></td>
+                        <td>王小明</td>
+                        <td>
+                            <i class="fa-solid fa-square-minus"></i>
+                            <span class="px-4">1</span>
+                            <i class="fa-solid fa-square-plus"></i>
+                        </td>
+                        <td><i class="fa-solid fa-pen"></i></td>
+                        <td><i class="fa-solid fa-trash-can"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <!-- 換頁 -->
+    <section class="container-fluid">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 換頁</span>
+                <div class="title-line d-block d-md-none"></div>
+            </div>
+            <div class="change-page">
+                <div class="change-option active h3">商品訂單</div>
+                <div class="change-option h3">課程訂單</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 購物流程 -->
+    <section class="container-fluid">
+        <div class="container">
+            <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+                <span class="col-auto title j-deepSec"> 購物流程</span>
+                <div class="title-line d-block d-md-none"></div>
+            </div>
+            <div class="step-process">
+                <div class="step complete">
+                    <h1>1</h1>
+                    <h3>步驟1</h3>
+                </div>
+
+                <div class="step active">
+                    <h1>2</h1>
+                    <h3>步驟2步驟2</h3>
+                </div>
+                <div class="step">
+                    <h1>3</h1>
+                    <h3>步驟3步驟3</h3>
+                </div>
+                <div class="step">
+                    <h1>4</h1>
+                    <h3>步驟4</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <div class="container-fluid footer">
+        <div class="container">
+            <div class="row">
+                <footer class="d-flex">
+                    <div class="d-block d-md-flex">
+                        <div class="col-auto pe-5 d-none d-md-block">
+                            <img src="./img/Logo-white.png">
+                        </div>
+                        <div class="col-auto pe-5">
+                            <div class="j-h5 j-white pb-2">地址 ｜台北市大安區復興南路一段390號2樓</div>
+                            <div class="j-h5 j-white pb-2">電話 ｜02-6631-6588</div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="j-h5 j-white pb-2">信箱 | joinjoin@gmail.com</div>
+                            <div class="j-h5 j-white pb-2">周一至周五 14:00 - 02:00</div>
+                        </div>
+                    </div>
+                    <div class="col-auto d-none d-lg-block ms-auto">
+                        <img src="./img/Icon/cup-sm.png" alt="">
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script src="./style.js"></script>
+</body>
+
+</html>
