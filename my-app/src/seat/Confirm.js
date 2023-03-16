@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { SEAT_ALL } from './api_config'
+import { SEAT_ALL, CONFIRM } from './api_config'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { usePopup } from '../Public/Popup'
@@ -15,7 +15,7 @@ function Confirm() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`${SEAT_ALL}/${sid}`).then((response) => {
+    axios.get(`${CONFIRM}/${sid}`).then((response) => {
       setData(response.data)
       console.log(sid)
       console.log(response.data)
@@ -54,8 +54,8 @@ function Confirm() {
               {data.map((item) => (
                 <tr key={item.sid}>
                   <td>{dayjs(item.reserveDate).format('YYYY-MM-DD')}</td>
-                  <td>{item['period-sid']}</td>
-                  <td>{item.table_sid}</td>
+                  <td>{item.period}</td>
+                  <td>{item.category}</td>
                   <td>{item.people}</td>
                   <td>{item.name}</td>
                   <td>{item.phone}</td>
