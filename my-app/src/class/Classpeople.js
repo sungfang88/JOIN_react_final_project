@@ -137,10 +137,8 @@ function Classpeople() {
               <input
                 type="text"
                 className="input-text"
-                value={s1}
                 required
                 placeholder="ex.王小明"
-                onChange={(e) => sets1(e.target.value)}
               />
             </div>
           </div>
@@ -153,10 +151,8 @@ function Classpeople() {
               <input
                 type="tel"
                 className="inpu2t-text"
-                value={p1}
                 required
                 placeholder="ex.0912345678"
-                onChange={(e) => setp1(e.target.value)}
               />
             </div>
           </div>
@@ -175,7 +171,7 @@ function Classpeople() {
             上一步
           </Link>
 
-          <a
+          <Link
             className="o-long-btn j-h3 btnCall "
             to="http://localhost:3002/cart/classOrder01"
             onClick={(e) => {
@@ -184,7 +180,7 @@ function Classpeople() {
             }}
           >
             立即購買
-          </a>
+          </Link>
           {/* <Link
             className="o-long-btn j-h3 btnCall "
             to="/cart/classOrder01"
