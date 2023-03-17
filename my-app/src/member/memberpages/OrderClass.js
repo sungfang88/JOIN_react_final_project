@@ -271,7 +271,7 @@ function OrderClass() {
 
                             <td>上課日期</td>
                             <td>上課時間</td>
-                            <td>上課人數</td>
+                            <td>購課人數</td>
                             <td>課程價格</td>
                           </tr>
                         </thead>
@@ -475,7 +475,7 @@ function OrderClass() {
                   <div className="col-12 mt-3 d-flex justify-content-center">
                     <div className="w-50 text-center ms-2">
                       <span className="j-deepSec tr-fs border-bottom border-2">
-                        上課人數
+                        購課人數
                       </span>
                     </div>
                     <div className="w-50 me-5">

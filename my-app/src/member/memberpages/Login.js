@@ -57,7 +57,13 @@ function Login() {
               )
             } else {
               const likedProducts = localStorage.getItem('likedProducts')
-              const likedProductsJSON = JSON.parse(likedProducts)
+              let likedProductsJSON = ''
+              if (likedProducts === null) {
+                likedProductsJSON = ''
+              } else {
+                likedProductsJSON = JSON.parse(likedProducts)
+              }
+
               const arr = Object.keys(likedProductsJSON)
               const sendlikedata = { productarray: arr, mid: accountId }
               if (!!likedProducts) {
