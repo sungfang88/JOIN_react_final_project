@@ -171,7 +171,7 @@ function Classpeople() {
             上一步
           </Link>
 
-          <Link
+          <a
             className="o-long-btn j-h3 btnCall "
             to="http://localhost:3002/cart/classOrder01"
             onClick={(e) => {
@@ -180,7 +180,7 @@ function Classpeople() {
             }}
           >
             立即購買
-          </Link>
+          </a>
           {/* <Link
             className="o-long-btn j-h3 btnCall "
             to="/cart/classOrder01"
