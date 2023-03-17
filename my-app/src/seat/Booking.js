@@ -97,13 +97,6 @@ function Booking() {
     }
   }, [checked])
 
-  useEffect(() => {
-    setName(memberdata.name)
-    setPhone(memberdata.phone)
-  }, [memberdata])
-
-  //TODO 寫前端判斷式 如果打勾就帶入會員 沒打勾就不要帶入
-
   // 上傳資料
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -115,6 +108,7 @@ function Booking() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          member_sid: myAuth.sid,
           name: name,
           phone: phone,
           reserveDate: reserveDate,
