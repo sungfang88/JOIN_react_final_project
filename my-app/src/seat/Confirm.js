@@ -16,9 +16,10 @@ function Confirm() {
 
   useEffect(() => {
     axios.get(`${CONFIRM}/${sid}`).then((response) => {
-      setData(response.data)
+      setData(response.data[0])
       console.log(sid)
       console.log(response.data)
+      console.log(data)
       // const category = response.data[0].category
       // console.log(category)
     })
@@ -51,86 +52,47 @@ function Confirm() {
               </tr>
             </thead>
             <tbody className="j-deepGray">
-              {data.map((item) => (
-                <tr key={item.sid}>
-                  <td>{dayjs(item.reserveDate).format('YYYY-MM-DD')}</td>
-                  <td>{item.period}</td>
-                  <td>{item.category}</td>
-                  <td>{item.people}</td>
-                  <td>{item.name}</td>
-                  <td>{item.phone}</td>
-                  {/* <td>{console.log(data)}</td> */}
-                </tr>
-              ))}
+              <tr>
+                <td>{dayjs(data.reserveDate).format('YYYY-MM-DD')}</td>
+                <td>{data.period}</td>
+                <td>{data.category}</td>
+                <td>{data.people}</td>
+                <td>{data.name}</td>
+                <td>{data.phone}</td>
+                {/* <td>{console.log(data)}</td> */}
+              </tr>
             </tbody>
           </table>
           <table className="mb-3 d-table d-md-none">
             <tbody>
               <tr>
                 <td className="j-deepPri category">日期</td>
-                {data.map((item) => (
-                  <td
-                    className="j-deepGray text-start"
-                    key={item.id + item.reserveDate}
-                  >
-                    {dayjs(item.reserveDate).format('YYYY-MM-DD')}
-                  </td>
-                ))}
+
+                <td className="j-deepGray text-start">
+                  {dayjs(data.reserveDate).format('YYYY-MM-DD')}
+                </td>
               </tr>
               <tr>
                 <td className="j-deepPri category">時段</td>
-                {data.map((item) => (
-                  <td
-                    className="j-deepGray text-start"
-                    key={item.id + item.period_sid}
-                  >
-                    {item.period_sid}
-                  </td>
-                ))}
+
+                <td className="j-deepGray text-start">{data.period}</td>
               </tr>
               <tr>
                 <td className="j-deepPri category">座位種類</td>
-                {data.map((item) => (
-                  <td
-                    className="j-deepGray text-start"
-                    key={item.id + item.table_sid}
-                  >
-                    {item.table_sid}
-                  </td>
-                ))}
+
+                <td className="j-deepGray text-start">{data.category}</td>
               </tr>
               <tr>
                 <td className="j-deepPri category">人數</td>
-                {data.map((item) => (
-                  <td
-                    className="j-deepGray text-start"
-                    key={item.id + item.people}
-                  >
-                    {item.people}
-                  </td>
-                ))}
+                <td className="j-deepGray text-start">{data.people}</td>
               </tr>
               <tr>
                 <td className="j-deepPri category">姓名</td>
-                {data.map((item) => (
-                  <td
-                    className="j-deepGray text-start"
-                    key={item.id + item.name}
-                  >
-                    {item.name}
-                  </td>
-                ))}
+                <td className="j-deepGray text-start">{data.name}</td>
               </tr>
               <tr>
                 <td className="j-deepPri category">電話</td>
-                {data.map((item) => (
-                  <td
-                    className="j-deepGray text-start"
-                    key={item.id + item.phone}
-                  >
-                    {item.phone}
-                  </td>
-                ))}
+                <td className="j-deepGray text-start">{data.phone}</td>
               </tr>
             </tbody>
           </table>
