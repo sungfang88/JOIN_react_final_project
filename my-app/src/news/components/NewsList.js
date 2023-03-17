@@ -21,6 +21,7 @@ function NewsList({ NewsListData=[] }) {
             title,
             date,
             btnUrl,
+            state,
             btnText,
             content,
             cate,
@@ -38,6 +39,7 @@ function NewsList({ NewsListData=[] }) {
                 title={title}
                 date={new Date(date).toJSON().slice(0, 10)}
                 btnUrl={btnUrl}
+                state={state}
                 btnText={btnText}
                 content={content}
                 cate={cate}
