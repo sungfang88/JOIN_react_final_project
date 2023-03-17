@@ -70,10 +70,29 @@ function Cartsec() {
     console.log(coupon.code)
     setIsMenuOpen1(false)
   }
-  //總數量
-  const totalCount = data.reduce((acc, v, i) => acc + v.quantity, 0)
-  //總金額
-  let totalPrice = data.reduce((acc, v, i) => acc + v.price * v.quantity, 0)
+
+  //算數量
+  const totalCount = data.reduce((acc, v, i) => {
+    if (typeof v.quantity === 'number' && !isNaN(v.quantity)) {
+      return acc + v.quantity
+    } else {
+      return acc
+    }
+  }, 0)
+  //算總金額
+  const totalPrice = data.reduce((acc, v, i) => {
+    if (
+      typeof v.price === 'number' &&
+      !isNaN(v.price) &&
+      typeof v.quantity === 'number' &&
+      !isNaN(v.quantity)
+    ) {
+      return acc + v.price * v.quantity
+    } else {
+      return acc
+    }
+  }, 0)
+
   console.log('v.price', data.price)
   // 根據選擇的優惠卷做折扣
   const discount = selectedCoupon ? selectedCoupon.discount : 0
@@ -152,9 +171,8 @@ function Cartsec() {
     // }
     // } else {
     const orderId = 'P' + Date.now()
-    const amount = totalPrice - discount
-    const response = await axios.post(`${UPDATED_ORDER}${myAuth.sid}`, {
-      amount: amount,
+    const response = await axios.post(`${UPDATED_ORDER}${data[0].m_id}`, {
+      amount: discountedPrice,
       addressee: userName,
       orderId: orderId,
       phone: phone,
@@ -165,19 +183,12 @@ function Cartsec() {
         name: product_ch,
         price: price,
         quantity: quantity,
-        discount: discount,
       })),
     })
-    console.log('discountedPrice', totalPrice)
     const resLINE = response.data
     console.log('resLINE.data.web', resLINE.web)
-    const orderData = {
-      orderId,
-      amount: amount,
-    }
-    console.log('discountedPrice', discountedPrice)
-    localStorage.setItem('orderData', JSON.stringify(orderData))
-    console.log('result', response.data)
+    localStorage.setItem('orderId', orderId)
+    console.log('result', response)
     window.location.href = resLINE.web
     // }
   }
@@ -525,14 +536,15 @@ function Cartsec() {
               >
                 上一步
               </Link>
-              <Link
-                to="/cart/cart03"
+              <button
                 className="g-line-btn j-h3 j-white"
-                onClick={(e) => handleSubmit(e)}
-                type="submit"
+                onClick={(e) => {
+                  handleSubmit(e)
+                  e.preventDefault()
+                }}
               >
                 送出
-              </Link>
+              </button>
             </div>
           </form>
         </div>

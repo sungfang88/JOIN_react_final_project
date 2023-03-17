@@ -133,8 +133,10 @@ function Classfirst() {
 
   //按下一步後將資料傳送到updateClassItem
   const handleNext = () => {
-    updateForm()
-    upDataCoupon(couponsData)
+    updateForm().then(() => {
+      const orderIdString = localStorage.getItem('orderId')
+      upDataCoupon(couponsData, orderIdString)
+    })
   }
   //送出課程訂單
   const [classOrder, setClassOrder] = useState()
@@ -163,24 +165,27 @@ function Classfirst() {
   }
 
   //將優惠卷的資料庫改寫
-  const orderIdString = localStorage.getItem('orderId')
-  const orderId = orderIdString ? JSON.parse(orderIdString) : null
   const [couponsData, setCouponData] = useState([])
   const upDataCoupon = async () => {
-    try {
-      const response = await axios.post(
-        UPDATED_COUPON,
-        {
-          memberId: myAuth.sid,
-          orderId: orderId,
-          itemId: coupons.sid,
-        },
-        { withCredentials: true }
-      )
-      console.log('couponsData', response.data)
-      setCouponData(selectedCoupon)
-    } catch (error) {
-      console.log(error)
+    const orderIdString = localStorage.getItem('orderId')
+    if (orderIdString === null) {
+      console.log('NO')
+    } else {
+      try {
+        const response = await axios.post(
+          UPDATED_COUPON,
+          {
+            memberId: myAuth.sid,
+            orderId: orderIdString,
+            itemId: coupons.sid,
+          },
+          { withCredentials: true }
+        )
+        console.log('couponsData', orderIdString)
+        setCouponData(selectedCoupon)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -363,7 +368,6 @@ function Classfirst() {
                 </table>
               </div>
             </div>
-
             <div className="text-center">
               <Link
                 to="/class/Classsec" //尚未確認

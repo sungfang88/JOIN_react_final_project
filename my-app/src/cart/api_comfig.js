@@ -25,7 +25,10 @@ export const UPDATED_COUPON = `${HOST}/coupon/applyCoupon/`
 export const UPDATED_ORDER = `${HOST}/cart/order/`
 
 //ORDER GET:
-export const ORDER_DATA = `${HOST}/cart/linePayOrder`
+export const ORDER_DATA = `${HOST}/linePay/confirm`
+
+//emptycart DELETE
+export const DELETE_CART_DATA = `${HOST}/cart/emptycart`
 
 //CLASS GET:
 export const CLASS_DATA = `${HOST}/cart/classOrder/`

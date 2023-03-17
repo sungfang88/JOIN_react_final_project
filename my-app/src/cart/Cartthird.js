@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
-import { CART_DATA, ORDER_DATA } from './api_comfig'
+import { CART_DATA, ORDER_DATA, DELETE_CART_DATA } from './api_comfig'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Stepprocess from './components/Stepprocess'
@@ -24,6 +24,18 @@ function Cartthird() {
     }
   }
 
+  const handleDeleteCart = async () => {
+    try {
+      // 刪除購物車資料的 API 請求
+      const storedSids = JSON.parse(localStorage.getItem('selectedSids')) || []
+      await axios.delete(`${DELETE_CART_DATA}${storedSids.join('/')}`, {
+        withCredentials: true,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //取得訂單資料(LINE PAY 轉址不成功)
   const [order, setOrder] = useState({})
   const params = new URLSearchParams(window.location.search)
@@ -31,19 +43,13 @@ function Cartthird() {
   const orderId = params.get('orderId')
   const getOrderData = async () => {
     try {
-      const response = await axios.get(
-        `${ORDER_DATA}?transactionId=${transactionId}&orderId=${orderId}`,
-        {
-          withCredentials: true,
-        }
-      )
-      setOrder(response.data)
-      window.location.href = `http://localhost:3002/cart/linePayOrder?transactionId=${transactionId}&orderId=${transactionId}`
+      const response = await axios.get(`${ORDER_DATA}`, {
+        withCredentials: true,
+      })
     } catch (error) {
       console.log(error)
     }
   }
-
   //控制商品明細收合
   const [isOpen, setIsOpen] = useState(false)
   const toggleTable = () => {
@@ -79,8 +85,12 @@ function Cartthird() {
       <section className="container-fluid">
         <div className="container myWidth">
           <table className="mb-3">
-            <div className="tableTitle h3 j-deepSec headTitle">收件人</div>
             <tbody className="j-deepGray">
+              <tr className="row g-0">
+                <td className="tableTitle h3 j-deepSec headTitle text-start">
+                  收件人
+                </td>
+              </tr>
               <tr className="row g-0">
                 <td className="col-md-2 col-3 j-deepPri h3">姓名</td>
                 <td className="col-md-10 col-9 j-deepGray text-start h3">
@@ -129,6 +139,7 @@ function Cartthird() {
             className="gray-line-btn j-h3 title-button me-3"
             onClick={() => {
               localStorage.removeItem('orderData')
+              handleDeleteCart()
             }}
           >
             查看歷史訂單
@@ -138,6 +149,7 @@ function Cartthird() {
             className="g-line-btn j-h3 title-button"
             onClick={() => {
               localStorage.removeItem('orderData')
+              handleDeleteCart()
             }}
           >
             繼續購物

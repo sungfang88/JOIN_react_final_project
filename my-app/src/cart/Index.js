@@ -15,6 +15,39 @@ function Index() {
 
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
+
+  // 在 component 中新增一個狀態來儲存被選取的 sid
+  const [selectedSids, setSelectedSids] = useState(
+    JSON.parse(localStorage.getItem('selectedSids') || '[]')
+  )
+  // 將 handleCheckboxChange 改為更新 selectedSids 狀態
+  const handleCheckboxChange = (e, sid) => {
+    if (e.target.checked) {
+      setSelectedSids([...selectedSids, sid])
+    } else {
+      setSelectedSids(selectedSids.filter((selectedSid) => selectedSid !== sid))
+    }
+    localStorage.setItem('selectedSids', JSON.stringify([...selectedSids, sid]))
+  }
+  useEffect(() => {
+    localStorage.setItem('selectedSids', JSON.stringify(selectedSids))
+  }, [selectedSids])
+
+  // btnGroup array {text: 按鍵字, handle: onclick function}
+  const openDupBtnPopup = () => {
+    initialState.current = false
+    setPopupProps({
+      content: `請選擇商品`,
+      btnGroup: [
+        {
+          text: '關閉',
+          handle: closePopup,
+        },
+      ],
+    })
+    // openPopup()
+  }
+
   //取得購物車資料
   const [data, setData] = useState([{}])
   const getCartData = async () => {
@@ -29,8 +62,11 @@ function Index() {
   }
 
   //算金額
-  const totalPrice = data.reduce((acc, v, i) => acc + v.price * v.quantity, 0)
-  const totalCount = data.reduce((acc, v, i) => acc + v.quantity, 0)
+  const totalPrice = data.reduce(
+    (acc, v, i) => acc + (v.price || 0) * (v.quantity || 0),
+    0
+  )
+  const totalCount = data.reduce((acc, v, i) => acc + (v.quantity || 0), 0)
 
   //將購物車資料送回資料庫
   const updateCartItem = async (item) => {
@@ -50,47 +86,18 @@ function Index() {
     }
   }
 
-  // btnGroup array {text: 按鍵字, handle: onclick function}
-  const openDupBtnPopup = () => {
-    initialState.current = false
-    setPopupProps({
-      content: `請選擇商品`,
-      btnGroup: [
-        {
-          text: '關閉',
-          handle: closePopup,
-        },
-      ],
-    })
-    // openPopup()
-  }
-
   //按下一部後將資料傳送到updateCartItem
   const handleNext = () => {
     data.forEach((item) => {
       updateCartItem(item)
     })
-    localStorage.setItem('selectedSids', JSON.stringify(selectedSids))
-  }
-  // 在 component 中新增一個狀態來儲存被選取的 sid
-  const [selectedSids, setSelectedSids] = useState([])
-  // 將 handleCheckboxChange 改為更新 selectedSids 狀態
-  const handleCheckboxChange = (e, sid) => {
-    console.log(e, sid)
-    if (e.target.checked) {
-      setSelectedSids([...selectedSids, sid])
-      console.log('sid', sid)
-    } else {
-      console.log('sid2', sid)
-      setSelectedSids(selectedSids.filter((selectedSid) => selectedSid !== sid))
-    }
   }
 
   useEffect(() => {
-    getCartData()
     if (initialState.current !== true) {
       openPopup() //可以直接打開pop up
     }
+    getCartData()
     return () => {
       //解除功能
       console.log('unmount')
@@ -154,28 +161,28 @@ function Index() {
           </Link>
           <Link
             className="g-line-btn j-h3 title-button"
-            to="/cart/cart02"
-            onClick={() => {
+            onClick={(event) => {
               const selectedSidsInLocalStorage =
                 localStorage.getItem('selectedSids')
               const selectedSids = JSON.parse(
                 selectedSidsInLocalStorage || '[]'
               )
-
               if (selectedSids.length === 0) {
                 console.log('selectedSids is an empty array')
                 openDupBtnPopup()
+                event.preventDefault() // 阻止預設行為，即不進行頁面跳轉
               } else {
                 console.log('12345')
                 handleNext()
               }
             }}
+            to="/cart/cart02"
           >
             下一步
           </Link>
-          <Popup {...popupProps} />
         </div>
       </section>
+      <Popup {...popupProps} />
     </>
   )
 }
