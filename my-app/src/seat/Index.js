@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import '../Public/style'
 import './css/booking.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PERIOD, SEARCH } from './api_config'
 import axios from 'axios'
+import { usePopup } from '../Public/Popup'
+import AuthContext from '../Context/AuthContext'
 
 const options2 = [
   { value: '1', label: '琴酒 Gin' },
@@ -15,18 +17,26 @@ const options2 = [
 ]
 
 function Index() {
+  const { myAuth } = useContext(AuthContext)
+
+  //查詢用
+  const [results, setResults] = useState([])
   const [reserveDate, setReserveDate] = useState('')
   const [period, setPeriod] = useState('請選擇...')
   const [people, setPeople] = useState('')
-  const [results, setResults] = useState([])
+  const [searchData, setSearchData] = useState({})
 
+  //popup
+  const { Popup, openPopup, closePopup } = usePopup()
+  const navigate = useNavigate()
+
+  //下拉選單
   const [options, setOptions] = useState([])
-
   const [selectedValue2, setSelectedValue2] = useState('請選擇...')
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
   const [isMenuOpen2, setIsMenuOpen2] = useState(false)
 
-  //下拉式選單
+  //*下拉式選單
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -64,9 +74,16 @@ function Index() {
     setIsMenuOpen2(false)
   }
 
-  const search = async (event) => {
+  //* 查詢
+  const Search = async (event) => {
     event.preventDefault()
+    setSearchData({
+      reserveDate,
+      period,
+      people,
+    })
     try {
+      // saveSearchData({ reserveDate, period, people })
       const response = await axios.get(SEARCH, {
         params: {
           reserveDate,
@@ -81,6 +98,28 @@ function Index() {
       console.error(error)
     }
   }
+
+  //*localStorage
+  //TODO 登入後localStorage會消失
+  //讀取local資料
+  useEffect(() => {
+    const storageData = JSON.parse(localStorage.getItem('searchData')) || {}
+    setSearchData(storageData)
+    setReserveDate(storageData.date || '')
+    setPeriod(storageData.period || '')
+    setPeople(storageData.people || '')
+    setResults(JSON.parse(localStorage.getItem('results')) || [])
+  }, [])
+
+  //狀態變化時將其寫入 `localStorage`
+  // useEffect(() => {
+  //   localStorage.setItem('queryResult', JSON.stringify(results))
+  // }, [results])
+
+  //TODO 還沒把時段改成數字再存
+  useEffect(() => {
+    localStorage.setItem('bookingData', JSON.stringify(searchData))
+  }, [searchData])
 
   return (
     <>
@@ -182,7 +221,7 @@ function Index() {
                     <button
                       type="submit"
                       className="g-line-btn j-h3 j-white w-100"
-                      onClick={search}
+                      onClick={Search}
                     >
                       查詢
                     </button>
@@ -213,9 +252,29 @@ function Index() {
                 </tbody>
               </table>
               <div className="d-flex justify-md-content-end flex-grow-1">
-                <Link className="w-100" to="/seat/book-seat">
-                  <button className="o-long-btn h3 py-3 w-100">訂位去！</button>
-                </Link>
+                {/* <Link className="w-100" to="/seat/book-seat"> */}
+                {myAuth.authorized ? (
+                  <button
+                    className="o-long-btn h3 py-3 w-100"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      navigate('/seat/book-seat')
+                    }}
+                  >
+                    訂位去！
+                  </button>
+                ) : (
+                  <button
+                    className="o-long-btn h3 py-3 w-100"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      openPopup()
+                    }}
+                  >
+                    訂位去！
+                  </button>
+                )}
+                {/* </Link> */}
               </div>
             </section>
 
@@ -356,6 +415,26 @@ function Index() {
           </div>
         </div>
       </div>
+
+      <Popup
+        content={'請先登入會員'}
+        btnGroup={[
+          {
+            text: '立即登入',
+            handle: () => {
+              localStorage.setItem(
+                'presentURL',
+                JSON.stringify(window.location.href)
+              )
+              navigate('/member/login')
+            },
+          },
+          {
+            text: '關閉',
+            handle: closePopup,
+          },
+        ]}
+      />
     </>
   )
 }

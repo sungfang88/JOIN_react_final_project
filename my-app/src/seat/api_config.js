@@ -13,3 +13,6 @@ export const SEAT_ALL = `${HOST}/seat_all`
 
 //查詢
 export const SEARCH = `${HOST}/search`
+
+//confirm
+export const CONFIRM = `${HOST}/confirm`
