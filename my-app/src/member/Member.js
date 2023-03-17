@@ -19,6 +19,7 @@ import OrderClass from './memberpages/OrderClass'
 import Popupdemo from './memberpages/Popdemo'
 import Verify from './memberpages/Verify'
 import Newpassword from './memberpages/Newpassword'
+import Home from '../home/Home'
 
 function Member() {
   const { myAuth } = useContext(AuthContext)
@@ -36,6 +37,9 @@ function Member() {
             <Route path="/orderlist" element={<Orderlist />} />
             <Route path="/orderclass" element={<OrderClass />} />
             <Route path="/popdemo" element={<Popupdemo />} />
+            <Route path="/login" element={<Home />} />
+            <Route path="/register" element={<Home />} />
+            <Route path="/newpassword" element={<Home />} />
           </Route>
         </Routes>
       </>

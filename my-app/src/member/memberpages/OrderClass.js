@@ -140,11 +140,11 @@ function OrderClass() {
                       navigate('/member/coupon')
                     }}
                   >
-                    折價券
+                    優惠券
                   </button>
                 ) : (
                   <button className="disabledbtn j-h3 mb-2 me-4 text-secondary">
-                    折價券
+                    優惠券
                   </button>
                 )}
 
@@ -251,14 +251,14 @@ function OrderClass() {
 
                       <div className="col-12 ">
                         <div className="row d-flex justify-content-around align-items-center mb-2 border-bottom mt-2">
-                          <div className="col-3 ps-5">
+                          <div className="col-6 ps-5 mb-2">
                             <img
-                              src="../img/001.webp"
+                              src="../img/1.png"
                               alt=""
-                              className="productImg"
+                              className="productImg barpic"
                             />
                           </div>
-                          <div className="col-9 d-flex justify-content-center">
+                          <div className="col-6 d-flex justify-content-center">
                             <h4 className="j-deepGray">BARTENDER 調酒課程</h4>
                           </div>
                         </div>
@@ -315,7 +315,7 @@ function OrderClass() {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    會員分頁清單
+                    分頁清單
                   </span>
                 </div>
                 <ul
@@ -343,7 +343,7 @@ function OrderClass() {
                         navigate('/member/coupon')
                       }}
                     >
-                      折價券
+                      優惠券
                     </a>
                   </li>
                   <li data-value="orderlist" onClick={handleMenuItemClick}>
@@ -439,11 +439,7 @@ function OrderClass() {
 
                   <div className="col-12 d-flex justify-content-center">
                     <div className="pic-phone">
-                      <img
-                        src="../img/001.webp"
-                        alt=""
-                        className="productImg"
-                      />
+                      <img src="../img/1.png" alt="" className="productImg" />
                     </div>
                   </div>
                   <div className="col-12 text-center border-bottom border-2 pb-3 mb-2">

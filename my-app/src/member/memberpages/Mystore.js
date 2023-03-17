@@ -141,11 +141,11 @@ function Mystore() {
                       navigate('/member/coupon')
                     }}
                   >
-                    折價券
+                    優惠券
                   </button>
                 ) : (
                   <button className="disabledbtn j-h3 mb-2 me-4 text-secondary">
-                    折價券
+                    優惠券
                   </button>
                 )}
 
@@ -287,7 +287,7 @@ function Mystore() {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-              會員分頁清單
+              分頁清單
                     </span>
                   </div>
                   <ul
@@ -317,7 +317,7 @@ function Mystore() {
                           navigate('/member/coupon')
                         }}
                       >
-                        折價券
+                        優惠券
                       </a>
                     </li>
                     <li data-value="orderlist" onClick={handleMenuItemClick}>
