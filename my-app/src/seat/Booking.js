@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import '../Public/style'
 import './css/booking.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { HOST, SEAT_ADD } from './api_config'
+import { SEAT_ADD, SEAT_ALL } from './api_config'
 import { usePopup } from '../Public/Popup'
 import '../Public/css/popup.css'
+import AuthContext from '../Context/AuthContext'
 
 const options1 = [
   { value: '1', label: '8pm-10pm' },
@@ -20,6 +21,8 @@ const options2 = [
 ]
 
 function Booking() {
+  const { myAuth, logout } = useContext(AuthContext)
+  // console.log('myAuth', myAuth)
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
@@ -55,6 +58,53 @@ function Booking() {
     setIsMenuOpen2(false)
   }
 
+  //*帶入會員資料
+  const [checked, setChecked] = useState(false)
+  const handleCheckboxChange = (event) => {
+    const { checked } = event.target
+    setChecked(checked)
+    if (checked) {
+      // console.log('check')
+    } else {
+      // console.log('not check')
+      setName('')
+      setPhone('')
+    }
+  }
+
+  const [memberdata, setMemberData] = useState({ name: '', phone: '' })
+  const getMemberData = async () => {
+    try {
+      const response = await axios.get(`${SEAT_ALL}/${myAuth.sid}`, {
+        withCredentials: true,
+      })
+      setMemberData(response.data)
+      // console.log(response.data)
+      setName(response.data[0].name)
+      setPhone(response.data[0].phone)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (checked) {
+      // console.log('check')
+      getMemberData()
+    } else {
+      setName('')
+      setPhone('')
+    }
+  }, [checked])
+
+  useEffect(() => {
+    setName(memberdata.name)
+    setPhone(memberdata.phone)
+  }, [memberdata])
+
+  //TODO 寫前端判斷式 如果打勾就帶入會員 沒打勾就不要帶入
+
+  // 上傳資料
   const handleSubmit = async (event) => {
     event.preventDefault()
     console.log('上傳中')
@@ -199,6 +249,8 @@ function Booking() {
                       name="food"
                       value="1"
                       className="j-checkbox"
+                      checked={checked}
+                      onChange={handleCheckboxChange}
                     />
                     同會員資料
                   </label>
