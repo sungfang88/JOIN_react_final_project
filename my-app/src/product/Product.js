@@ -1,5 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 import React from 'react'
+import { useContext } from 'react'
+import AuthContext from '../Context/AuthContext'
+import LoginIndex from './LoginIndex'
+
 import Productdetail from './Productdetail'
 import Producttry1 from './Producttry1'
 import Producttry2 from './Producttry2'
@@ -8,18 +12,25 @@ import Index from './Index'
 // import './css/product.css'
 
 function Product() {
+  // const { myAuth } = useContext(AuthContext)
+  // if (myAuth.authorized) {
   return (
     <>
-      {/* 定義子路徑的路由 */}
+      {/* 判斷是否有登入 */}
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/productdetail" element={<Productdetail />} />
-        <Route path="/producttry1" element={<Producttry1 />} />
-        <Route path="/producttry2" element={<Producttry2 />} />
-        <Route path="/producttry3" element={<Producttry3 />} />
       </Routes>
     </>
+    //   )
+    // } else {
+    //   return (
+    //     <Routes>
+    //       <Route path="/" element={<Index />} />
+    //       <Route path="/productdetail" element={<Productdetail />} />
+    //     </Routes>
   )
+  // }
 }
 
 export default Product

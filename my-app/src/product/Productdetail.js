@@ -8,7 +8,15 @@ import './css/product.css'
 
 function Productdetail() {
   const location = useLocation()
-  const state = location.state
+
+  let state = location.state
+
+  // 如果沒有state就走BD0002FR
+  if (!state) {
+    state = {
+      productId: 'BD0002FR',
+    }
+  }
   console.log(state.productId)
 
   // console.log(props)
@@ -100,6 +108,7 @@ function Productdetail() {
                       key={product.product_id}
                       productId={product.product_id}
                       productch={product.product_ch}
+                      producteg={product.product_eg}
                       productprice={product.productprice}
                       isLiked={likedProducts.includes(product.product_id)}
                       productimg={product.product_img}

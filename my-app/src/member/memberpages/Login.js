@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { usePopup } from '../../Public/Popup'
-
+import { useLocation } from 'react-router-dom'
 import AuthContext from '../../Context/AuthContext'
 import axios from 'axios'
 
@@ -18,12 +18,22 @@ function Login() {
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
+  // const history = useHistory()
+  const location = useLocation()
+  const productstate = location.state
+  console.log('state', productstate)
 
   const gmaillogin = async () => {
     const result = await signInWithPopup(auth, googleprovide)
     console.log('signInWithPopupresult', result)
     console.log('result.user.displayName', result.user.displayName)
     console.log('result.user.email', result.user.email)
+
+    function toproduct() {
+      navigate('/product/productdetail', {
+        state: productstate,
+      })
+    }
 
     if (result.user.displayName !== '' && result.user.email !== '') {
       const gmailloginform = {
@@ -57,6 +67,13 @@ function Login() {
               //看有沒有上一頁的url
 
               const presentURL = localStorage.getItem('presentURL')
+              if (
+                presentURL === 'http://localhost:3002/product/productdetail'
+              ) {
+                console.log('去商品', HOST)
+                window.location.href = 'http://localhost:3002/product'
+              }
+
               if (presentURL) {
                 const lasturl = JSON.parse(presentURL)
                 console.log('有presentURL', lasturl)
@@ -125,6 +142,19 @@ function Login() {
             //看有沒有上一頁的url
 
             const presentURL = localStorage.getItem('presentURL')
+            if (presentURL === 'http://localhost:3002/product/productdetail') {
+              console.log('去商品', HOST)
+              navigate('/product/productdetail', {
+                state: productstate,
+              })
+            }
+            // if (presentURL === 'http://localhost:3002/product/productdetail') {
+            //   const state = productstate
+            //   history.push({
+            //     pathname: 'http://localhost:3002/product/productdetail',
+            //     state,
+            //   })
+            // }
             if (presentURL) {
               const lasturl = JSON.parse(presentURL)
               console.log('有presentURL', lasturl)

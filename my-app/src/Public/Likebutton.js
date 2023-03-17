@@ -4,7 +4,7 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons'
 
 function LikeButton(props) {
   const { productId, isLiked, onClick, onMouseEnter, onMouseLeave } = props
-
+  // console.log(productId)
   const handleMouseEnter = (e) => {
     if (!isLiked) {
       e.target.classList.remove('fa-regular')

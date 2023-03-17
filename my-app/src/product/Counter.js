@@ -1,13 +1,18 @@
+import { Routes, Route } from 'react-router-dom'
+import { useContext } from 'react'
 import React, { useEffect, useState } from 'react'
+import AuthContext from '../Context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 function Counter(props) {
+  const navigate = useNavigate()
   const [count, setCount] = useState(1)
   const [isCart, setIsCart] = useState('')
-
-  useEffect(() => {
-    if (localStorage.getItem) {
-    }
-  })
+  const { myAuth } = useContext(AuthContext)
+  // useEffect(() => {
+  //   if (localStorage.getItem) {
+  //   }
+  // })
 
   function handlePlusClick() {
     setCount(count + 1)
@@ -18,17 +23,40 @@ function Counter(props) {
       setCount(count - 1)
     }
   }
-  function clickconsole() {
-    console.log('click!')
-    console.log(count)
-    console.log(props.productId)
-
+  function settomember() {
+    // const cartItem = {
+    //   productId: props.productId,
+    //   amount: count,
+    // }
+    fetch(`http://localhost:3008/member/logincart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        productId: props.productId,
+        amount: count,
+        mid: myAuth.sid,
+      }),
+    })
+    console.log('加入資料庫')
+  }
+  function nologin() {
     const cartItem = {
       productId: props.productId,
       amount: count,
     }
 
     localStorage.setItem('cart', JSON.stringify(cartItem))
+    localStorage.setItem(
+      'presentURL',
+      'http://localhost:3002/product/productdetail'
+    )
+    navigate('/member/login', {
+      state: {
+        productId: props.productId,
+      },
+    })
   }
 
   return (
@@ -70,7 +98,16 @@ function Counter(props) {
               </button>
             </div>
             <div className="col">
-              <button className="cart-btn j-h3 w-100" onClick={clickconsole}>
+              <button
+                className="cart-btn j-h3 w-100"
+                onClick={() => {
+                  if (myAuth.authorized) {
+                    settomember()
+                  } else {
+                    nologin()
+                  }
+                }}
+              >
                 加入購物車
                 <i className="fa-solid fa-cart-shopping"></i>
               </button>
