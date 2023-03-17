@@ -86,49 +86,49 @@ function Classday() {
     fetchClasstime()
   }, [])
   return (
-    <section class="container-fluid py-5 pb-5">
-      <div class="container nav-space">
-        <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
-          {/* <span class="col-auto title j-deepSec"> 課程訂購流程</span>
-          <div class="title-line d-block d-md-none"></div> */}
+    <section className="container-fluid py-5 pb-5">
+      <div className="container nav-space">
+        <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
+          {/* <span className="col-auto title j-deepSec"> 課程訂購流程</span>
+          <div className="title-line d-block d-md-none"></div> */}
         </div>
-        <div class="step-process pb-3">
-          <div class="step complete">
+        <div className="step-process pb-3">
+          <div className="step complete">
             <h1>1</h1>
             <h3> 選擇課程組合 </h3>
           </div>
 
-          <div class="step complete ">
+          <div className="step complete ">
             <h1>2</h1>
             <h3>選擇Bartender</h3>
           </div>
-          <div class="step complete">
+          <div className="step complete">
             <h1>3</h1>
             <h3>選擇日期時間&人數</h3>
           </div>
-          <div class="step">
+          <div className="step">
             <h1>4</h1>
             <h3>填寫資料</h3>
           </div>
         </div>
       </div>
-      <div class="container d-flex py-5  flex-md-row flex-column">
+      <div className="container d-flex py-5  flex-md-row flex-column">
         {/* <!-- 下拉式選單 --> */}
-        <div class="container col ps-5 ">
-          {/* <div class=" d-flex  ">
-            <div class="j-input w-50  pe-lg-3 ">
+        <div className="container col ps-5 ">
+          {/* <div className=" d-flex  ">
+            <div className="j-input w-50  pe-lg-3 ">
               <div>
                 <label for="period">請選擇年份</label>
               </div>
-              <div class="dropdown  ">
+              <div className="dropdown  ">
                 <YearSelect />
               </div>
             </div>
-            <div class="j-input  w-50 ">
+            <div className="j-input  w-50 ">
               <div>
                 <label for="period">請選擇月份</label>
               </div>
-              <div class="dropdown">
+              <div className="dropdown">
                 <MonthSelect />
               </div>
             </div>
@@ -138,17 +138,17 @@ function Classday() {
 
           {/* </div> */}
         </div>
-        <div class="col container ps-5 ">
-          <div class="j-input pb-3 ">
+        <div className="col container ps-5 ">
+          <div className="j-input pb-3 ">
             <div>
               <label for="period">選擇時段</label>
             </div>
             {classtime.map((v, i) => (
-              <label class="align-items-center">
+              <label className="align-items-center">
                 <input
                   type="radio"
                   name="table"
-                  class="j-radio"
+                  className="j-radio"
                   value={v.classtime}
                   onClick={(e) => {
                     setTime(e.target.value)
@@ -157,16 +157,16 @@ function Classday() {
                 {v.time}
               </label>
             ))}
-            {/* <label class=" align-items-center">
-              <input type="radio" name="table" value="2" class="j-radio" />
+            {/* <label className=" align-items-center">
+              <input type="radio" name="table" value="2" className="j-radio" />
               時段1
             </label> */}
           </div>
 
-          <div class="j-input ">
+          <div className="j-input ">
             <div>
               <label for="period ">選擇人數</label>
-              <p class="h5 pt-2 ">TWD 2400/每人</p>
+              <p className="h5 pt-2 ">TWD 2400/每人</p>
               <td>
                 <i
                   className="fa-solid fa-square-minus"
@@ -199,21 +199,21 @@ function Classday() {
               <input type="hidden" id="selected" name="selected" />
             </div>
 
-            <div class="d-flex py-3 align-items-center">
-              <h3 class="j-deepGray pe-5 "> 總金額 </h3>
-              <h3 class="j-deepGray  pe-2">TWD</h3>
+            <div className="d-flex py-3 align-items-center">
+              <h3 className="j-deepGray pe-5 "> 總金額 </h3>
+              <h3 className="j-deepGray  pe-2">TWD</h3>
               <h3 className="j-primary">{totalPrice * selectedPeople}</h3>
             </div>
           </div>
         </div>
       </div>
 
-      <div class=" d-flex justify-content-around">
-        <Link class="gray-line-btn j-h3" to="/class/Classbt">
+      <div className=" d-flex justify-content-around">
+        <Link className="gray-line-btn j-h3" to="/class/Classbt">
           上一步
         </Link>
         <Link
-          class="g-line-btn j-h3"
+          className="g-line-btn j-h3"
           to="/class/Classpeople"
           type="submit"
           onClick={Submit}

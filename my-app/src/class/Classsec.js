@@ -46,36 +46,36 @@ function Classsec() {
     fetchClassNames()
   }, [])
   return (
-    <section class="container-fluid">
-      <div class="container nav-space">
-        <div class="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
-          <span class="col-auto title j-deepSec"> 課程訂購流程</span>
-          <div class="title-line d-block d-md-none"></div>
+    <section className="container-fluid">
+      <div className="container nav-space">
+        <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
+          <span className="col-auto title j-deepSec"> 課程訂購流程</span>
+          <div className="title-line d-block d-md-none"></div>
         </div>
-        <div class="step-process pb-3">
-          <div class="step complete">
+        <div className="step-process pb-3">
+          <div className="step complete">
             <h1>1</h1>
             <h3> 選擇課程組合 </h3>
           </div>
 
-          <div class="step ">
+          <div className="step ">
             <h1>2</h1>
             <h3>選擇Bartender</h3>
           </div>
-          <div class="step">
+          <div className="step">
             <h1>3</h1>
             <h3>選擇日期時間&人數</h3>
           </div>
-          <div class="step">
+          <div className="step">
             <h1>4</h1>
             <h3>填寫資料</h3>
           </div>
         </div>
       </div>
       {/* 課程組合 */}
-      <div class="container ">
+      <div className="container ">
         <table action=" ref={this.input}">
-          <thead class="j-deepPri">
+          <thead className="j-deepPri">
             <tr>
               <td>check</td>
               <td>課程組合</td>
@@ -83,7 +83,7 @@ function Classsec() {
             </tr>
           </thead>
 
-          <tbody class="j-deepGray">
+          <tbody className="j-deepGray">
             {ClassNames.map((v, i) => (
               <tr>
                 <td>
