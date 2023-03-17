@@ -9,6 +9,12 @@ function Detail() {
   const [news, SetNews] = useState({})
   const ItemId = useLocation().pathname.split('/')[3]
   let processFetch = true
+
+  let linkState = null;
+  try {
+    linkState = JSON.parse(news.state)
+  }catch(ex){}
+
   useEffect(() => {
     fetch(GET_NEWS_DETAIL + `/${ItemId}`)
       .then((res) => res.json())
@@ -60,10 +66,13 @@ function Detail() {
                     {news?.date && new Date(news.date).toJSON().slice(0, 10)}
                   </p>
                   <div dangerouslySetInnerHTML={{ __html: news.content }} />
-                  <Link to={news.btnUrl}>
+                  <Link to={news.btnUrl} state={ linkState }>
                     <button className="o-line-btn j-h3 mt-2">
                       {news.btnText}{' '}
                       <i className="fa-solid fa-angles-right"></i>
+                      {/* {{
+          productId: `${props.productId}`,
+        }} */}
                     </button>
                   </Link>
                 </div>
