@@ -23,6 +23,7 @@ const options2 = [
 function Booking() {
   const { myAuth, logout } = useContext(AuthContext)
   // console.log('myAuth', myAuth)
+
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
@@ -38,6 +39,7 @@ function Booking() {
   const [sid, setSid] = useState(null)
   const navigate = useNavigate()
 
+  //*下拉選單
   const handleToggleDropdown1 = () => {
     setIsMenuOpen1(!isMenuOpen1)
   }
@@ -57,6 +59,16 @@ function Booking() {
     document.getElementById('selected2').value = option.value
     setIsMenuOpen2(false)
   }
+
+  //* 代入查詢locolStorage資料
+  useEffect(() => {
+    const bookingData = JSON.parse(localStorage.getItem('bookingData'))
+    if (bookingData) {
+      setReserveDate(bookingData.reserveDate)
+      setPeriod(bookingData.period)
+      setPeople(bookingData.people)
+    }
+  }, [])
 
   //*帶入會員資料
   const [checked, setChecked] = useState(false)
@@ -97,7 +109,7 @@ function Booking() {
     }
   }, [checked])
 
-  // 上傳資料
+  //* 上傳資料
   const handleSubmit = async (event) => {
     event.preventDefault()
     console.log('上傳中')
@@ -128,6 +140,8 @@ function Booking() {
     } catch (error) {
       console.log(error)
     }
+    localStorage.removeItem('bookingData')
+    localStorage.removeItem('queryResult')
   }
 
   return (
