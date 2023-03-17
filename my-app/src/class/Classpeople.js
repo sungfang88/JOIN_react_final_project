@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import './css/Class.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function Classpeople() {
   const [Classform, setClassform] = useState([])
   const [s1, sets1] = useState('')
   const [p1, setp1] = useState('')
+  const navigate = useNavigate()
 
   // const Submit = () => {
   //   const alldata = {
@@ -26,12 +28,11 @@ function Classpeople() {
 
       const formObj = { classformId, ...key1, ...key2, ...key3, ...key4 }
       console.log(formObj)
-      const response = await axios.post(
-        'http://localhost:3008/class/classform',
-        formObj
-      )
-
-      console.log(response.data)
+      axios
+        .post('http://localhost:3008/class/classform', formObj)
+        .then((response) => {
+          navigate('/cart/classOrder01')
+        })
     } catch (error) {
       console.error(error)
     }
@@ -172,8 +173,8 @@ function Classpeople() {
           </Link>
 
           <a
-            className="o-long-btn j-h3 btnCall "
-            to="http://localhost:3002/cart/classOrder01"
+            href="#/"
+            className="o-long-btn j-h3 btnCall"
             onClick={(e) => {
               e.preventDefault()
               PostForm()
