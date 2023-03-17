@@ -21,7 +21,8 @@
     max-width: 50%;
     text-align: center;
 }
-.selectbox{
+.product-end{
+
 
 }
 .selectbox-left {
@@ -129,7 +130,7 @@ min-width: 10%;
       
       .inner-box {
         position: relative;
-        width: 110%; /* 或是 calc(100% + 50px) */
+        width: 100%; /* 或是 calc(100% + 50px) */
         /* height: 100px; */
       }
       .product-discrip{

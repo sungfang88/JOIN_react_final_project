@@ -147,6 +147,7 @@ function Productinfo(props) {
                         }}
                       ></h4>
                     </div>
+
                     <div className="row">
                       <div className="row mt-4">
                         <h1 className="price  text-start">

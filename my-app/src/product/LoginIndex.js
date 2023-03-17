@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import ProductCard from './ProductCard'
-import { useContext } from 'react'
-import AuthContext from '../Context/AuthContext'
 import '../Public/style'
 import './css/product.css'
+let likedProducts = {}
+if (localStorage.getItem('likedProducts') !== null) {
+  likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
+}
 
 function Product() {
   const [allProductData, setAllProductData] = useState([])
@@ -18,31 +20,6 @@ function Product() {
   const [currentPage, setCurrentPage] = useState(1)
   const [productsPerPage] = useState(12)
 
-  const [Memberlike, setMemberlike] = useState([])
-  // 登入判斷設定愛心
-  const { myAuth } = useContext(AuthContext)
-  let likedProducts = {}
-  if (myAuth.authorized) {
-    const Array = Memberlike.map((v, i) => {
-      return v.productmanage
-    }).map((v, i) => {
-      return { [v]: true }
-    })
-    let obj = {}
-    Array.map((v, i) => {
-      obj = { ...obj, ...v }
-    })
-    likedProducts = obj
-    // console.log('MemberlikedProducts', likedProducts)
-    //{BD0002FR: true, BD0003FR: true, BD0004FR: true}
-  } else {
-    if (localStorage.getItem('likedProducts') !== null) {
-      likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
-      // console.log('localStoragelikedProducts', likedProducts)
-      //{BD0002FR: true, BD0003FR: true, BD0004FR: true}
-    }
-  }
-
   const categoryselect = () => {
     setshowCatogory(!showCatogory)
     setshowPrice(false)
@@ -51,17 +28,6 @@ function Product() {
     setshowPrice(!showPrice)
     setshowCatogory(false)
   }
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(
-        `http://localhost:3008/product/api/getproductlike/${myAuth.sid} `
-      )
-      const data = await res.json()
-      // console.log(data.rows)
-      setMemberlike(data.rows)
-    }
-    fetchData()
-  }, [])
 
   useEffect(() => {
     async function fetchData() {

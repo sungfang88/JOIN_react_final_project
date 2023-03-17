@@ -9,10 +9,10 @@ function Counter(props) {
   const [count, setCount] = useState(1)
   const [isCart, setIsCart] = useState('')
   const { myAuth } = useContext(AuthContext)
-  useEffect(() => {
-    if (localStorage.getItem) {
-    }
-  })
+  // useEffect(() => {
+  //   if (localStorage.getItem) {
+  //   }
+  // })
 
   function handlePlusClick() {
     setCount(count + 1)
@@ -28,6 +28,17 @@ function Counter(props) {
     //   productId: props.productId,
     //   amount: count,
     // }
+    fetch(`http://localhost:3008/member/logincart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        productId: props.productId,
+        amount: count,
+        mid: myAuth.sid,
+      }),
+    })
     console.log('加入資料庫')
   }
   function nologin() {

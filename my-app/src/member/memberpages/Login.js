@@ -31,6 +31,12 @@ function Login() {
     console.log('result.user.displayName', result.user.displayName)
     console.log('result.user.email', result.user.email)
 
+    function toproduct() {
+      navigate('/product/productdetail', {
+        state: productstate,
+      })
+    }
+
     if (result.user.displayName !== '' && result.user.email !== '') {
       const gmailloginform = {
         email: result.user.email,
