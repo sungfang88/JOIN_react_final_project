@@ -133,10 +133,10 @@ function Classfirst() {
 
   //按下一步後將資料傳送到updateClassItem
   const handleNext = () => {
-    data.forEach((item) => {
-      updateForm(item)
+    updateForm().then(() => {
+      const orderIdString = localStorage.getItem('orderId')
+      upDataCoupon(couponsData, orderIdString)
     })
-    upDataCoupon(couponsData)
   }
   //送出課程訂單
   const [classOrder, setClassOrder] = useState()
@@ -148,7 +148,7 @@ function Classfirst() {
         `${UPDATED_CLASSFORM}${class_form_sid}`,
         {
           orderId: orderId,
-          m_id: 1,
+          m_id: myAuth.sid,
           class_form_sid: class_form_sid, //
           amount: discountedPrice, //
         },
@@ -165,24 +165,27 @@ function Classfirst() {
   }
 
   //將優惠卷的資料庫改寫
-  const orderIdString = localStorage.getItem('orderId')
-  const orderId = orderIdString ? JSON.parse(orderIdString) : null
   const [couponsData, setCouponData] = useState([])
   const upDataCoupon = async () => {
-    try {
-      const response = await axios.post(
-        UPDATED_COUPON,
-        {
-          memberId: myAuth.sid,
-          orderId: orderId,
-          itemId: coupons.sid,
-        },
-        { withCredentials: true }
-      )
-      console.log('couponsData', response.data)
-      setCouponData(selectedCoupon)
-    } catch (error) {
-      console.log(error)
+    const orderIdString = localStorage.getItem('orderId')
+    if (orderIdString === null) {
+      console.log('NO')
+    } else {
+      try {
+        const response = await axios.post(
+          UPDATED_COUPON,
+          {
+            memberId: myAuth.sid,
+            orderId: orderIdString,
+            itemId: coupons.sid,
+          },
+          { withCredentials: true }
+        )
+        console.log('couponsData', orderIdString)
+        setCouponData(selectedCoupon)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -190,8 +193,6 @@ function Classfirst() {
     getClassData()
     getMemberData()
     upDataCoupon()
-    // getFormData()
-    updateForm()
     getCouponData()
     return () => {
       //解除功能
@@ -367,10 +368,9 @@ function Classfirst() {
                 </table>
               </div>
             </div>
-
             <div className="text-center">
               <Link
-                to="/class" //尚未確認
+                to="/class/Classsec" //尚未確認
                 className="gray-line-btn j-h3 title-button me-2"
               >
                 回課程資訊
@@ -381,7 +381,7 @@ function Classfirst() {
                 onClick={handleSubmit}
                 type="submit"
               >
-                下一步
+                送出訂單
               </Link>
             </div>
           </form>

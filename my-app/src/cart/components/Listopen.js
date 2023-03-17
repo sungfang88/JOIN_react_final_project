@@ -6,7 +6,7 @@ function Listopen(props) {
     <>
       <div className="container">
         <div
-          className="headTitle h3 j-deepSec mb-3 d-flex justify-content-between"
+          className="headTitle h3 j-deepSec mb-3 d-flex justify-content-between element-class"
           onClick={toggleTable}
         >
           <p className="m-0">商品訂單明細</p>
@@ -29,7 +29,7 @@ function Listopen(props) {
                   <li className="col-md-2 col-6 text-center" key={r.sid}>
                     <img
                       className="orderImg  ms-3"
-                      src={require('../img/001.webp')}
+                      src={`http://localhost:3008/product_img/${r.product_img}`}
                       alt=""
                     />
                   </li>

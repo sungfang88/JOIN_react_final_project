@@ -1,20 +1,58 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { CART_DATA } from './api_comfig'
+import { CART_DATA, GETCART_DATA } from './api_comfig'
 import { UPDATED } from './api_comfig'
+import { usePopup } from '../Public/Popup'
 import Stepprocess from './components/Stepprocess'
 import AuthContext from '../Context/AuthContext'
 import List from './components/List'
 import axios from 'axios'
 
 function Index() {
+  const { Popup, openPopup, closePopup } = usePopup() //必要const
+  const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
+  const initialState = useRef(true)
+
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
+
+  // 在 component 中新增一個狀態來儲存被選取的 sid
+  const [selectedSids, setSelectedSids] = useState(
+    JSON.parse(localStorage.getItem('selectedSids') || '[]')
+  )
+  // 將 handleCheckboxChange 改為更新 selectedSids 狀態
+  const handleCheckboxChange = (e, sid) => {
+    if (e.target.checked) {
+      setSelectedSids([...selectedSids, sid])
+    } else {
+      setSelectedSids(selectedSids.filter((selectedSid) => selectedSid !== sid))
+    }
+    localStorage.setItem('selectedSids', JSON.stringify([...selectedSids, sid]))
+  }
+  useEffect(() => {
+    localStorage.setItem('selectedSids', JSON.stringify(selectedSids))
+  }, [selectedSids])
+
+  // btnGroup array {text: 按鍵字, handle: onclick function}
+  const openDupBtnPopup = () => {
+    initialState.current = false
+    setPopupProps({
+      content: `請選擇商品`,
+      btnGroup: [
+        {
+          text: '關閉',
+          handle: closePopup,
+        },
+      ],
+    })
+    // openPopup()
+  }
+
   //取得購物車資料
   const [data, setData] = useState([{}])
   const getCartData = async () => {
     try {
-      const response = await axios.get(`${CART_DATA}${myAuth.sid}`, {
+      const response = await axios.get(`${GETCART_DATA}${myAuth.sid}`, {
         withCredentials: true,
       })
       setData(response.data)
@@ -24,8 +62,11 @@ function Index() {
   }
 
   //算金額
-  const totalPrice = data.reduce((acc, v, i) => acc + v.price * v.quantity, 0)
-  const totalCount = data.reduce((acc, v, i) => acc + v.quantity, 0)
+  const totalPrice = data.reduce(
+    (acc, v, i) => acc + (v.price || 0) * (v.quantity || 0),
+    0
+  )
+  const totalCount = data.reduce((acc, v, i) => acc + (v.quantity || 0), 0)
 
   //將購物車資料送回資料庫
   const updateCartItem = async (item) => {
@@ -44,6 +85,7 @@ function Index() {
       console.log(await error.text())
     }
   }
+
   //按下一部後將資料傳送到updateCartItem
   const handleNext = () => {
     data.forEach((item) => {
@@ -52,12 +94,15 @@ function Index() {
   }
 
   useEffect(() => {
+    if (initialState.current !== true) {
+      openPopup() //可以直接打開pop up
+    }
     getCartData()
     return () => {
       //解除功能
       console.log('unmount')
     }
-  }, [])
+  }, [popupProps])
 
   return (
     <>
@@ -66,7 +111,11 @@ function Index() {
         <Stepprocess />
       </section>
       <section className="container-fluid orderTable">
-        <List data={data} setData={setData} />
+        <List
+          data={data}
+          setData={setData}
+          handleCheckboxChange={handleCheckboxChange}
+        />
       </section>
       {/* 金額總計 */};
       <div className="container-fluid pb-5">
@@ -104,20 +153,36 @@ function Index() {
           <Link
             className="gray-line-btn j-h3 title-button me-3"
             to="/cart/classOrder01"
+            onClick={() => {
+              localStorage.removeItem('selectedSids')
+            }}
           >
             課程
           </Link>
           <Link
             className="g-line-btn j-h3 title-button"
-            to="/cart/cart02"
-            onClick={() => {
-              handleNext()
+            onClick={(event) => {
+              const selectedSidsInLocalStorage =
+                localStorage.getItem('selectedSids')
+              const selectedSids = JSON.parse(
+                selectedSidsInLocalStorage || '[]'
+              )
+              if (selectedSids.length === 0) {
+                console.log('selectedSids is an empty array')
+                openDupBtnPopup()
+                event.preventDefault() // 阻止預設行為，即不進行頁面跳轉
+              } else {
+                console.log('12345')
+                handleNext()
+              }
             }}
+            to="/cart/cart02"
           >
             下一步
           </Link>
         </div>
       </section>
+      <Popup {...popupProps} />
     </>
   )
 }

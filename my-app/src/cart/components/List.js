@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect, useContext } from 'react'
 import { usePopup } from '../../Public/Popup'
 import { DELETE_DATA } from '../api_comfig'
 function List(props) {
+  const { data, setData, handleCheckboxChange } = props
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
-  const { data, setData } = props
 
   // btnGroup array {text: 按鍵字, handle: onclick function}
   const openDupBtnPopup = (sid, product_ch) => {
@@ -54,6 +54,7 @@ function List(props) {
       openPopup() //可以直接打開pop up
     }
   }, [popupProps])
+
   return (
     <>
       <div className="container">
@@ -70,13 +71,23 @@ function List(props) {
               <li className="col-md-2 col-6 d-md-block text-center"> 刪除</li>
             </ul>
           </div>
-          {data.map((r, i) => {
+          {data.map((r) => {
             return (
-              <div className="d-flex tableTbody mb-2 orderBottomLine">
-                <li className="col-md-2 col-6 text-center" key={i}>
+              <div
+                className="d-flex tableTbody mb-2 orderBottomLine"
+                key={r.sid}
+              >
+                <li className="col-md-2 col-6 text-center">
+                  <input
+                    type="checkbox"
+                    name="food"
+                    value="1"
+                    className="j-checkbox me-3"
+                    onChange={(e) => handleCheckboxChange(e, r.sid)}
+                  />
                   <img
                     className="orderImg pe-2"
-                    src={require('../img/001.webp')} // {`http://192.168.21.179/product/${r.product_img}`}
+                    src={`http://localhost:3008/product_img/${r.product_img}`}
                     alt=""
                   />
                 </li>

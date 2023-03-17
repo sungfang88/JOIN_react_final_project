@@ -130,3 +130,7 @@ ul,li {
 .hide {
     display: none;
   }
+
+  .element-class {
+    cursor: pointer;
+  }
