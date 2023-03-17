@@ -3,7 +3,6 @@ import './css/Class.css'
 import { Link } from 'react-router-dom'
 
 function Index() {
-  const [] = useState([])
   return (
     <>
       {/* <!-- Sec-navbar 要用nav-space 空出上面的距離 --> */}

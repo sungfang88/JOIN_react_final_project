@@ -3,36 +3,55 @@ import './css/Class.css'
 import { Link } from 'react-router-dom'
 
 function Classpeople() {
-  const [Classbooking, setClassbooking] = useState([])
+  const [Classform, setClassform] = useState([])
   const [s1, sets1] = useState('')
   const [p1, setp1] = useState('')
-  const [data, setdata] = useState('')
-  const [data2, setdata2] = useState('')
+
   const Submit = () => {
     const alldata = {
       s1: s1,
       p1: p1,
-      data: data,
-      data2: data2,
     }
-
     localStorage.setItem('key4', JSON.stringify(alldata))
   }
-  useEffect(() => {
-    const fetchClassbooking = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:3008/class/classbooking/'
-        )
-        const data = await response.json()
-        setClassbooking(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
 
-    fetchClassbooking()
-  }, [])
+  const PostForm = async () => {
+    try {
+      const { key1, key2, key3, key4 } = localStorage
+      const formObj = {
+        classId: key1,
+        bartender: key2,
+        class_date: key3,
+        class_time: key3,
+        class_prople: key3,
+        s1: key4,
+        p1: key4,
+      }
+
+      const sid = 1
+      const response = await Classform.post(`Classform${sid}`, formObj)
+
+      // 加上流水號
+      const classformId = 'C' + Date.now()
+      localStorage.setItem('classformId', JSON.stringify(classformId))
+
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // useEffect(() => {
+  //   // 從後端讀取已預約的課程
+  //   fetch('http://localhost:3008/class/classform/')
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setClassform(data)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // }, [])
   return (
     <section class="container-fluid">
       <div class="container nav-space">
@@ -118,10 +137,10 @@ function Classpeople() {
               <input
                 type="text"
                 class="input-text"
-                value={data}
+                value={s1}
                 required
                 placeholder="ex.王小明"
-                onChange={(e) => setdata(e.target.value)}
+                onChange={(e) => sets1(e.target.value)}
               />
             </div>
           </div>
@@ -134,10 +153,10 @@ function Classpeople() {
               <input
                 type="tel"
                 class="inpu2t-text"
-                value={data2}
+                value={p1}
                 required
                 placeholder="ex.0912345678"
-                onChange={(e) => setdata2(e.target.value)}
+                onChange={(e) => setp1(e.target.value)}
               />
             </div>
           </div>
@@ -159,7 +178,7 @@ function Classpeople() {
           <Link
             class="o-long-btn j-h3 btnCall "
             to="/cart/classOrder01"
-            onClick={Submit}
+            onClick={(Submit, PostForm)}
           >
             立即購買
           </Link>

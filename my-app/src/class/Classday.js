@@ -64,7 +64,7 @@ function Classday() {
   const Submit = function () {
     const alldata = {
       class_date: dayjs(value).format('YYYY-MM-DD'),
-      classtime: data,
+      class_time: data,
       class_prople: selectedPeople,
     }
 

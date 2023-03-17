@@ -22,7 +22,7 @@ function Classsec() {
   ])
   const Submit = function () {
     const alldata = {
-      data: data,
+      class_id: data,
       // 寫變數取值
       wine1: selectname1,
       wine2: selectname2,

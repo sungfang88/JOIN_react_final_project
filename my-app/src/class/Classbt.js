@@ -7,11 +7,11 @@ function Classbt() {
   const [data, setData] = useState('')
 
   const [bartenders, setBartenders] = useState([
-    { sid: 0, bartendername: '', bartenderID: '', created_at: '' },
+    { sid: 0, bartender: '', bartenderID: '', created_at: '' },
   ])
   const Submit = function () {
     const alldata = {
-      bartendername: data,
+      bartender: data,
     }
 
     localStorage.setItem('key2', JSON.stringify(alldata))
