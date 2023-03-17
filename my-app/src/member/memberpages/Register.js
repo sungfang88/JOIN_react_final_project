@@ -2,6 +2,8 @@ import { useState, useContext, useEffect, useRef } from 'react'
 import AuthContext from '../../Context/AuthContext'
 import dayjs from 'dayjs'
 import { usePopup } from '../../Public/Popup'
+import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 //countries=[台北市,新北市,桃園市.....]
 //townships=[[大安區,中山區,信區],[蘆洲區,三重區],[澎湖市],......]
@@ -16,14 +18,20 @@ import {
   REGISTER,
   HOST,
   INSERTCOUPON,
+  LOGINCART,
+  LOGINSTORE,
 } from '../membercomponents/memberapi_config'
 
 function Register() {
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
+  const navigate = useNavigate()
 
   const { setMyAuth } = useContext(AuthContext)
+  const location = useLocation()
+  const productstate = location.state
+  console.log('state', productstate)
 
   const [registerform, setRegisterform] = useState({
     name: '',
@@ -43,9 +51,13 @@ function Register() {
   const [postcode, setPostcode] = useState('')
   //看密碼輸入用
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isCheckPasswordVisible, setIsCheckPasswordVisible] = useState(false)
   //切換看密碼的狀態函式
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState)
+  }
+  const toggleCheckPasswordVisibility = () => {
+    setIsCheckPasswordVisible((prevState) => !prevState)
   }
 
   //檢查密碼有沒有大於等於8個字以上 且包含數字及英文
@@ -73,7 +85,7 @@ function Register() {
         return true
       }
     }
-     openDefaultPopup('密碼須包含英文及數字', '關閉', closePopup)
+    openDefaultPopup('密碼須包含英文及數字', '關閉', closePopup)
 
     return false
   }
@@ -98,6 +110,8 @@ function Register() {
     if (phoneNumberRegex.test(phoneNumber)) {
       return true
     } else {
+      openDefaultPopup('手機號碼格式不符', '關閉', closePopup)
+
       return false
     }
   }
@@ -115,7 +129,7 @@ function Register() {
     const areaName = selectedAreaOption.textContent
     console.log(areaName)
     if (areaName === '選擇縣市') {
-     openDefaultPopup('請選擇縣市/區域', '關閉', closePopup)
+      openDefaultPopup('請選擇縣市/區域', '關閉', closePopup)
 
       return
     }
@@ -125,7 +139,7 @@ function Register() {
     )
     const cityName = selectedCityOption.textContent
     console.log(cityName)
-     if (cityName === '選擇區域') {
+    if (cityName === '選擇區域') {
       openDefaultPopup('請選擇區域', '關閉', closePopup)
 
       return
@@ -153,6 +167,7 @@ function Register() {
 
     console.log(registerformData)
     console.log(REGISTER)
+    let membertoken =""
     axios
       .post(REGISTER, registerformData, {
         headers: {
@@ -167,90 +182,316 @@ function Register() {
             accountId: response.data.result.insertId,
             token: response.data.token,
           })
-          
+           membertoken =response.data.token
+
           const presentURL = localStorage.getItem('presentURL')
+
           if (presentURL) {
-            const lasturl = JSON.parse(presentURL)
-            console.log('有presentURL', lasturl)
+            if (presentURL === 'http://localhost:3002/product/productdetail') {
+              console.log('走status')
+              //連到presentURL同時設定會員給context
+              const linktostateURL = function () {
+                const likedProducts = localStorage.getItem('likedProducts')
+                const likedProductsJSON = JSON.parse(likedProducts)
+                const arr = Object.keys(likedProductsJSON)
+                const sendlikedata = {
+                  productarray: arr,
+                  mid: response.data.result.insertId,
+                }
+                if (!!likedProducts) {
+                  axios.post(LOGINSTORE, sendlikedata)
+                }
+                const cartPlus = localStorage.getItem('cart')
+                const cartPlusJSON = JSON.parse(cartPlus)
+                const data = {
+                  ...cartPlusJSON,
+                  mid: response.data.result.insertId,
+                }
+                console.log('data', data)
+                if (cartPlus) {
+                  axios.post(LOGINCART, data).then((response) => {
+                    console.log('response.data', response.data)
+                    if (response.data.success) {
+                      console.log('response.data', response.data)
+                      localStorage.removeItem('cart')
 
-            //連到presentURL同時設定會員給context
-            const linktopresentURL = function () {
-              console.log('lasturlinlinktopresentURL', lasturl)
-          localStorage.setItem(
-            'myAuth',
-            JSON.stringify({
-              useremail: registerform.email,
-              accountId: response.data.result.insertId,
-              token: response.data.token,
-            })
-          )
-          setMyAuth({
-            authorized: true, // 有沒有登入
-            sid: response.data.result.insertId,
-            useremail: registerform.email,
-            token: response.data.postData.token,
-          })
-          window.location.href = lasturl
-        }
-        //領取優惠券
-        const takeTicket = async () => {
-          console.log(
-            'INSERTCOUPON+1',
-            INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
-          )
-          const addcoupon = await axios.get(
-            INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
-          )
-          console.log('addcoupon.data', addcoupon.data)
+                      localStorage.setItem(
+                        'myAuth',
+                        JSON.stringify({
+                          useremail: registerform.email,
+                          accountId: response.data.result.insertId,
+                          token: membertoken,
+                        })
+                      )
+                      setMyAuth({
+                        authorized: true, // 有沒有登入
+                        sid: response.data.result.insertId,
+                        useremail: registerform.email,
+                        token: membertoken,
+                      })
+                      navigate('/product/productdetail', {
+                        state: productstate,
+                      })
+                    } else {
+                      localStorage.setItem(
+                        'myAuth',
+                        JSON.stringify({
+                          useremail: registerform.email,
+                          accountId: response.data.result.insertId,
+                          token: response.data.token,
+                        })
+                      )
+                      setMyAuth({
+                        authorized: true, // 有沒有登入
+                        sid: response.data.result.insertId,
+                        useremail: registerform.email,
+                        token: response.data.postData.token,
+                      })
+                      navigate('/product/productdetail', {
+                        state: productstate,
+                      })
+                    }
+                  })
+                } else {
+                  localStorage.setItem(
+                    'myAuth',
+                    JSON.stringify({
+                      useremail: registerform.email,
+                      accountId: response.data.result.insertId,
+                      token: response.data.token,
+                    })
+                  )
+                  setMyAuth({
+                    authorized: true, // 有沒有登入
+                    sid: response.data.result.insertId,
+                    useremail: registerform.email,
+                    token: response.data.postData.token,
+                  })
+                  navigate('/product/productdetail', {
+                    state: productstate,
+                  })
+                }
+              }
+              const takeTicket = async () => {
+                console.log(
+                  'INSERTCOUPON+1',
+                  INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
+                )
+                const addcoupon = await axios.get(
+                  INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
+                )
+                console.log('addcoupon.data', addcoupon.data)
 
-          openDefaultPopup(
-            '新會員95折優惠券已領取',
-            '一起買醉吧!!',
-            linktopresentURL
-          )
-        }
-        openDefaultPopup('註冊成功', '索取優惠券', takeTicket)
+                openDefaultPopup(
+                  '新會員95折優惠券已領取',
+                  '一起買醉吧!!',
+                  linktostateURL
+                )
+              }
+              openDefaultPopup('註冊成功', '索取優惠券', takeTicket)
+            } else {
+              const lasturl = JSON.parse(presentURL)
+              console.log('有presentURL', lasturl)
+
+              //連到presentURL同時設定會員給context
+              const linktopresentURL = function () {
+                const likedProducts = localStorage.getItem('likedProducts')
+                const likedProductsJSON = JSON.parse(likedProducts)
+                const arr = Object.keys(likedProductsJSON)
+                const sendlikedata = {
+                  productarray: arr,
+                  mid: response.data.result.insertId,
+                }
+                if (!!likedProducts) {
+                  axios.post(LOGINSTORE, sendlikedata)
+                }
+                const cartPlus = localStorage.getItem('cart')
+                const cartPlusJSON = JSON.parse(cartPlus)
+                const data = {
+                  ...cartPlusJSON,
+                  mid: response.data.result.insertId,
+                }
+                console.log('data', data)
+                if (cartPlus) {
+                  axios.post(LOGINCART, data).then((response) => {
+                    console.log('response.data', response.data)
+                    if (response.data.success) {
+                      localStorage.removeItem('cart')
+                      console.log('lasturlinlinktopresentURL', lasturl)
+                      localStorage.setItem(
+                        'myAuth',
+                        JSON.stringify({
+                          useremail: registerform.email,
+                          accountId: response.data.result.insertId,
+                          token: response.data.token,
+                        })
+                      )
+                      setMyAuth({
+                        authorized: true, // 有沒有登入
+                        sid: response.data.result.insertId,
+                        useremail: registerform.email,
+                        token: response.data.postData.token,
+                      })
+                      window.location.href = lasturl
+                    } else {
+                      console.log('lasturlinlinktopresentURL', lasturl)
+                      localStorage.setItem(
+                        'myAuth',
+                        JSON.stringify({
+                          useremail: registerform.email,
+                          accountId: response.data.result.insertId,
+                          token: response.data.token,
+                        })
+                      )
+                      setMyAuth({
+                        authorized: true, // 有沒有登入
+                        sid: response.data.result.insertId,
+                        useremail: registerform.email,
+                        token: response.data.postData.token,
+                      })
+                      window.location.href = lasturl
+                    }
+                  })
+                } else {
+                  console.log('lasturlinlinktopresentURL', lasturl)
+                  localStorage.setItem(
+                    'myAuth',
+                    JSON.stringify({
+                      useremail: registerform.email,
+                      accountId: response.data.result.insertId,
+                      token: response.data.token,
+                    })
+                  )
+                  setMyAuth({
+                    authorized: true, // 有沒有登入
+                    sid: response.data.result.insertId,
+                    useremail: registerform.email,
+                    token: response.data.postData.token,
+                  })
+                  window.location.href = lasturl
+                }
+              }
+              //領取優惠券
+              const takeTicket = async () => {
+                console.log(
+                  'INSERTCOUPON+1',
+                  INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
+                )
+                const addcoupon = await axios.get(
+                  INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
+                )
+                console.log('addcoupon.data', addcoupon.data)
+
+                openDefaultPopup(
+                  '新會員95折優惠券已領取',
+                  '一起買醉吧!!',
+                  linktopresentURL
+                )
+              }
+
+              openDefaultPopup('註冊成功', '索取優惠券', takeTicket)
+            }
           } else {
             console.log('沒有presentURL', HOST)
 
             const linktoHOST = function () {
-              console.log('lasturlinlinktopresentURL', HOST)
-              localStorage.setItem(
-                'myAuth',
-                JSON.stringify({
-                  useremail: registerform.email,
-                  accountId: response.data.result.insertId,
-                  token: response.data.token,
+              const likedProducts = localStorage.getItem('likedProducts')
+              const likedProductsJSON = JSON.parse(likedProducts)
+              const arr = Object.keys(likedProductsJSON)
+              const sendlikedata = {
+                productarray: arr,
+                mid: response.data.result.insertId,
+              }
+              if (!!likedProducts) {
+                axios.post(LOGINSTORE, sendlikedata)
+              }
+              const cartPlus = localStorage.getItem('cart')
+              const cartPlusJSON = JSON.parse(cartPlus)
+              const data = {
+                ...cartPlusJSON,
+                mid: response.data.result.insertId,
+              }
+              console.log('data', data)
+              if (cartPlus) {
+                axios.post(LOGINCART, data).then((response) => {
+                  console.log('response.data', response.data)
+                  if (response.data.success) {
+                    localStorage.removeItem('cart')
+
+                    console.log('lasturlinlinktopresentURL', HOST)
+                    localStorage.setItem(
+                      'myAuth',
+                      JSON.stringify({
+                        useremail: registerform.email,
+                        accountId: response.data.result.insertId,
+                        token: response.data.token,
+                      })
+                    )
+                    setMyAuth({
+                      authorized: true, // 有沒有登入
+                      sid: response.data.result.insertId,
+                      useremail: registerform.email,
+                      token: response.data.postData.token,
+                    })
+                    window.location.href = HOST
+                  } else {
+                    console.log('lasturlinlinktopresentURL', HOST)
+                    localStorage.setItem(
+                      'myAuth',
+                      JSON.stringify({
+                        useremail: registerform.email,
+                        accountId: response.data.result.insertId,
+                        token: response.data.token,
+                      })
+                    )
+                    setMyAuth({
+                      authorized: true, // 有沒有登入
+                      sid: response.data.result.insertId,
+                      useremail: registerform.email,
+                      token: response.data.postData.token,
+                    })
+                    window.location.href = HOST
+                  }
                 })
+              } else {
+                console.log('lasturlinlinktopresentURL', HOST)
+                localStorage.setItem(
+                  'myAuth',
+                  JSON.stringify({
+                    useremail: registerform.email,
+                    accountId: response.data.result.insertId,
+                    token: response.data.token,
+                  })
+                )
+                setMyAuth({
+                  authorized: true, // 有沒有登入
+                  sid: response.data.result.insertId,
+                  useremail: registerform.email,
+                  token: response.data.postData.token,
+                })
+                window.location.href = HOST
+              }
+            }
+            //領取優惠券
+            const takeTicket = async () => {
+              console.log(
+                'INSERTCOUPON+1',
+                INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
               )
-              setMyAuth({
-                authorized: true, // 有沒有登入
-                sid: response.data.result.insertId,
-                useremail: registerform.email,
-                token: response.data.postData.token,
-              })
-            window.location.href = HOST
-          }
-           //領取優惠券
-           const takeTicket = async () => {
-            console.log(
-              'INSERTCOUPON+1',
-              INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
-            )
-            const addcoupon = await axios.get(
-              INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
-            )
-            console.log('addcoupon.data', addcoupon.data)
+              const addcoupon = await axios.get(
+                INSERTCOUPON + '/' + response.data.result.insertId + '/' + 1
+              )
+              console.log('addcoupon.data', addcoupon.data)
 
-            openDefaultPopup(
-              '新會員95折優惠券已領取',
-              '一起買醉吧!!',
-              linktoHOST
-            )
-          }
+              openDefaultPopup(
+                '新會員95折優惠券已領取',
+                '一起買醉吧!!',
+                linktoHOST
+              )
+            }
 
-          openDefaultPopup('註冊成功', '一起買醉吧!!', takeTicket)
-        }
+            openDefaultPopup('註冊成功', '一起買醉吧!!', takeTicket)
+          }
         } else {
           console.log(response.data.error)
           openDefaultPopup(response.data.error, '關閉', closePopup)
@@ -300,13 +541,13 @@ function Register() {
     }
   }, [countryIndex, townshipIndex])
 
-    //當popupProps被改動時 促發popup
-    useEffect(() => {
-      if (initialState.current !== true) {
-        openPopup() //可以直接打開pop up
-      }
-    }, [popupProps])
-  
+  //當popupProps被改動時 促發popup
+  useEffect(() => {
+    if (initialState.current !== true) {
+      openPopup() //可以直接打開pop up
+    }
+  }, [popupProps])
+
   return (
     <>
       <div className="container-fluid ">
@@ -383,8 +624,9 @@ function Register() {
                   >
                     驗證密碼
                   </label>
+
                   <input
-                    type="text"
+                    type={isCheckPasswordVisible ? 'text' : 'password'}
                     value={checkpwd}
                     onChange={(e) => {
                       setCheckpwd(e.target.value)
@@ -393,6 +635,15 @@ function Register() {
                     id="checkregisterpassword"
                     required
                   />
+                  <button
+                    className="btn btn-outline-secondary labelinput translate-bg-btn"
+                    type="button"
+                    onClick={() => {
+                      toggleCheckPasswordVisibility()
+                    }}
+                  >
+                    <i className="fa-sharp fa-solid fa-eye"></i>
+                  </button>
                 </div>
                 <div className="input-group mb-2 ">
                   <label

@@ -61,3 +61,9 @@ export const NEWPASSWORD = `${HOST}/member/newpassword`
 
 //黑名單
 export const BLACKMEMBER = `${HOST}/member/blackmember`
+
+///登入時有新增購物數量寫入cart
+export const LOGINCART = `${HOST}/member/logincart`
+
+///登入時有新增會員收藏
+export const LOGINSTORE = `${HOST}/member/loginstore`

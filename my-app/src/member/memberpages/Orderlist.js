@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { Link } from 'react-router-dom'
 import AuthContext from '../../Context/AuthContext'
 import {
   ORDERLIST,
@@ -17,6 +17,7 @@ import axios from 'axios'
 function Orderlist() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   // 點擊下拉式選單裡的項目時，在隱藏的input中告知選到誰，並關閉下拉式選單
   function handleMenuItemClick(event) {
@@ -191,6 +192,7 @@ function Orderlist() {
     })
     console.log('listName', listName)
     setListNameArray(listName)
+    setIsLoading(false)
   }
 
   //關鍵字排序:用純函式-傳入資料陣列，以keyword進行過濾 => 回傳"過濾後"的資料"陣列"
@@ -246,22 +248,35 @@ function Orderlist() {
       setEndPage(pageNow + pagebtnNav)
     }
   }
- //只要一次資料
+
+  // 搭配css的純載入指示動畫
+  const loader = (
+    <div className="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  )
+  //只要一次資料
   useEffect(() => {
     getAllData()
   }, [])
 
- 
   useEffect(() => {
     console.log('要資料')
 
     getMemberData()
   }, [keyword, sortType, pageNow])
 
-   // 當keyword或age選項有變化時，開起loader指示動畫
-  //  useEffect(() => {
-  //   setIsLoading(true)
-  // }, [keyword, sortType, pageNow])
+  // 當keyword或age選項有變化時，開起loader指示動畫
+  useEffect(() => {
+    setIsLoading(true)
+  }, [keyword, sortType, pageNow])
 
   const listItem = function (v, i, listid) {
     return (
@@ -284,15 +299,19 @@ function Orderlist() {
         <div className="col-12 ">
           <div className="row d-flex justify-content-between align-items-center mb-2 mt-2 border-bottom mx-2 pb-1">
             <div className="col-2">
-              <img
-                src={
-                  'http://localhost:3008/product_img/' +
-                  usersDisplay[i][0].product_img +
-                  '.webp'
-                }
-                alt=""
-                className="productImg"
-              />
+              {isLoading ? (
+                loader
+              ) : (
+                <img
+                  src={
+                    'http://localhost:3008/product_img/' +
+                    usersDisplay[i][0].product_img +
+                    '.webp'
+                  }
+                  alt=""
+                  className="productImg"
+                />
+              )}
             </div>
             <div className="col-6 d-flex justify-content-start ps-5">
               {/* <h4 className="j-deepGray">人頭馬VSOP特選桶白蘭地 &nbsp;&nbsp;X3</h4> */}
@@ -401,9 +420,14 @@ function Orderlist() {
           </p>
         </div>
         <div className="col-12 d-flex justify-content-end">
-          <a href="#/">
+          <Link
+            to="/product/productdetail"
+            state={{
+              productId: `${usersDisplay[i][0].product_id}`,
+            }}
+          >
             <button className="btn btn-primary g-line-btn">再買一次</button>
-          </a>
+          </Link>
         </div>
       </div>
     )
@@ -484,11 +508,11 @@ function Orderlist() {
                       navigate('/member/coupon')
                     }}
                   >
-                    折價券
+                    優惠券
                   </button>
                 ) : (
                   <button className="disabledbtn j-h3 mb-2 me-4 text-secondary">
-                    折價券
+                    優惠券
                   </button>
                 )}
 
@@ -678,6 +702,7 @@ function Orderlist() {
                 })} */}
 
                 {/* 這邊的V是個Array */}
+
                 {Array(usersDisplay.length)
                   .fill(1)
                   .map((v, i) => {
@@ -705,7 +730,7 @@ function Orderlist() {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    會員分頁清單
+                    分頁清單
                   </span>
                 </div>
                 <ul
@@ -733,7 +758,7 @@ function Orderlist() {
                         navigate('/member/coupon')
                       }}
                     >
-                      折價券
+                      優惠券
                     </a>
                   </li>
                   <li data-value="orderlist" onClick={handleMenuItemClick}>

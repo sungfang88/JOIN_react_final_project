@@ -1,15 +1,18 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { usePopup } from '../../Public/Popup'
-
+import { useLocation } from 'react-router-dom'
 import AuthContext from '../../Context/AuthContext'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 import {
   LOGIN,
   HOST,
   GMAILLOGIN,
   BLACKMEMBER,
+  LOGINCART,
+  LOGINSTORE,
 } from '../membercomponents/memberapi_config'
 import { auth, googleprovide } from '../config/firebase'
 import { signInWithPopup } from 'firebase/auth'
@@ -18,6 +21,9 @@ function Login() {
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
+  const location = useLocation()
+  const productstate = location.state
+  console.log('state', productstate)
 
   const gmaillogin = async () => {
     const result = await signInWithPopup(auth, googleprovide)
@@ -44,26 +50,116 @@ function Login() {
                 linktoIndex
               )
             } else {
-              localStorage.setItem(
-                'myAuth',
-                JSON.stringify({ useremail, accountId, token })
-              )
-              setMyAuth({
-                authorized: true, // 有沒有登入
-                sid: accountId,
-                useremail: useremail,
-                token: token,
-              })
-              //看有沒有上一頁的url
+              const likedProducts = localStorage.getItem('likedProducts')
+              const likedProductsJSON = JSON.parse(likedProducts)
+              const arr = Object.keys(likedProductsJSON)
+              const sendlikedata = { productarray: arr, mid: accountId }
+              if (!!likedProducts) {
+                axios.post(LOGINSTORE, sendlikedata)
+              }
 
-              const presentURL = localStorage.getItem('presentURL')
-              if (presentURL) {
-                const lasturl = JSON.parse(presentURL)
-                console.log('有presentURL', lasturl)
-                window.location.href = lasturl
+              const cartPlus = localStorage.getItem('cart')
+              const cartPlusJSON = JSON.parse(cartPlus)
+              const data = { ...cartPlusJSON, mid: accountId }
+              console.log('data', data)
+              if (!!cartPlus) {
+                axios.post(LOGINCART, data).then((response) => {
+                  if (response.data.success) {
+                    localStorage.removeItem('cart')
+                    localStorage.setItem(
+                      'myAuth',
+                      JSON.stringify({ useremail, accountId, token })
+                    )
+                    setMyAuth({
+                      authorized: true, // 有沒有登入
+                      sid: accountId,
+                      useremail: useremail,
+                      token: token,
+                    })
+                    //看有沒有上一頁的url
+
+                    const presentURL = localStorage.getItem('presentURL')
+                    if (
+                      presentURL ===
+                      'http://localhost:3002/product/productdetail'
+                    ) {
+                      console.log('去商品', HOST)
+
+                      navigate('/product/productdetail', {
+                        state: productstate,
+                      })
+                    }
+                    if (presentURL) {
+                      const lasturl = JSON.parse(presentURL)
+                      console.log('有presentURL', lasturl)
+                      window.location.href = lasturl
+                    } else {
+                      console.log('沒有presentURL', HOST)
+                      window.location.href = HOST
+                    }
+                  } else {
+                    localStorage.setItem(
+                      'myAuth',
+                      JSON.stringify({ useremail, accountId, token })
+                    )
+                    setMyAuth({
+                      authorized: true, // 有沒有登入
+                      sid: accountId,
+                      useremail: useremail,
+                      token: token,
+                    })
+                    //看有沒有上一頁的url
+
+                    const presentURL = localStorage.getItem('presentURL')
+                    if (
+                      presentURL ===
+                      'http://localhost:3002/product/productdetail'
+                    ) {
+                      console.log('去商品', HOST)
+                      navigate('/product/productdetail', {
+                        state: productstate,
+                      })
+                    }
+                    if (presentURL) {
+                      const lasturl = JSON.parse(presentURL)
+                      console.log('有presentURL', lasturl)
+                      window.location.href = lasturl
+                    } else {
+                      console.log('沒有presentURL', HOST)
+                      window.location.href = HOST
+                    }
+                  }
+                })
               } else {
-                console.log('沒有presentURL', HOST)
-                window.location.href = HOST
+                localStorage.setItem(
+                  'myAuth',
+                  JSON.stringify({ useremail, accountId, token })
+                )
+                setMyAuth({
+                  authorized: true, // 有沒有登入
+                  sid: accountId,
+                  useremail: useremail,
+                  token: token,
+                })
+                //看有沒有上一頁的url
+
+                const presentURL = localStorage.getItem('presentURL')
+                if (
+                  presentURL === 'http://localhost:3002/product/productdetail'
+                ) {
+                  console.log('去商品', HOST)
+                  navigate('/product/productdetail', {
+                    state: productstate,
+                  })
+                }
+                if (presentURL) {
+                  const lasturl = JSON.parse(presentURL)
+                  console.log('有presentURL', lasturl)
+                  window.location.href = lasturl
+                } else {
+                  console.log('沒有presentURL', HOST)
+                  window.location.href = HOST
+                }
               }
             }
           })
@@ -112,26 +208,113 @@ function Login() {
               linktoIndex
             )
           } else {
-            localStorage.setItem(
-              'myAuth',
-              JSON.stringify({ useremail, accountId, token })
-            )
-            setMyAuth({
-              authorized: true, // 有沒有登入
-              sid: accountId,
-              useremail: useremail,
-              token: token,
-            })
-            //看有沒有上一頁的url
+            const likedProducts = localStorage.getItem('likedProducts')
+            const likedProductsJSON = JSON.parse(likedProducts)
+            const arr = Object.keys(likedProductsJSON)
+            const sendlikedata = { productarray: arr, mid: accountId }
+            if (!!likedProducts) {
+              axios.post(LOGINSTORE, sendlikedata)
+            }
+            const cartPlus = localStorage.getItem('cart')
+            const cartPlusJSON = JSON.parse(cartPlus)
+            const data = { ...cartPlusJSON, mid: accountId }
+            console.log('data', data)
+            if (cartPlus) {
+              axios.post(LOGINCART, data).then((response) => {
+                console.log('response.data', response.data)
+                if (response.data.success) {
+                  localStorage.removeItem('cart')
+                  localStorage.setItem(
+                    'myAuth',
+                    JSON.stringify({ useremail, accountId, token })
+                  )
+                  setMyAuth({
+                    authorized: true, // 有沒有登入
+                    sid: accountId,
+                    useremail: useremail,
+                    token: token,
+                  })
+                  //看有沒有上一頁的url
 
-            const presentURL = localStorage.getItem('presentURL')
-            if (presentURL) {
-              const lasturl = JSON.parse(presentURL)
-              console.log('有presentURL', lasturl)
-              window.location.href = lasturl
+                  const presentURL = localStorage.getItem('presentURL')
+                  if (
+                    presentURL === 'http://localhost:3002/product/productdetail'
+                  ) {
+                    console.log('去商品', HOST)
+                    navigate('/product/productdetail', {
+                      state: productstate,
+                    })
+                  }
+                  if (presentURL) {
+                    const lasturl = JSON.parse(presentURL)
+                    console.log('有presentURL', lasturl)
+                    window.location.href = lasturl
+                  } else {
+                    console.log('沒有presentURL', HOST)
+                    window.location.href = HOST
+                  }
+                } else {
+                  localStorage.setItem(
+                    'myAuth',
+                    JSON.stringify({ useremail, accountId, token })
+                  )
+                  setMyAuth({
+                    authorized: true, // 有沒有登入
+                    sid: accountId,
+                    useremail: useremail,
+                    token: token,
+                  })
+                  //看有沒有上一頁的url
+
+                  const presentURL = localStorage.getItem('presentURL')
+                  if (
+                    presentURL === 'http://localhost:3002/product/productdetail'
+                  ) {
+                    console.log('去商品', HOST)
+                    navigate('/product/productdetail', {
+                      state: productstate,
+                    })
+                  }
+                  if (presentURL) {
+                    const lasturl = JSON.parse(presentURL)
+                    console.log('有presentURL', lasturl)
+                    window.location.href = lasturl
+                  } else {
+                    console.log('沒有presentURL', HOST)
+                    window.location.href = HOST
+                  }
+                }
+              })
             } else {
-              console.log('沒有presentURL', HOST)
-              window.location.href = HOST
+              localStorage.setItem(
+                'myAuth',
+                JSON.stringify({ useremail, accountId, token })
+              )
+              setMyAuth({
+                authorized: true, // 有沒有登入
+                sid: accountId,
+                useremail: useremail,
+                token: token,
+              })
+              //看有沒有上一頁的url
+
+              const presentURL = localStorage.getItem('presentURL')
+              if (
+                presentURL === 'http://localhost:3002/product/productdetail'
+              ) {
+                console.log('去商品', HOST)
+                navigate('/product/productdetail', {
+                  state: productstate,
+                })
+              }
+              if (presentURL) {
+                const lasturl = JSON.parse(presentURL)
+                console.log('有presentURL', lasturl)
+                window.location.href = lasturl
+              } else {
+                console.log('沒有presentURL', HOST)
+                window.location.href = HOST
+              }
             }
           }
         })
@@ -179,7 +362,10 @@ function Login() {
               <form onSubmit={loginSubmit}>
                 <div className="row">
                   <div className="input-group mb-2 ">
-                    <label className="input-group-text labelinput" for="email">
+                    <label
+                      className="input-group-text labelinput"
+                      htmlFor="email"
+                    >
                       電子信箱
                     </label>
                     <input
@@ -201,7 +387,7 @@ function Login() {
                   <div className="input-group mb-lg-2">
                     <label
                       className="input-group-text labelinput"
-                      for="password"
+                      htmlFor="password"
                     >
                       登入密碼
                     </label>
@@ -263,7 +449,11 @@ function Login() {
                     className="registerlink"
                     onClick={(e) => {
                       e.preventDefault()
-                      navigate('/member/register')
+                      {
+                        navigate('/member/register', {
+                          state: productstate,
+                        })
+                      }
                     }}
                   >
                     註冊

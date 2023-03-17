@@ -525,11 +525,11 @@ function Edit() {
                       navigate('/member/coupon')
                     }}
                   >
-                    折價券
+                    優惠券
                   </button>
                 ) : (
                   <button className="disabledbtn j-h3 mb-2 me-4 text-secondary">
-                    折價券
+                    優惠券
                   </button>
                 )}
 
@@ -638,7 +638,7 @@ function Edit() {
                       <div className="col-12 ms-5 ps-5 pe-5 me-5">
                         <div className="j-input">
                           <div>
-                            <label htmlfor="name">姓名</label>
+                            <label htmlFor="name">姓名</label>
                           </div>
                           <input
                             type="text"
@@ -658,7 +658,7 @@ function Edit() {
 
                         <div className="j-input">
                           <div>
-                            <label htmlfor="email">信箱</label>
+                            <label htmlFor="email">信箱</label>
                           </div>
                           <input
                             type="email"
@@ -678,7 +678,7 @@ function Edit() {
 
                         <div className="j-input">
                           <div>
-                            <label htmlfor="password">新密碼</label>
+                            <label htmlFor="password">新密碼</label>
                           </div>
                           <div>
                             {isPasswordVisible ? (
@@ -740,7 +740,7 @@ function Edit() {
                         </div>
                         <div className={showcheck}>
                           <div>
-                            <label htmlfor="checkpassword">確認新密碼</label>
+                            <label htmlFor="checkpassword">確認新密碼</label>
                           </div>
                           {isCheckPasswordVisible ? (
                             <input
@@ -776,7 +776,7 @@ function Edit() {
 
                         <div className="j-input">
                           <div>
-                            <label htmlfor="phone">手機</label>
+                            <label htmlFor="phone">手機</label>
                           </div>
                           <input
                             type="text"
@@ -796,7 +796,7 @@ function Edit() {
 
                         <div className="j-input">
                           <div>
-                            <label htmlfor="birthday">生日</label>
+                            <label htmlFor="birthday">生日</label>
                           </div>
                           <input
                             type="date"
@@ -817,7 +817,7 @@ function Edit() {
 
                         <div className="j-input d-flex ">
                           <div className="">
-                            <label htmlfor="area">地區</label>
+                            <label htmlFor="area">地區</label>
                             <select
                               value={countryIndex}
                               className="like-dropdown-toggle  j-deepGray select-bg"
@@ -847,7 +847,7 @@ function Edit() {
                             </select>
                           </div>
                           <div className="">
-                            <label htmlfor="city">城市</label>
+                            <label htmlFor="city">城市</label>
                             <select
                               value={townshipIndex}
                               className="like-dropdown-toggle  j-deepGray select-bg"
@@ -878,7 +878,7 @@ function Edit() {
                         </div>
                         <div className="j-input border-bottom border-3 pb-2">
                           <div>
-                            <label htmlfor="address">地址</label>
+                            <label htmlFor="address">地址</label>
                           </div>
                           <input
                             type="text"
