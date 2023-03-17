@@ -100,6 +100,7 @@ function Index() {
   }
 
   //*localStorage
+  //TODO 登入後localStorage會消失
   //讀取local資料
   useEffect(() => {
     const storageData = JSON.parse(localStorage.getItem('searchData')) || {}
