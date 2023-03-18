@@ -1,19 +1,37 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import './css/turntable.css'
 import { usePopup } from '../Public/Popup'
-import AutoScrollToTop from './AutoScrollToTop.js'
+import { useUtils } from './Utils'
+import AutoScrollToTop from './AutoScrollToTop'
+import './css/turntable.css'
 
 function Turntable() {
-  const { Popup, openPopup, closePopup } = usePopup()
   const navigate = useNavigate()
-  const [popupProps, setPopupProps] = useState({})
   const [isRolling, setIsRolling] = useState(false)
 
-  const inBetween = (itemDeg, b, c) => {
-    return itemDeg >= b && itemDeg < c
-  }
+  const [popupProps, setPopupProps] = useState({})
+  const { Popup, openPopup, closePopup } = usePopup()
+  const { checkLogin, setUpPopup } = useUtils()
+
   const doTurn = async () => {
+    let { isLogged, myAuth } = await checkLogin()
+    if (!isLogged) {
+      setUpPopup(setPopupProps, {
+        content: '請先登入會員',
+        btnGroup: [
+          {
+            text: '立即登入',
+            handle: () => {
+              navigate('/member')
+            },
+          },
+          { text: '關閉', handle: closePopup },
+        ],
+      }).then(() => {
+        openPopup()
+      })
+      return
+    }
     //check today record
     const wheelDom = document.querySelector('#wheel')
     wheelDom.style.transform = 'rotate(0deg)'
@@ -35,19 +53,19 @@ function Turntable() {
           {
             fill: 'forwards',
             easing: 'ease-out',
-            duration: 1200,
+            duration: 800,
           }
         )
 
         final.onfinish = () => {
           //call api
-          let props = {
+          let pProps = {
             content: '',
             icon: <i className="fa-solid fa-circle-check"></i>,
           }
           if (itemDeg >= 270 && itemDeg < 360) {
-            props.content = '再抽一次'
-            props.btnGroup = [
+            pProps.content = '再抽一次'
+            pProps.btnGroup = [
               {
                 text: '確定',
                 handle: () => {
@@ -57,43 +75,40 @@ function Turntable() {
               },
             ]
           } else if (itemDeg >= 225 && itemDeg < 270) {
-            props.content = '恭喜獲得折一百'
+            pProps.content = '恭喜獲得折一百'
           } else if (itemDeg >= 180 && itemDeg < 225) {
-            props.content = '恭喜獲得折五十'
+            pProps.content = '恭喜獲得折五十'
           } else if (itemDeg >= 90 && itemDeg < 180) {
-            props.content = '恭喜獲得折五元'
+            pProps.content = '恭喜獲得折五元'
           } else if (itemDeg >= 45 && itemDeg < 90) {
-            props.content = '恭喜獲得九五折'
+            pProps.content = '恭喜獲得九五折'
           } else if (itemDeg >= 0 && itemDeg < 45) {
-            props.content = '恭喜獲得九折'
+            pProps.content = '恭喜獲得九折'
           } else {
-            props.content = '再抽一次'
-            props.btnGroup = [
+            pProps.content = '再抽一次'
+            pProps.btnGroup = [
               {
                 text: '確定',
                 handle: () => {
                   closePopup()
                   doTurn()
-                }
-              }
+                },
+              },
             ]
           }
           setTimeout(() => {
-            setPopupProps({ ...props })
             setIsRolling('done')
+            setUpPopup(setPopupProps, pProps).then(() => {
+              openPopup()
+              setIsRolling(false)
+            })
           }, 500)
         }
+
+        // spinAnimation.play()
       }
     }
   }
-
-  useEffect(() => {
-    // console.log(isRolling)
-    if (isRolling === 'done') {
-      setIsRolling(false)
-      openPopup()
-    }
-  }, [isRolling])
 
   return (
     <>
@@ -142,7 +157,6 @@ function Turntable() {
                     src="/img/pointer.png"
                     alt="pointer"
                     className="w-25 turntable-pointer"
-                    // onClick={openPopup}
                     onClick={doTurn}
                   />
                 </div>
@@ -183,26 +197,6 @@ function Turntable() {
             </p>
           </div>
         </section>
-
-        {/* <Popup
-          content={'請先登入會員'}
-          btnGroup={[
-            {
-              text: '立即登入',
-              handle: () => {
-                navigate('/member')
-              },
-            },
-            {
-              text: '關閉',
-              handle: closePopup,
-            },
-          ]}
-        /> */}
-
-        {/* <Popup content={'恭喜獲得{"九五折"}'} icon ={<i className="fa-solid fa-circle-check"></i>} />  */}
-        {/* <Popup content={'再抽一次'} icon ={<i className="fa-solid fa-face-smile"></i>}/>  */}
-
         {/* <Popup content={'今天已領取過優惠'} /> */}
         <Popup {...popupProps} />
       </AutoScrollToTop>

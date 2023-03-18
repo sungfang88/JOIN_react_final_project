@@ -1,26 +1,39 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import './css/checkIn.css'
-import CheckList from './components/CheckList'
-import { usePopup } from '../Public/Popup'
-import AutoScrollToTop from './AutoScrollToTop'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { GET_CHECKIN_RECORDS, POST_DOCHECKIN } from './data/api_config.js'
-import { useCheckLogin } from './Utils.js'
+import CheckList from './components/CheckList'
+import AutoScrollToTop from './AutoScrollToTop'
+import { useUtils } from './Utils'
+import { usePopup } from '../Public/Popup'
 import axios from 'axios'
+import './css/checkIn.css'
 
 function CheckIn() {
-  const [checkInList, setCheckInList] = useState([])
+  const navigate = useNavigate()
   const [accumulatedCheck, setAccumulatedCheck] = useState(0)
   const { Popup, openPopup, closePopup } = usePopup()
-  const navigate = useNavigate()
-  const checkLogin = useCheckLogin()
-  const initList = useRef(false)
+  const { checkLogin, setUpPopup } = useUtils()
   //簽到天數、獎勵
   const countCheckin = 12
   const split = 4
-
+  const initList = useRef(false)
+  const [checkInList, setCheckInList] = useState(() =>
+    renderCheckinList(countCheckin)
+  )
+  function renderCheckinList(acc) {
+    console.log('r');
+    let l = []
+    for (let index = 0; index < countCheckin; index++) {
+      l = l.concat({
+        key: `item-${Date.now() + index}`,
+        isCheck: !!(acc >= index + 1),
+        text: (index + 1) % split === 0 || index === 0 ? '領取獎勵' : '',
+      })
+    }
+    return l
+  }
   useEffect(() => {
-    checkLogin
+    checkLogin()
       .then(async (result) => {
         const { isLogged, myAuth } = result
         if (isLogged && initList.current === false) {
@@ -32,15 +45,9 @@ function CheckIn() {
       })
       .finally(() => {
         initList.current = true
-        let l = []
-        for (let index = 0; index < countCheckin; index++) {
-          l = l.concat({
-            key: `item-${Date.now() + index}`,
-            isCheck: !!(accumulatedCheck >= index + 1),
-            text: (index + 1) % split === 0 || index === 0 ? '領取獎勵' : '',
-          })
-        }
-        setCheckInList(l)
+        setCheckInList(() => {
+          return renderCheckinList(accumulatedCheck)
+        })
       })
   }, [accumulatedCheck])
 
@@ -48,7 +55,7 @@ function CheckIn() {
   const [popupProps, setPopupProps] = useState({})
   const doCheckIn = () => {
     if (accumulatedCheck !== countCheckin) {
-      checkLogin.then((result) => {
+      checkLogin().then((result) => {
         const { isLogged, myAuth } = result
         if (isLogged) {
           const { sid } = myAuth
