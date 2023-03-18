@@ -50,6 +50,11 @@ function Classday() {
       console.log('bad')
     }
   }
+  function isDisabled(date) {
+    const day = date.getDay()
+    // 禁用周一、三、五、日
+    return day === 1 || day === 3 || day === 5 || day === 0
+  }
 
   const [classtime, setClasstime] = useState([
     { sid: 0, classtime: '', time: '', created: '' },
@@ -134,7 +139,11 @@ function Classday() {
             </div>
           </div>
           <div> */}
-          <Calendar onChange={myChange} value={value} />
+          <Calendar
+            onChange={myChange}
+            value={value}
+            tileDisabled={({ date }) => isDisabled(date)}
+          />
 
           {/* </div> */}
         </div>
