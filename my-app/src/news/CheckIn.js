@@ -21,7 +21,6 @@ function CheckIn() {
     renderCheckinList(countCheckin)
   )
   function renderCheckinList(acc) {
-    console.log('r');
     let l = []
     for (let index = 0; index < countCheckin; index++) {
       l = l.concat({
@@ -64,7 +63,7 @@ function CheckIn() {
               memberId: sid,
             })
             .then((res) => {
-              console.table(res.data)
+              // console.table(res.data)
               if (res.data.success) {
                 let popuptext = '完成簽到'
                 if (res.data?.gotCouppon) {

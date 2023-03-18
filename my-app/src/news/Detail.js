@@ -6,23 +6,36 @@ import { motion } from 'framer-motion'
 import AutoScrollToTop from './AutoScrollToTop.js'
 
 function Detail() {
-  const [news, SetNews] = useState({})
-  const ItemId = useLocation().pathname.split('/')[3]
-  let processFetch = true
-  let linkState = null
-  try {
-    linkState = JSON.parse(news.state)
-  } catch (ex) {}
-
+  const [news, setNews] = useState({});
+  const itemId = useLocation().pathname.split('/')[3];
+  let processFetch = true;
+  let linkState = null;
+  
+  const parseJson = (jsonString) => {
+    try {
+      return JSON.parse(jsonString);
+    } catch (ex) {
+      return null;
+    }
+  };
+  
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`${GET_NEWS_DETAIL}/${itemId}`);
+      const data = await res.json();
+      if (processFetch) {
+        setNews(data);
+      }
+    } catch (error) {
+      console.log('Error fetching news:', error);
+    }
+  };
   useEffect(() => {
-    fetch(GET_NEWS_DETAIL + `/${ItemId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (processFetch) {
-          SetNews(data)
-        }
-      })
-  }, [])
+  
+    fetchData();
+  }, []);
+  
+  linkState = parseJson(news.state);
   return (
     <>
       <AutoScrollToTop>

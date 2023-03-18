@@ -35,7 +35,6 @@ function News() {
   const [fetchData, setFetchData] = useState([])
   const [newsListData, setNewsListData] = useState([])
   const initList = useRef(true)
-  const [isLoading, setIsLoading] = useState(true)
 
   const [selectedValue1, setSelectedValue1] = useState({
     value: 0,
@@ -114,31 +113,6 @@ function News() {
       })
     )
   }, [selectedValue2.value])
-
-  //  1.6s後自動關掉載入指示動畫
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     setTimeout(() => {
-  //       setIsLoading(false)
-  //     }, 1600)
-  //   }
-  // }, [isLoading])
-
-  // 搭配css的純載入指示動畫
-  // const loader = (
-  // <div className="col d-flex justify-content-center">
-  //     <div className="lds-roller">
-  //       <div></div>
-  //       <div></div>
-  //       <div></div>
-  //       <div></div>
-  //       <div></div>
-  //       <div></div>
-  //       <div></div>
-  //       <div></div>
-  //     </div>
-  // </div>
-  // )
 
   return (
     <>

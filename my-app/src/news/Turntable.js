@@ -1,20 +1,80 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { usePopup } from '../Public/Popup'
 import { useUtils } from './Utils'
+import { POST_PROCESS_WHEEL, GET_WHEEL_RECORDS } from './data/api_config.js'
 import AutoScrollToTop from './AutoScrollToTop'
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 import './css/turntable.css'
 
 function Turntable() {
   const navigate = useNavigate()
+  const uuid = uuidv4()
   const [isRolling, setIsRolling] = useState(false)
-
   const [popupProps, setPopupProps] = useState({})
   const { Popup, openPopup, closePopup } = usePopup()
   const { checkLogin, setUpPopup } = useUtils()
+  const [fetchPrizeRecords, setFetchPrizeRecords] = useState()
+  const prizeRecords = useMemo(() => {
+    return fetchPrizeRecords
+  }, [fetchPrizeRecords])
 
+  const fetchRecords = async () => {
+    const { isLogged, myAuth } = await checkLogin()
+    const res = await axios.post(GET_WHEEL_RECORDS, {
+      memberId: myAuth.sid,
+    })
+    const resData = await res.data
+    setFetchPrizeRecords(resData?.rows)
+  }
+
+  const displayPrize = (itemDeg) => {
+    let pProps = {
+      content: '',
+      icon: <i className="fa-solid fa-circle-check"></i>,
+    }
+    switch (true) {
+      case itemDeg >= 225 && itemDeg < 270:
+        pProps.content = '恭喜獲得折一百'
+        pProps.couponId = 3
+        break
+      case itemDeg >= 180 && itemDeg < 225:
+        pProps.content = '恭喜獲得折五十'
+        pProps.couponId = 4
+        break
+      case itemDeg >= 90 && itemDeg < 180:
+        pProps.content = '恭喜獲得折五元'
+        pProps.couponId = 5
+        break
+      case itemDeg >= 45 && itemDeg < 90:
+        pProps.content = '恭喜獲得九五折'
+        pProps.couponId = 2
+        break
+      case itemDeg >= 0 && itemDeg < 45:
+        pProps.content = '恭喜獲得九折'
+        pProps.couponId = 15
+        break
+      case itemDeg >= 270 && itemDeg < 360:
+      default:
+        pProps.couponId = 'A'
+        pProps.content = '再抽一次'
+        pProps.btnGroup = [
+          {
+            text: '確定',
+            handle: () => {
+              closePopup()
+              doTurn()
+            },
+          },
+        ]
+    }
+    return new Promise((resolve, reject) => {
+      resolve(pProps)
+    })
+  }
   const doTurn = async () => {
-    let { isLogged, myAuth } = await checkLogin()
+    const { isLogged, myAuth } = await checkLogin()
     if (!isLogged) {
       setUpPopup(setPopupProps, {
         content: '請先登入會員',
@@ -22,7 +82,7 @@ function Turntable() {
           {
             text: '立即登入',
             handle: () => {
-              navigate('/member')
+              navigate('/member/login')
             },
           },
           { text: '關閉', handle: closePopup },
@@ -32,83 +92,54 @@ function Turntable() {
       })
       return
     }
-    //check today record
+
     const wheelDom = document.querySelector('#wheel')
+    const itemDeg = Math.floor(Math.random() * 360)
+    const targetDeg = 3600 + itemDeg
+    let pProps = await displayPrize(itemDeg)
+    const res = await axios.post(POST_PROCESS_WHEEL, {
+      memberId: myAuth.sid,
+      couponId: pProps.couponId
+    })
+    const resData = await res.data
+    if (!resData.success) {
+      setUpPopup(setPopupProps, { content: resData.error }).then(() => {
+        openPopup()
+        setIsRolling(false)
+      })
+      return
+    }
     wheelDom.style.transform = 'rotate(0deg)'
     if (isRolling === false) {
       setIsRolling('rolling')
       let spinAnimation = wheelDom.animate(
-        [{ transform: 'rotate(0deg)' }, { transform: 'rotate(720deg)' }],
+        [
+          { transform: 'rotate(0deg)' },
+          { transform: `rotate(${targetDeg}deg)` },
+        ],
         {
           fill: 'forwards',
-          easing: 'linear',
-          duration: 800,
+          easing: 'ease-out',
+          duration: 1000,
         }
       )
-      spinAnimation.onfinish = function () {
-        let itemDeg = Math.floor(Math.random() * 360)
-        let targetDeg = Math.floor(720 + itemDeg)
-        var final = wheelDom.animate(
-          [{ transform: `rotate(${targetDeg}deg)` }],
-          {
-            fill: 'forwards',
-            easing: 'ease-out',
-            duration: 800,
-          }
-        )
-
-        final.onfinish = () => {
-          //call api
-          let pProps = {
-            content: '',
-            icon: <i className="fa-solid fa-circle-check"></i>,
-          }
-          if (itemDeg >= 270 && itemDeg < 360) {
-            pProps.content = '再抽一次'
-            pProps.btnGroup = [
-              {
-                text: '確定',
-                handle: () => {
-                  closePopup()
-                  doTurn()
-                },
-              },
-            ]
-          } else if (itemDeg >= 225 && itemDeg < 270) {
-            pProps.content = '恭喜獲得折一百'
-          } else if (itemDeg >= 180 && itemDeg < 225) {
-            pProps.content = '恭喜獲得折五十'
-          } else if (itemDeg >= 90 && itemDeg < 180) {
-            pProps.content = '恭喜獲得折五元'
-          } else if (itemDeg >= 45 && itemDeg < 90) {
-            pProps.content = '恭喜獲得九五折'
-          } else if (itemDeg >= 0 && itemDeg < 45) {
-            pProps.content = '恭喜獲得九折'
-          } else {
-            pProps.content = '再抽一次'
-            pProps.btnGroup = [
-              {
-                text: '確定',
-                handle: () => {
-                  closePopup()
-                  doTurn()
-                },
-              },
-            ]
-          }
-          setTimeout(() => {
-            setIsRolling('done')
-            setUpPopup(setPopupProps, pProps).then(() => {
-              openPopup()
-              setIsRolling(false)
-            })
-          }, 500)
-        }
-
-        // spinAnimation.play()
+      spinAnimation.onfinish = async () => {
+        setIsRolling('done')
+        setTimeout(() => {
+          setUpPopup(setPopupProps, pProps).then(() => {
+            openPopup()
+            setIsRolling(false)
+          })
+        }, 500)
       }
     }
   }
+  useEffect(() => {
+    if(isRolling === false){
+      fetchRecords()
+      // console.log(fetchPrizeRecords);
+    }
+  }, [isRolling])
 
   return (
     <>
@@ -179,10 +210,14 @@ function Turntable() {
                   </tr>
                 </thead>
                 <tbody className="j-deepGray">
-                  <tr>
-                    <td>九五折</td>
-                    <td>2023-03-01</td>
-                  </tr>
+                  {fetchPrizeRecords && fetchPrizeRecords.map((item, index) => {
+                    return (
+                      <tr key={uuid.concat(item.itemid)}>
+                        <td >{item.title}</td>
+                        <td>{new Intl.DateTimeFormat("fr-ca").format(new Date(item.create_at))}</td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>

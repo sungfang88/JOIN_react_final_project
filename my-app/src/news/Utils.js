@@ -14,8 +14,8 @@ export const useUtils = () => {
   }, [myAuth])
 
   const setUpPopup = useCallback((setPopupProps, popupProps) => {
-    setPopupProps(popupProps)
     return new Promise((resolve, reject) => {
+      setPopupProps(popupProps)
       resolve(true)
     })
   }, [])
