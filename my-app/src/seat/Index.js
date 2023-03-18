@@ -18,6 +18,16 @@ const options2 = [
 
 function Index() {
   const { myAuth } = useContext(AuthContext)
+  //*日期驗證
+  const today = new Date()
+    .toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    .split(' ')[0]
+  const dateObj = new Date(today)
+  const year = dateObj.getFullYear()
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+  const day = dateObj.getDate().toString().padStart(2, '0')
+  const formattedToday = `${year}-${month}-${day}`
+  console.log(formattedToday) // Output: "2023-03-18"
 
   //查詢用
   const [results, setResults] = useState([])
@@ -176,7 +186,9 @@ function Index() {
                       type="date"
                       className="input-text"
                       value={reserveDate}
+                      min={formattedToday}
                       onChange={(e) => setReserveDate(e.target.value)}
+                      required
                     />
                   </div>
                   {/* 時段 */}

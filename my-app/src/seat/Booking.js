@@ -7,11 +7,12 @@ import { SEAT_ADD, SEAT_ALL } from './api_config'
 import { usePopup } from '../Public/Popup'
 import '../Public/css/popup.css'
 import AuthContext from '../Context/AuthContext'
+import dayjs from 'dayjs'
 
 const options1 = [
-  { value: '1', label: '8pm-10pm' },
-  { value: '2', label: '10pm-12am' },
-  { value: '3', label: '12am-2am' },
+  { value: 1, label: '8pm-10pm' },
+  { value: 2, label: '10pm-12am' },
+  { value: 3, label: '12am-2am' },
 ]
 
 const options2 = [
@@ -33,6 +34,18 @@ function Booking() {
   const [table, setTable] = useState('請選擇...')
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
   const [isMenuOpen2, setIsMenuOpen2] = useState(false)
+
+  //*日期驗證
+  const today = new Date()
+    .toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    .split(' ')[0]
+  const dateObj = new Date(today)
+  const year = dateObj.getFullYear()
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+  const day = dateObj.getDate().toString().padStart(2, '0')
+  const formattedToday = `${year}-${month}-${day}`
+  console.log(formattedToday) // Output: "2023-03-18"
+
   const [reserveDate, setReserveDate] = useState('')
   const [people, setPeople] = useState('')
   const [name, setName] = useState('')
@@ -60,7 +73,6 @@ function Booking() {
     document.getElementById('selected2').value = option.value
     setIsMenuOpen2(false)
   }
-
   //* 代入查詢locolStorage資料
   useEffect(() => {
     const bookingData = JSON.parse(localStorage.getItem('bookingData'))
@@ -176,6 +188,7 @@ function Booking() {
                     type="date"
                     className="input-text"
                     value={reserveDate}
+                    min={formattedToday}
                     onChange={(e) => setReserveDate(e.target.value)}
                   />
                 </div>
