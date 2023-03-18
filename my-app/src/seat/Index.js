@@ -36,6 +36,15 @@ function Index() {
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
   const [isMenuOpen2, setIsMenuOpen2] = useState(false)
 
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('bookingData'))
+    if (storedData) {
+      setReserveDate(storedData.reserveDate)
+      setPeriod(storedData.period)
+      setPeople(storedData.people)
+    }
+  }, [])
+
   //*下拉式選單
   useEffect(() => {
     const fetchOptions = async () => {
@@ -79,7 +88,7 @@ function Index() {
     event.preventDefault()
     setSearchData({
       reserveDate,
-      period,
+      period: +document.getElementById('selected1').value,
       people,
     })
     try {
@@ -119,6 +128,7 @@ function Index() {
   //TODO 還沒把時段改成數字再存
   useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
+    console.log('刷新')
   }, [searchData])
 
   return (

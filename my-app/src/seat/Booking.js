@@ -29,6 +29,7 @@ function Booking() {
   const initialState = useRef(true)
 
   const [period, setPeriod] = useState('請選擇...')
+  const [periodSid, setPeriodSid] = useState()
   const [table, setTable] = useState('請選擇...')
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
   const [isMenuOpen2, setIsMenuOpen2] = useState(false)
@@ -66,6 +67,16 @@ function Booking() {
     if (bookingData) {
       setReserveDate(bookingData.reserveDate)
       setPeriod(bookingData.period)
+      if (period == options1[0].value) {
+        setPeriod(options1[0].label)
+        setPeriodSid(1)
+      } else if (period == options1[1].value) {
+        setPeriod(options1[1].label)
+        setPeriodSid(2)
+      } else if (period == options1[2].value) {
+        setPeriod(options1[2].label)
+        setPeriodSid(3)
+      }
       setPeople(bookingData.people)
     }
   }, [])
@@ -90,8 +101,9 @@ function Booking() {
       const response = await axios.get(`${SEAT_ALL}/${myAuth.sid}`, {
         withCredentials: true,
       })
-      setMemberData(response.data)
-      // console.log(response.data)
+      // console.log(myAuth.sid)
+      setMemberData(response.data[0])
+      // console.log(response.data[0])
       setName(response.data[0].name)
       setPhone(response.data[0].phone)
     } catch (error) {
@@ -124,7 +136,7 @@ function Booking() {
           name: name,
           phone: phone,
           reserveDate: reserveDate,
-          period_sid: +document.getElementById('selected1').value,
+          period_sid: +document.getElementById('selected1').value || periodSid,
           table_sid: +document.getElementById('selected2').value,
           people: people,
         }),
