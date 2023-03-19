@@ -44,7 +44,6 @@ function Booking() {
   const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
   const day = dateObj.getDate().toString().padStart(2, '0')
   const formattedToday = `${year}-${month}-${day}`
-  console.log(formattedToday) // Output: "2023-03-18"
 
   const [reserveDate, setReserveDate] = useState('')
   const [people, setPeople] = useState('')
@@ -78,14 +77,14 @@ function Booking() {
     const bookingData = JSON.parse(localStorage.getItem('bookingData'))
     if (bookingData) {
       setReserveDate(bookingData.reserveDate)
-      setPeriod(bookingData.period)
-      if (period == options1[0].value) {
+      // setPeriod(bookingData.period)
+      if (bookingData.period == options1[0].value) {
         setPeriod(options1[0].label)
         setPeriodSid(1)
-      } else if (period == options1[1].value) {
+      } else if (bookingData.period == options1[1].value) {
         setPeriod(options1[1].label)
         setPeriodSid(2)
-      } else if (period == options1[2].value) {
+      } else if (bookingData.period == options1[2].value) {
         setPeriod(options1[2].label)
         setPeriodSid(3)
       }
@@ -153,7 +152,7 @@ function Booking() {
           people: people,
         }),
       })
-
+      console.log(response.data)
       //解決popup路徑重複問題
       const data = await response.json()
       const sid = data.result.insertId
@@ -190,6 +189,7 @@ function Booking() {
                     value={reserveDate}
                     min={formattedToday}
                     onChange={(e) => setReserveDate(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -236,6 +236,8 @@ function Booking() {
                     value={people}
                     onChange={(e) => setPeople(e.target.value)}
                     required
+                    min="1"
+                    max="50"
                   />
                 </div>
                 {/* <!-- 下拉式選單 --> */}
@@ -326,7 +328,7 @@ function Booking() {
                 <button className="gray-line-btn h3 me-2">取消</button>
               </Link>
               {/* <Link to="/seat/confirm-seat"> */}
-              <button className="o-line-btn h3" type="submmit">
+              <button className="o-line-btn h3" type="submit">
                 送出
               </button>
               {/* </Link> */}

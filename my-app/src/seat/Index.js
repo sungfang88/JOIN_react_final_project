@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import '../Public/style'
 import './css/booking.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -27,7 +27,6 @@ function Index() {
   const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
   const day = dateObj.getDate().toString().padStart(2, '0')
   const formattedToday = `${year}-${month}-${day}`
-  console.log(formattedToday) // Output: "2023-03-18"
 
   //查詢用
   const [results, setResults] = useState([])
@@ -92,29 +91,35 @@ function Index() {
     setSelectedValue2(option.label)
     setIsMenuOpen2(false)
   }
-
+  const searchForm = document.getElementById('searchForm')
   //* 查詢
   const Search = async (event) => {
     event.preventDefault()
-    setSearchData({
-      reserveDate,
-      period: +document.getElementById('selected1').value,
-      people,
-    })
-    try {
-      // saveSearchData({ reserveDate, period, people })
-      const response = await axios.get(SEARCH, {
-        params: {
-          reserveDate,
-          period: +document.getElementById('selected1').value,
-          people,
-        },
+    if (searchForm.checkValidity() && (period == 1 || 2 || 3)) {
+      // console.log('Form is valid!')
+      setSearchData({
+        reserveDate,
+        period: +document.getElementById('selected1').value,
+        people,
       })
-      if (response && response.data) {
-        setResults(response.data)
+      try {
+        // saveSearchData({ reserveDate, period, people })
+        const response = await axios.get(SEARCH, {
+          params: {
+            reserveDate,
+            period: +document.getElementById('selected1').value,
+            people,
+          },
+        })
+        if (response && response.data) {
+          setResults(response.data)
+        }
+      } catch (error) {
+        console.error(error)
       }
-    } catch (error) {
-      console.error(error)
+    } else {
+      // console.log('Form is invalid!')
+      // 驗證以後再做...
     }
   }
 
@@ -175,7 +180,10 @@ function Index() {
                 <span className="col-auto title j-deepSec"> 訂位</span>
                 <div className="title-line d-block d-md-none"></div>
               </div>
-              <form className="d-flex align-items-end justify-content-between mb-3 flex-column flex-md-row">
+              <form
+                className="d-flex align-items-end justify-content-between mb-3 flex-column flex-md-row"
+                id="searchForm"
+              >
                 <div className="d-flex col-12 col-md-8 mb-2 mb-md-0">
                   {/* 日期 */}
                   <div className="j-input col-6 m-0 px-1">
@@ -233,6 +241,8 @@ function Index() {
                       type="number"
                       id="people"
                       className="input-text"
+                      min="1"
+                      max="50"
                       value={people}
                       onChange={(e) => setPeople(e.target.value)}
                       required
