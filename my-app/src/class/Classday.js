@@ -50,9 +50,11 @@ function Classday() {
       console.log('bad')
     }
   }
+
+  // 日期禁用周一、三、五、日
   function isDisabled(date) {
     const day = date.getDay()
-    // 禁用周一、三、五、日
+
     return day === 1 || day === 3 || day === 5 || day === 0
   }
 
