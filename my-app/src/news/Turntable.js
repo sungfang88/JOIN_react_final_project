@@ -16,12 +16,12 @@ function Turntable() {
   const { Popup, openPopup, closePopup } = usePopup()
   const { checkLogin, setUpPopup } = useUtils()
   const [fetchPrizeRecords, setFetchPrizeRecords] = useState()
-  const prizeRecords = useMemo(() => {
-    return fetchPrizeRecords
-  }, [fetchPrizeRecords])
 
   const fetchRecords = async () => {
     const { isLogged, myAuth } = await checkLogin()
+    if(!isLogged) {
+      return []
+    }
     const res = await axios.post(GET_WHEEL_RECORDS, {
       memberId: myAuth.sid,
     })

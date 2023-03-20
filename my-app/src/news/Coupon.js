@@ -1,9 +1,48 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './css/news.css'
 import { Link } from 'react-router-dom'
 import CouponItem from './components/CouponItem'
+import {
+  GET_COUPON_MEM,
+  CHECKIN_COUPON_ARR,
+  TURNTABLE_COUPON_ARR,
+} from './data/api_config'
+import { useUtils } from './Utils'
+
 
 function Coupon() {
+  const [fetchData, setFetchData] = useState([])
+  const { checkLogin } = useUtils()
+  const fetchCouponList = async (setFetchData) => {
+    const { isLogged, myAuth } = await checkLogin()
+    let fetchUrl = GET_COUPON_MEM
+    if (isLogged) {
+      fetchUrl += `?memId=${myAuth.sid}`
+    }
+    try {
+      const r = await fetch(fetchUrl)
+      const data = await r.json()
+
+      const rows =
+        data?.rows?.filter((item) => {
+          return (
+            !CHECKIN_COUPON_ARR.includes(item.sid) &&
+            !TURNTABLE_COUPON_ARR.includes(item.sid)
+          )
+        }) ?? []
+
+      setFetchData((prev) => {
+        return rows ?? prev
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCouponList(setFetchData).then(() => {})
+  }, [])
+
   return (
     <>
       <section className="container-fluid d-none d-md-block nav-space ">
@@ -33,9 +72,18 @@ function Coupon() {
             </div>
           </div>
           <div className="row">
-            <CouponItem />
-            <CouponItem />
-            <CouponItem />
+            {fetchData.map((item) => {
+              return (
+                <CouponItem
+                  key={item.sid}
+                  itemId={item.sid}
+                  title={item.title}
+                  description={item.description}
+                  endDate={new Date(item.end_date).toJSON().slice(0, 10)}
+                  isAvalible={!(item?.menber_sid ?? null)}
+                />
+              )
+            })}
           </div>
         </div>
       </section>
