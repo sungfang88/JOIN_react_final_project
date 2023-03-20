@@ -150,7 +150,7 @@ function Index() {
             <span className="col-auto title j-deepSec">購買須知</span>
             <div className="title-line d-block d-md-none"></div>
           </div>
-          <div className="purchase">
+          <div className="purchase ps-xl-4">
             <ul>
               <li className="j-h3">
                 當參加人數未達上述規定的最少人數時，將取消課程，於上課前 2

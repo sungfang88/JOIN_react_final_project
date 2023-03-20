@@ -35,13 +35,14 @@ function Classsec() {
   }
 
   function handleSubmit() {
+    console.log('到了')
     // 獲取input值
     const input = document.getElementById('myInput').value
 
     // 檢查input是否為空
     if (input.trim() === '') {
       // 如果input為空，顯示警告訊息
-      alert('123')
+      alert('請輸入有效的值！')
     } else {
       // 如果input不為空，提交表單
       document.getElementById('myForm').submit()
@@ -107,7 +108,7 @@ function Classsec() {
                   <td>
                     <input
                       type="radio"
-                      id="classname"
+                      name="classname"
                       value={v.classsid}
                       class="j-radio"
                       onClick={(e) => {
@@ -160,6 +161,7 @@ function Classsec() {
             <Link
               class="g-line-btn j-h3"
               to="/class/Classbt"
+              // onClick={Submit}
               onClick={handleSubmit}
               // onClick={(e) => {
               //   e.preventDefault()
