@@ -6,6 +6,7 @@ import { PERIOD, SEARCH } from './api_config'
 import axios from 'axios'
 import { usePopup } from '../Public/Popup'
 import AuthContext from '../Context/AuthContext'
+import JoinMap from './JoinMap'
 
 const options2 = [
   { value: '1', label: '琴酒 Gin' },
@@ -162,20 +163,26 @@ function Index() {
 
           <div className="row d-flex d-md-none mb-5">
             <div className="col-auto flex-grow-1">
-              <button className="g-line-btn h3 w-100">訂位</button>
+              <a href="#booking">
+                <button className="g-line-btn h3 w-100">訂位</button>
+              </a>
             </div>
             <div className="col-auto flex-grow-1">
-              <button className="g-line-btn h3 w-100">菜單</button>
+              <a href="#menu">
+                <button className="g-line-btn h3 w-100">菜單</button>
+              </a>
             </div>
             <div className="col-auto flex-grow-1">
-              <button className="g-line-btn h3 w-100">營業據點</button>
+              <a href="#location">
+                <button className="g-line-btn h3 w-100">營業據點</button>
+              </a>
             </div>
           </div>
 
           {/* <!-- section-right --> */}
           <div className="sec-right ps-7 mb-5">
             {/* <!-- 訂位 --> */}
-            <section>
+            <section id="booking">
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 訂位</span>
                 <div className="title-line d-block d-md-none"></div>
@@ -311,7 +318,7 @@ function Index() {
             </section>
 
             {/* 菜單 */}
-            <section>
+            <section id="menu">
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 菜單</span>
                 <div className="title-line d-block d-md-none"></div>
@@ -418,13 +425,15 @@ function Index() {
               </div>
             </section>
             {/* 營業據點 */}
-            <section>
+            <section id="location">
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 營業據點</span>
                 <div className="title-line d-block d-md-none"></div>
               </div>
               <div className="d-flex flex-column flex-md-row">
-                <div className="map mb-4 mb-md-0"></div>
+                <div className="map mb-4 mb-md-0">
+                  <JoinMap />
+                </div>
                 <div className="map-info ps-0 ps-md-5">
                   <h2 className="j-deepPri">交通位置</h2>
                   <ul className="h4 j-deepSec mb-3 mb-md-5">

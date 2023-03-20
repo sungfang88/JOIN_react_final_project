@@ -64,9 +64,13 @@ input[type='date']::before {
 
 .map {
   width: 100%;
-  background-color: #838383;
+  /* background-color: #838383; */
   height: 18rem;
+  z-index: 1;
 }
+/* #joinamap {
+  z-index: 1;
+} */
 
 @media screen and (min-width: 768px) {
   .map {
@@ -80,3 +84,17 @@ input[type='date']::before {
   width: 30%;
   padding-right: 1rem;
 }
+
+.myDivIcon {
+  text-align: center;
+  /* Horizontally center the text (icon) */
+  line-height: 20px;
+  /* Vertically center the text (icon) */
+}
+
+.fa-location-pin {
+  font-size: 35px;
+  color: #1f2fab;
+}
+
+/* #d86c08 */
