@@ -7,18 +7,27 @@ import axios from 'axios'
 import { usePopup } from '../Public/Popup'
 import AuthContext from '../Context/AuthContext'
 import JoinMap from './JoinMap'
-
-const options2 = [
-  { value: '1', label: '琴酒 Gin' },
-  { value: '2', label: '蘭姆酒 Rum' },
-  { value: '3', label: '伏特加 Vodka' },
-  { value: '4', label: '威士忌 Whisky' },
-  { value: '5', label: '龍舌蘭 Tequila' },
-  { value: '6', label: '白蘭地 Brandy' },
-]
+import Menu from './Menu'
 
 function Index() {
   const { myAuth } = useContext(AuthContext)
+
+  //*sidebar
+  const bookingRef = useRef(null)
+  const menuRef = useRef(null)
+  const mapRef = useRef(null)
+  const handlesidebar = (ref) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'auto' })
+      const navbarHeight = document.querySelector('.navbar').offsetHeight
+      const elementPosition =
+        ref.current.getBoundingClientRect().top +
+        window.pageYOffset -
+        (navbarHeight + 15)
+      window.scrollTo({ top: elementPosition, behavior: 'auto' })
+    }
+  }
+
   //*日期驗證
   const today = new Date()
     .toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
@@ -42,9 +51,7 @@ function Index() {
 
   //下拉選單
   const [options, setOptions] = useState([])
-  const [selectedValue2, setSelectedValue2] = useState('請選擇...')
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
-  const [isMenuOpen2, setIsMenuOpen2] = useState(false)
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('bookingData'))
@@ -84,14 +91,6 @@ function Index() {
     setIsMenuOpen1(false)
   }
 
-  const handleToggleDropdown2 = () => {
-    setIsMenuOpen2(!isMenuOpen2)
-  }
-
-  const handleSelectOption2 = (option) => {
-    setSelectedValue2(option.label)
-    setIsMenuOpen2(false)
-  }
   const searchForm = document.getElementById('searchForm')
   //* 查詢
   const Search = async (event) => {
@@ -125,7 +124,7 @@ function Index() {
   }
 
   //*localStorage
-  //TODO 登入後localStorage會消失
+  //TODO 刷新頁面後localStorage會消失
   //讀取local資料
   useEffect(() => {
     const storageData = JSON.parse(localStorage.getItem('searchData')) || {}
@@ -141,7 +140,6 @@ function Index() {
   //   localStorage.setItem('queryResult', JSON.stringify(results))
   // }, [results])
 
-  //TODO 還沒把時段改成數字再存
   useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
     console.log('刷新')
@@ -156,33 +154,57 @@ function Index() {
         <div className="container d-flex flex-column flex-md-row">
           {/* <!-- section-left --> */}
           <div className="sec-left d-none d-md-block">
-            <button className="g-line-btn h3">訂位</button>
-            <button className="g-line-btn h3">菜單</button>
-            <button className="g-line-btn h3">營業據點</button>
+            <button
+              className="g-line-btn h3"
+              onClick={() => handlesidebar(bookingRef)}
+            >
+              訂位
+            </button>
+            <button
+              className="g-line-btn h3"
+              onClick={() => handlesidebar(menuRef)}
+            >
+              菜單
+            </button>
+            <button
+              className="g-line-btn h3"
+              onClick={() => handlesidebar(mapRef)}
+            >
+              營業據點
+            </button>
           </div>
 
           <div className="row d-flex d-md-none mb-5">
             <div className="col-auto flex-grow-1">
-              <a href="#booking">
-                <button className="g-line-btn h3 w-100">訂位</button>
-              </a>
+              <button
+                className="g-line-btn h3 w-100"
+                onClick={() => handlesidebar(bookingRef)}
+              >
+                訂位
+              </button>
             </div>
             <div className="col-auto flex-grow-1">
-              <a href="#menu">
-                <button className="g-line-btn h3 w-100">菜單</button>
-              </a>
+              <button
+                className="g-line-btn h3 w-100"
+                onClick={() => handlesidebar(menuRef)}
+              >
+                菜單
+              </button>
             </div>
             <div className="col-auto flex-grow-1">
-              <a href="#location">
-                <button className="g-line-btn h3 w-100">營業據點</button>
-              </a>
+              <button
+                className="g-line-btn h3 w-100"
+                onClick={() => handlesidebar(mapRef)}
+              >
+                營業據點
+              </button>
             </div>
           </div>
 
           {/* <!-- section-right --> */}
           <div className="sec-right ps-7 mb-5">
             {/* <!-- 訂位 --> */}
-            <section id="booking">
+            <section id="booking" ref={bookingRef}>
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 訂位</span>
                 <div className="title-line d-block d-md-none"></div>
@@ -213,7 +235,7 @@ function Index() {
                     </div>
                     <div className="dropdown">
                       <div
-                        className="dropdown-toggle"
+                        className="dropdown-toggle w-100"
                         onClick={handleToggleDropdown1}
                       >
                         <span className="dropdown-label">
@@ -318,7 +340,7 @@ function Index() {
             </section>
 
             {/* 菜單 */}
-            <section id="menu">
+            {/* <section id="menu" ref={menuRef}>
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 菜單</span>
                 <div className="title-line d-block d-md-none"></div>
@@ -423,9 +445,10 @@ function Index() {
                   </div>
                 </div>
               </div>
-            </section>
+            </section> */}
+            <Menu ref={menuRef} />
             {/* 營業據點 */}
-            <section id="location">
+            <section id="location" ref={mapRef}>
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 營業據點</span>
                 <div className="title-line d-block d-md-none"></div>
