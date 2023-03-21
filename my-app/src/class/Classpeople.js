@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom'
 
 function Classpeople() {
   const [Classform, setClassform] = useState([])
-  const [s1, sets1] = useState('')
-  const [p1, setp1] = useState('')
+  const [student, setstudent] = useState('')
+  const [phone, setphone] = useState('')
   const navigate = useNavigate()
 
   // const Submit = () => {
   //   const alldata = {
-  //     s1: s1,
-  //     p1: p1,
+  //     student: student,
+  //     phone: phone,
   //   }
   //   localStorage.setItem('key4', JSON.stringify(alldata))
   // }
@@ -137,14 +137,14 @@ function Classpeople() {
                   <input
                     type="text"
                     className="input-text"
-                    value={s1}
+                    value={student}
                     required
                     placeholder="ex.王小明"
                     onChange={(e) => {
                       let d = JSON.parse(localStorage.getItem('key4')) || {}
-                      d = { ...d, s1: e.target.value }
+                      d = { ...d, student: e.target.value }
                       localStorage.setItem('key4', JSON.stringify(d))
-                      sets1(e.target.value)
+                      setstudent(e.target.value)
                     }}
                   />
                 </div>
@@ -158,14 +158,14 @@ function Classpeople() {
                   <input
                     type="tel"
                     className="input-text"
-                    value={p1}
+                    value={phone}
                     required
                     placeholder="ex.0912345678"
                     onChange={(e) => {
                       let d = JSON.parse(localStorage.getItem('key4')) || {}
-                      d = { ...d, p1: e.target.value }
+                      d = { ...d, phone: e.target.value }
                       localStorage.setItem('key4', JSON.stringify(d))
-                      setp1(e.target.value)
+                      setphone(e.target.value)
                     }}
                   />
                 </div>
