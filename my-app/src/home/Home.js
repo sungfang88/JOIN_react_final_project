@@ -1,13 +1,40 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './css/Index.css'
-// import Carousel from './Caraousel'
 import ProductCard from '../product/ProductCard'
+import axios from 'axios'
 
 function Home() {
   const [likedProducts, setLikedProducts] = useState([])
   const [bestProductData, setBestProductData] = useState([])
+  const [news, setNews] = useState([])
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const res = await fetch('http://localhost:3008/seat/news')
+  //     const data = await res.json()
+  //     setNews(data.rows)
+  //     console.log(data.rows)
+  //   }
+  //   fetchData()
+  // }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3008/seat/news`)
+        setNews(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchData()
+    return () => {
+      // 處理需要清理的資源
+    }
+  }, [])
+
+  //*商品
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(
@@ -142,7 +169,17 @@ function Home() {
           <div className="news j-bg-o-grad p-4 p-md-5 position-relative">
             <div className="news-info">
               <ul className="list-unstyled h4 mb-3 mb-md-5">
-                <li className="mb-4">
+                {news.map((data) => (
+                  <li className="mb-4" key={data.itemId}>
+                    <Link
+                      to={`/news/Detail/${data.itemId}`}
+                      className="j-white"
+                    >
+                      {data.title}
+                    </Link>
+                  </li>
+                ))}
+                {/* <li className="mb-4">
                   <Link to="#" className="j-white">
                     週年慶！會員八折優惠！
                   </Link>
@@ -157,7 +194,7 @@ function Home() {
                     賀！本店榮獲2023金杯獎第一名！全店消費皆八折優惠
                     賀！本店榮獲2023金杯獎第一名！全店消費皆八折優惠
                   </Link>
-                </li>
+                </li> */}
               </ul>
               <Link to="/news">
                 <button className="wo-line-btn j-h3">
@@ -265,15 +302,57 @@ function Home() {
             <div className="col">
               <div className="card card-a">
                 <img
-                  src={`./img/test.jpeg`}
+                  src={`./img/index-class1.jpeg`}
                   className="card-img-top"
                   alt="..."
                 />
                 <div className="info">
-                  <h3>馬丁尼與夏夜時光特調</h3>
+                  <h3>馬丁尼 / 尼格羅尼</h3>
                   <div className="j-text j-deepSec">Wilbur</div>
-                  <div className="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
-                  <div className="o-long-btn h3">報名</div>
+                  <div className="j-text j-deepSec mb-3">
+                    探索經典調酒，讓您體驗經典酒款的口感風味。
+                  </div>
+                  <Link to="/class/Classsec">
+                    <div className="o-long-btn h3">報名</div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="card card-a">
+                <img
+                  src={`/img/index-class2.jpeg`}
+                  className="card-img-top"
+                  alt="..."
+                />
+                <div className="info">
+                  <h3>柯夢波丹 / 長島冰茶</h3>
+                  <div className="j-text j-deepSec">Richie</div>
+                  <div className="j-text j-deepSec mb-3">
+                    不懂妹酒怎麼脫單？一起成為忘憂之人吧！
+                  </div>
+                  <Link to="/class/Classsec">
+                    <div className="o-long-btn h3">報名</div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="card card-a">
+                <img
+                  src={`./img/index-class3.jpeg`}
+                  className="card-img-top"
+                  alt="..."
+                />
+                <div className="info">
+                  <h3>Mojito / 瑪格麗特</h3>
+                  <div className="j-text j-deepSec">Steve</div>
+                  <div className="j-text j-deepSec mb-3">
+                    周杰倫愛到寫進歌裡的調酒，龍舌蘭中的經典
+                  </div>
+                  <Link to="/class/Classsec">
+                    <div className="o-long-btn h3">報名</div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -285,40 +364,14 @@ function Home() {
                   alt="..."
                 />
                 <div className="info">
-                  <h3>馬丁尼與夏夜時光特調</h3>
-                  <div className="j-text j-deepSec">Wilbur</div>
-                  <div className="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
-                  <div className="o-long-btn h3">報名</div>
-                </div>
-              </div>
-            </div>
-            <div className="col">
-              <div className="card card-a">
-                <img
-                  src={`./img/test.jpeg`}
-                  className="card-img-top"
-                  alt="..."
-                />
-                <div className="info">
-                  <h3>馬丁尼與夏夜時光特調</h3>
-                  <div className="j-text j-deepSec">Wilbur</div>
-                  <div className="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
-                  <div className="o-long-btn h3">報名</div>
-                </div>
-              </div>
-            </div>
-            <div className="col">
-              <div className="card card-a">
-                <img
-                  src={`/img/test.jpeg`}
-                  className="card-img-top"
-                  alt="..."
-                />
-                <div className="info">
-                  <h3>馬丁尼與夏夜時光特調</h3>
-                  <div className="j-text j-deepSec">Wilbur</div>
-                  <div className="j-text j-deepSec mb-3">3/18 16:00-18:00</div>
-                  <div className="o-long-btn h3">報名</div>
+                  <h3>夏夜時光特調</h3>
+                  <div className="j-text j-deepSec">Timmy</div>
+                  <div className="j-text j-deepSec mb-3">
+                    客製化的選擇你愛的調酒，想學不同的組合技？通通教給你
+                  </div>
+                  <Link to="/class/Classsec">
+                    <div className="o-long-btn h3">報名</div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -344,134 +397,16 @@ function Home() {
               </button>
             </Link>
           </div>
-          {/* <div className="row row-cols-2 row-cols-xl-3 row-cols-xxl-4 g-4 g-lg-5 g-xl-5 mt-4">
-            <div className="col">
-              <Link to="#/" alt="Mythrill" target="_blank">
-                <div className="mycard product">
-                  <div className="wrapper">
-                    <img
-                      src={`./img/001.webp`}
-                      className="cover-image"
-                      alt=""
-                    />
-                  </div>
-                  <div className="mycard-icon">
-                    <button className="icon-button btn like-btn">
-                      <i
-                        className="fa-regular fa-heart j-primary"
-                        data-id="product-1"
-                      ></i>
-                    </button>
-                  </div>
-                  <div className="origin-color"></div>
-                  <div className="mycard-title">
-                    <h2 className="mb-0">商品名稱商品名稱商品名稱</h2>
-                    <p className="mb-0">$2000</p>
-                    <div className="d-grid gap-2 mt-0 mt-md-3">
-                      <button className="btn wo-line-btn" type="button">
-                        加入購物車
-                      </button>
-                    </div>
-                  </div>
-                  <img src={`/img/001.webp`} className="character" alt="" />
-                </div>
-              </Link>
-            </div>
-
-            <div className="col">
-              <Link to="#/" alt="Mythrill" target="_blank">
-                <div className="mycard product">
-                  <div className="wrapper">
-                    <img src={`/img/001.webp`} className="cover-image" alt="" />
-                  </div>
-                  <div className="mycard-icon">
-                    <button className="icon-button btn like-btn">
-                      <i
-                        className="fa-regular fa-heart j-primary"
-                        data-id="product-2"
-                      ></i>
-                    </button>
-                  </div>
-                  <div className="origin-color"></div>
-                  <div className="mycard-title">
-                    <h2 className="mb-0">商品名稱商品名稱商品名稱</h2>
-                    <p className="mb-0">$2000</p>
-                    <div className="d-grid gap-2 mt-0 mt-md-3">
-                      <button className="btn wo-line-btn" type="button">
-                        加入購物車
-                      </button>
-                    </div>
-                  </div>
-                  <img src={`/img/001.webp`} className="character" alt="" />
-                </div>
-              </Link>
-            </div>
-            <div className="col">
-              <Link to="#/" alt="Mythrill" target="_blank">
-                <div className="mycard product">
-                  <div className="wrapper">
-                    <img src={`/img/001.webp`} className="cover-image" alt="" />
-                  </div>
-                  <div className="mycard-icon">
-                    <button className="icon-button btn like-btn">
-                      <i
-                        className="fa-regular fa-heart j-primary"
-                        data-id="product-3"
-                      ></i>
-                    </button>
-                  </div>
-                  <div className="origin-color"></div>
-                  <div className="mycard-title">
-                    <h2 className="mb-0">商品名稱商品名稱商品名稱</h2>
-                    <p className="mb-0">$2000</p>
-                    <div className="d-grid gap-2 mt-0 mt-md-3">
-                      <button className="btn wo-line-btn" type="button">
-                        加入購物車
-                      </button>
-                    </div>
-                  </div>
-                  <img src={`/img/001.webp`} className="character" alt="" />
-                </div>
-              </Link>
-            </div>
-            <div className="col">
-              <Link to="#/" alt="Mythrill" target="_blank">
-                <div className="mycard product">
-                  <div className="wrapper">
-                    <img src={`/img/001.webp`} className="cover-image" alt="" />
-                  </div>
-                  <div className="mycard-icon">
-                    <button className="icon-button btn like-btn">
-                      <i
-                        className="fa-regular fa-heart j-primary"
-                        data-id="product-4"
-                      ></i>
-                    </button>
-                  </div>
-                  <div className="origin-color"></div>
-                  <div className="mycard-title">
-                    <h2 className="mb-0">商品名稱商品名稱商品名稱</h2>
-                    <p className="mb-0">$2000</p>
-                    <div className="d-grid gap-2 mt-0 mt-md-3">
-                      <button className="btn wo-line-btn" type="button">
-                        加入購物車
-                      </button>
-                    </div>
-                  </div>
-                  <img src={`/img/001.webp`} className="character" alt="" />
-                </div>
-              </Link>
-            </div>
-          </div> */}
           <div className="row row-cols-1 row-cols-md-2  row-cols-xl-4 g-4 g-lg-5 g-xl-5 mt-2">
             {bestProductData.slice(0, 4).map((product) => (
               <ProductCard
                 key={product.product_id}
                 productId={product.product_id}
                 productch={product.product_ch}
+                producteg={product.product_eg}
                 productprice={product.productprice}
                 isLiked={likedProducts.includes(product.product_id)}
-                productimg={`/img/001.webp`}
+                productimg={product.product_img}
                 onLike={handleLike}
               />
             ))}
