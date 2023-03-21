@@ -354,9 +354,9 @@ function Index() {
                 <div className="map-info ps-0 ps-md-5">
                   <h2 className="j-deepPri">交通位置</h2>
                   <ul className="h4 j-deepSec mb-3 mb-md-5">
-                    <li className="my-2">台北市大安區復興南路一段390號2樓</li>
+                    <li className="my-2"> 台北市大安區復興南路一段390號2樓</li>
                     <li className="my-2">
-                      公車：搭乘xx號及xx號在xx站下車，走路三分鐘可到達
+                      公車：搭乘20號及22號在捷運大安站下車，走路三分鐘可到達
                     </li>
                     <li className="my-2">捷運：大安捷運站4號、6號出口</li>
                   </ul>

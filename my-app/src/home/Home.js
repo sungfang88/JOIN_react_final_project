@@ -179,22 +179,6 @@ function Home() {
                     </Link>
                   </li>
                 ))}
-                {/* <li className="mb-4">
-                  <Link to="#" className="j-white">
-                    週年慶！會員八折優惠！
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link to="#" className="j-white">
-                    新用戶體驗價享九折優惠，不醉不歸！
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link to="#" className="j-white">
-                    賀！本店榮獲2023金杯獎第一名！全店消費皆八折優惠
-                    賀！本店榮獲2023金杯獎第一名！全店消費皆八折優惠
-                  </Link>
-                </li> */}
               </ul>
               <Link to="/news">
                 <button className="wo-line-btn j-h3">
@@ -397,7 +381,7 @@ function Home() {
               </button>
             </Link>
           </div>
-          <div className="row row-cols-1 row-cols-md-2  row-cols-xl-4 g-4 g-lg-5 g-xl-5 mt-2">
+          <div className="row row-cols-2 row-cols-xl-4 g-4 g-lg-5 g-xl-5 mt-2">
             {bestProductData.slice(0, 4).map((product) => (
               <ProductCard
                 key={product.product_id}
