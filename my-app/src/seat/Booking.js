@@ -199,7 +199,7 @@ function Booking() {
                   </div>
                   <div className="dropdown">
                     <div
-                      className="dropdown-toggle"
+                      className="dropdown-toggle w-100"
                       onClick={handleToggleDropdown1}
                     >
                       <span className="dropdown-label">
@@ -247,7 +247,7 @@ function Booking() {
                   </div>
                   <div className="dropdown">
                     <div
-                      className="dropdown-toggle"
+                      className="dropdown-toggle w-100"
                       onClick={handleToggleDropdown2}
                     >
                       <span className="dropdown-label">
