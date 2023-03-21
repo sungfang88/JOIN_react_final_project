@@ -211,6 +211,9 @@ function OrderClass() {
               <div className="row ">
                 <div className="col-6 d-none d-lg-block">
                   <div className="d-flex justify-content-start j-input align-items-center">
+                  <label htmlFor="searchtime" className="j-h3 j-primary me-2">
+                      課程時間查詢
+                    </label>
                     <input
                       name="searchtime"
                       type="date"
@@ -230,9 +233,7 @@ function OrderClass() {
                       搜尋
                     </button>
 
-                    <label htmlFor="searchtime" className="j-h3 j-primary">
-                      課程時間查詢
-                    </label>
+                   
                   </div>
                 </div>
                 {classlistdata.map((v, i) => {

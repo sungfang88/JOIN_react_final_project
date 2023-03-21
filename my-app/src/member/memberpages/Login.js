@@ -63,6 +63,7 @@ function Login() {
               } else {
                 likedProductsJSON = JSON.parse(likedProducts)
               }
+              //const likedProductsJSON = JSON.parse(likedProducts)
 
               const arr = Object.keys(likedProductsJSON)
               const sendlikedata = { productarray: arr, mid: accountId }
@@ -227,7 +228,7 @@ function Login() {
             } else {
               likedProductsJSON = JSON.parse(likedProducts)
             }
-
+            //const likedProductsJSON = JSON.parse(likedProducts)
             const arr = Object.keys(likedProductsJSON)
             const sendlikedata = { productarray: arr, mid: accountId }
             if (!!likedProducts) {

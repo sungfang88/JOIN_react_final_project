@@ -222,7 +222,7 @@ function Booking() {
                             <td>電話</td>
                             <td>時間</td>
                             <td>類型</td>
-                            <td>桌號</td>
+
                             <td>訂位人數</td>
                             <td>狀態</td>
                             <td>取消</td>
@@ -241,7 +241,7 @@ function Booking() {
                                   )}
                                 </td>
                                 <td>{v.category}</td>
-                                <td>{v.table_num}</td>
+
                                 <td>{v.people}</td>
                                 {v.status === '訂位成立' ? (
                                   <>
@@ -392,7 +392,7 @@ function Booking() {
           </div>
           {seatbooking.map((v, i) => {
             return (
-              <div key={i} className='mb-5'>
+              <div key={i} className="mb-5">
                 <div className="bookinglist-phone border-bottom border-2 pb-3">
                   <div className="col-12">
                     <h4 className="j-deepGray border-bottom border-2 border-secondary pb-2">
@@ -441,16 +441,7 @@ function Booking() {
                       <span className="tr-fs j-deepGray ">{v.category}</span>
                     </div>
                   </div>
-                  <div className="col-12 mt-3 d-flex justify-content-center">
-                    <div className="w-50 text-center ms-2">
-                      <span className="j-deepSec tr-fs border-bottom border-2">
-                        桌號
-                      </span>
-                    </div>
-                    <div className="w-50 me-5">
-                      <span className="tr-fs j-deepGray ">{v.table_num}</span>
-                    </div>
-                  </div>
+
                   <div className="col-12 mt-3 d-flex justify-content-center">
                     <div className="w-50 text-center ms-2">
                       <span className="j-deepSec tr-fs border-bottom border-2">

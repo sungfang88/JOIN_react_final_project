@@ -71,6 +71,13 @@ function Classday() {
     localStorage.setItem('key3', JSON.stringify(alldata))
   }
 
+  function isDisabled(date) {
+    // 获取星期几的值，其中 0 表示星期日，1 表示星期一，2 表示星期二，以此类推
+    const day = date.getDay()
+    // 禁用周一、三、五、日
+    return day === 1 || day === 3 || day === 5 || day === 0
+  }
+
   useEffect(() => {
     const fetchClasstime = async () => {
       try {
@@ -134,7 +141,11 @@ function Classday() {
             </div>
           </div>
           <div> */}
-          <Calendar onChange={myChange} value={value} />
+          <Calendar
+            onChange={myChange}
+            value={value}
+            tileDisabled={({ date }) => isDisabled(date)}
+          />
 
           {/* </div> */}
         </div>
