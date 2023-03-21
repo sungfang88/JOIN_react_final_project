@@ -77,13 +77,14 @@ function Productdetail() {
           product_price={productData.productprice}
           product_country_ch={productData.country_ch}
           product_alcohol={productData.alcohol}
+          amount={1}
         />
       ) : (
         <div>Loading...</div>
       )}
 
       <section className="container-fluid mt-4">
-        <div className="container">
+        <div className="container productdetail">
           <div className="box">
             <div className="inner-box">
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
@@ -118,9 +119,12 @@ function Productdetail() {
               </div>
             </div>
           </div>
-          <button className="o-line-btn j-h3 d-block  d-md-none w-100 mt-5">
+          <Link
+            to="/product"
+            className="o-line-btn j-h3 d-block  d-md-none w-100 mt-5 text-center"
+          >
             查看更多 <i className="fa-solid fa-angles-right"></i>
-          </button>
+          </Link>
         </div>
       </section>
       {/* <h1>{productId}</h1> */}

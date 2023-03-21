@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import { useContext } from 'react'
 import AuthContext from '../Context/AuthContext'
@@ -129,21 +130,23 @@ function Product() {
         <div className="container">
           <div className="row sec-navbar">
             <div className="col-auto">
-              <a href="#" className="me-1">
+              <Link to="/" className="me-1">
+                主頁
+              </Link>
+              /{' '}
+              <Link to="/product" className="me-1">
                 商品
-              </a>
-              /{' '}
-              <a href="#" className="me-1">
-                威士忌
-              </a>
-              /{' '}
-              <a href="#" className="me-1">
-                威士忌
-              </a>
-              /{' '}
-              <a href="#" className="me-1">
-                威士忌
-              </a>
+              </Link>
+              {selectedCategory === '選擇商品種類' ? (
+                ' '
+              ) : (
+                <>
+                  /{' '}
+                  <Link to="/product" className="me-1">
+                    {selectedCategory}
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -265,10 +268,6 @@ function Product() {
                 .filter((product) =>
                   product.product_id.includes(filterProductCatagory)
                 )
-                .slice(
-                  (currentPage - 1) * productsPerPage,
-                  currentPage * productsPerPage
-                )
                 .sort((a, b) => {
                   if (filterProductPrice === 'ASC') {
                     return a.productprice - b.productprice
@@ -278,6 +277,10 @@ function Product() {
                   }
                   return 0
                 })
+                .slice(
+                  (currentPage - 1) * productsPerPage,
+                  currentPage * productsPerPage
+                )
 
                 .map((product) => (
                   <ProductCard

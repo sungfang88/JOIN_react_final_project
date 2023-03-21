@@ -56,3 +56,6 @@
     line-height: 90px;
     color:#ffffff
 }
+.popup-content h2{
+    white-space: pre-wrap;
+}
