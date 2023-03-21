@@ -9,6 +9,7 @@ import Member from './member/Member'
 import Product from './product/Product'
 import Seat from './seat/Seat'
 import Mainlayout from './Layout/Mainlayout/Mainlayout'
+import Mainlayoutwithnavbar from './Layout/Mainlayout/Mainlayoutwithnavbar'
 
 // 如果要測試登入，把下面這行註解拿掉
 import { AuthContextProvider } from './Context/AuthContext'
@@ -24,8 +25,12 @@ function App() {
       <Router>
         <AuthContextProvider>
           <Routes>
-            <Route path="/" element={<Mainlayout />}>
+
+            <Route path="/" element={<Mainlayoutwithnavbar />}>
               <Route index element={<Home />} />
+            </Route>
+
+            <Route element={<Mainlayout />}>
               {/* <Route index element={<Test_2 />} /> */}
               <Route path="/cart/*" element={<Cart />} />
               <Route path="/class/*" element={<Class />} />

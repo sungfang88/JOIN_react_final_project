@@ -211,6 +211,9 @@ function OrderClass() {
               <div className="row ">
                 <div className="col-6 d-none d-lg-block">
                   <div className="d-flex justify-content-start j-input align-items-center">
+                  <label htmlFor="searchtime" className="j-h3 j-primary me-2">
+                      課程時間查詢
+                    </label>
                     <input
                       name="searchtime"
                       type="date"
@@ -230,9 +233,7 @@ function OrderClass() {
                       搜尋
                     </button>
 
-                    <label htmlFor="searchtime" className="j-h3 j-primary">
-                      課程時間查詢
-                    </label>
+                   
                   </div>
                 </div>
                 {classlistdata.map((v, i) => {
@@ -271,7 +272,7 @@ function OrderClass() {
 
                             <td>上課日期</td>
                             <td>上課時間</td>
-                            <td>上課人數</td>
+                            <td>購課人數</td>
                             <td>課程價格</td>
                           </tr>
                         </thead>
@@ -475,7 +476,7 @@ function OrderClass() {
                   <div className="col-12 mt-3 d-flex justify-content-center">
                     <div className="w-50 text-center ms-2">
                       <span className="j-deepSec tr-fs border-bottom border-2">
-                        上課人數
+                        購課人數
                       </span>
                     </div>
                     <div className="w-50 me-5">
