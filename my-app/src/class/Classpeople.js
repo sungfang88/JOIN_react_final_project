@@ -85,7 +85,7 @@ function Classpeople() {
 
   return (
     <>
-      <section className="container-fluid" id="my-page-element">
+      <section className="container-fluid">
         <div className="container nav-space">
           <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
             {/* <span className="col-auto title j-deepSec"> 課程訂購流程</span>
@@ -113,7 +113,7 @@ function Classpeople() {
         </div>
 
         {/* 填寫資料*/}
-        <div className="container pt-3">
+        <div className="container pt-3 pb-3 " id="my-page-element">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
             <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
@@ -204,13 +204,6 @@ function Classpeople() {
                 />
               </div>
             </div>
-          </div>
-
-          <div className="container d-flex justify-content-end pb-3">
-            {/* <p className="text-center">再加一人</p> */}
-            <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
-              <i className="fa-solid fa-plus"></i>參與者
-            </button>
           </div>
         </div>
 
