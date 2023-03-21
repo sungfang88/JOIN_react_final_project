@@ -173,8 +173,9 @@ function Classpeople() {
           </Link>
 
           <a
+            className="o-long-btn j-h3 btnCall "
+            to="http://localhost:3002/cart/classOrder01"
             href="#/"
-            className="o-long-btn j-h3 btnCall"
             onClick={(e) => {
               e.preventDefault()
               PostForm()

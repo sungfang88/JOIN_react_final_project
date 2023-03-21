@@ -4,13 +4,17 @@ import { Link } from 'react-router-dom'
 import ClassSelect from './ClassSelect'
 import axios from 'axios'
 import { usePopup } from '../Public/Popup'
+import { useNavigate } from 'react-router-dom'
+
 
 function Classsec() {
   const [data, setData] = useState('')
   const { Popup, openPopup, closePopup } = usePopup() //必要const
-  const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
+  const [PopupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const [selectname1, setSelectname1] = useState('')
   const [selectname2, setSelectname2] = useState('')
+  const navigate = useNavigate()
+
 
   const [ClassNames, setClassNames] = useState([
     {
@@ -23,29 +27,30 @@ function Classsec() {
     },
   ])
 
+  // const Submit = function () {
+  //   const alldata = {
+  //     class_id: data,
+  //     // 寫變數取值
+  //     wine1: selectname1,
+  //     wine2: selectname2,
+  //   }
+
+  //   localStorage.setItem('key1', JSON.stringify(alldata))
+  // }
+
   const Submit = function () {
-    const alldata = {
-      class_id: data,
-      // 寫變數取值
-      wine1: selectname1,
-      wine2: selectname2,
-    }
+    if (data) {
+      const alldata = {
+        class_id: data,
+        wine1: selectname1,
+        wine2: selectname2,
+      }
 
-    localStorage.setItem('key1', JSON.stringify(alldata))
-  }
+      localStorage.setItem('key1', JSON.stringify(alldata))
+      navigate('/class/Classbt')
 
-  function handleSubmit() {
-    console.log('到了')
-    // 獲取input值
-    const input = document.getElementById('myInput').value
-
-    // 檢查input是否為空
-    if (input.trim() === '') {
-      // 如果input為空，顯示警告訊息
-      alert('請輸入有效的值！')
     } else {
-      // 如果input不為空，提交表單
-      document.getElementById('myForm').submit()
+      setPopupProps(true)
     }
   }
 
@@ -162,12 +167,11 @@ function Classsec() {
               class="g-line-btn j-h3"
               to="/class/Classbt"
               // onClick={Submit}
-              onClick={handleSubmit}
-              // onClick={(e) => {
-              //   e.preventDefault()
-              //   openPopup()
-              //   Submit()
-              // }}
+              onClick={(e) => {
+                Submit()
+                e.preventDefault()
+                openPopup()
+              }}
               type="submit"
             >
               下一步
@@ -176,18 +180,20 @@ function Classsec() {
         </div>
       </section>
       <div className="pb-0 pb-md-5"></div>
-      <Popup
-        content={'請選擇選項'}
-        icon={<i className="fa-solid fa-circle-exclamation"></i>}
-        btnGroup={[
-          {
-            text: '確定',
-            handle: () => {
-              closePopup()
+      {PopupProps && (
+        <Popup
+          content={'請選擇選項'}
+          icon={<i className="fa-solid fa-circle-exclamation"></i>}
+          btnGroup={[
+            {
+              text: '確定',
+              handle: () => {
+                setPopupProps(false)
+              },
             },
-          },
-        ]}
-      />
+          ]}
+        />
+      )}
     </>
   )
 }
