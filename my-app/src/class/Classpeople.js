@@ -114,13 +114,13 @@ function Classpeople() {
         <div className="container pt-3">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
-            <input
+            {/*<input
               type="checkbox"
               name="food"
               value="1"
               className="j-checkbox"
             />
-            <span className="text-align-center"> 同訂購人</span>
+             <span className="text-align-center"> 同訂購人</span> */}
           </div>
 
           <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
