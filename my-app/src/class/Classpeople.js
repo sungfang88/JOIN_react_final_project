@@ -24,9 +24,9 @@ function Classpeople() {
     const key3 = JSON.parse(localStorage.getItem('key3')) || {}
     const key4 = JSON.parse(localStorage.getItem('key4')) || {}
     try {
-      const classformId = 'C' + Date.now() // 建立 orderId
+      // const classformId = 'C' + Date.now() // 建立 orderId
 
-      const formObj = { classformId, ...key1, ...key2, ...key3, ...key4 }
+      const formObj = { ...key1, ...key2, ...key3, ...key4 }
       console.log(formObj)
       axios
         .post('http://localhost:3008/class/classform', formObj)
@@ -47,41 +47,41 @@ function Classpeople() {
     }
   }, [])
 
-  const handleAddParticipant = () => {
-    // 檢查特定的元素是否存在於頁面中
-    const pageElement = document.getElementById('my-page-element')
-    if (!pageElement) {
-      return
-    }
+  // const handleAddParticipant = () => {
+  //   // 檢查特定的元素是否存在於頁面中
+  //   const pageElement = document.getElementById('my-page-element')
+  //   if (!pageElement) {
+  //     return
+  //   }
 
-    const container = document.createElement('div')
-    container.className = 'container'
-    container.innerHTML = `
-      <div class="title-box justify-content-between">
-        <span class="col-auto j-h2 j-deepSec">參與者</span>
-      </div>
-      <div class="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-        <div class="mb-3 px-xl-5">
-          <div>
-            <label for="name">姓名</label>
-          </div>
-          <div class="">
-            <input type="text" class="input-text" required placeholder="ex.王小明">
-          </div>
-        </div>
-        <div class="mb-3">
-          <div>
-            <label for="phone">電話</label>
-          </div>
-          <div class="">
-            <input type="tel" class="input-text" required placeholder="ex.0912345678">
-          </div>
-        </div>
-      </div>
-    `
-    // 添加到特定的元素中
-    pageElement.appendChild(container)
-  }
+  //   const container = document.createElement('div')
+  //   container.className = 'container'
+  //   container.innerHTML = `
+  //     <div class="title-box justify-content-between">
+  //       <span class="col-auto j-h2 j-deepSec">參與者</span>
+  //     </div>
+  //     <div class="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+  //       <div class="mb-3 px-xl-5">
+  //         <div>
+  //           <label for="name">姓名</label>
+  //         </div>
+  //         <div class="">
+  //           <input type="text" class="input-text" required placeholder="ex.王小明">
+  //         </div>
+  //       </div>
+  //       <div class="mb-3">
+  //         <div>
+  //           <label for="phone">電話</label>
+  //         </div>
+  //         <div class="">
+  //           <input type="tel" class="input-text" required placeholder="ex.0912345678">
+  //         </div>
+  //       </div>
+  //     </div>
+  //   `
+  //   // 添加到特定的元素中
+  //   pageElement.appendChild(container)
+  // }
 
   return (
     <>
@@ -116,9 +116,9 @@ function Classpeople() {
         <div className="container pt-3 pb-3 " id="my-page-element">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
-            <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
+            {/* <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
               <i className="fa-solid fa-plus"></i>參與者
-            </button>
+            </button> */}
             {/*<input
               type="checkbox"
               name="food"

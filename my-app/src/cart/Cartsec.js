@@ -178,7 +178,7 @@ function Cartsec() {
       address: address,
       payment: 'LINE PAY待付款',
       products: data.map(({ product_ch, price, quantity, product_id }) => {
-        const discountedPrice = price - priceDiscount
+        const discountedPrice = price - priceDiscount / quantity
         return {
           id: product_id,
           name: product_ch,
