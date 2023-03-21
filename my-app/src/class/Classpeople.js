@@ -37,162 +37,206 @@ function Classpeople() {
       console.error(error)
     }
   }
+
   useEffect(() => {
     return () => {
       //解除功能
-      console.log('unmount')
+      // console.log('unmount')
     }
   }, [])
+  const handleAddParticipant = () => {
+    // 檢查特定的元素是否存在於頁面中
+    const pageElement = document.getElementById('my-page-element')
+    if (!pageElement) {
+      return
+    }
+
+    const container = document.createElement('div')
+    container.className = 'container'
+    container.innerHTML = `
+      <div class="title-box justify-content-between">
+        <span class="col-auto j-h2 j-deepSec">參與者</span>
+      </div>
+      <div class="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+        <div class="mb-3 px-xl-5">
+          <div>
+            <label for="name">姓名</label>
+          </div>
+          <div class="">
+            <input type="text" class="input-text" required placeholder="ex.王小明">
+          </div>
+        </div>
+        <div class="mb-3">
+          <div>
+            <label for="phone">電話</label>
+          </div>
+          <div class="">
+            <input type="tel" class="input-text" required placeholder="ex.0912345678">
+          </div>
+        </div>
+      </div>
+    `
+    // 添加到特定的元素中
+    pageElement.appendChild(container)
+  }
+
   return (
-    <section className="container-fluid">
-      <div className="container nav-space">
-        <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
-          {/* <span className="col-auto title j-deepSec"> 課程訂購流程</span>
+    <>
+      <section className="container-fluid" id="my-page-element">
+        <div className="container nav-space">
+          <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between py-2">
+            {/* <span className="col-auto title j-deepSec"> 課程訂購流程</span>
           <div className="title-line d-block d-md-none"></div> */}
-        </div>
-        <div className="step-process pb-3">
-          <div className="step complete">
-            <h1>1</h1>
-            <h3> 選擇課程組合 </h3>
           </div>
-
-          <div className="step complete ">
-            <h1>2</h1>
-            <h3>選擇Bartender</h3>
-          </div>
-          <div className="step complete">
-            <h1>3</h1>
-            <h3>選擇日期時間&人數</h3>
-          </div>
-          <div className="step complete">
-            <h1>4</h1>
-            <h3>填寫資料</h3>
-          </div>
-        </div>
-      </div>
-
-      {/* 填寫資料*/}
-      <div className="container pt-3">
-        <div className="title-box  justify-content-between">
-          <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
-          <input type="checkbox" name="food" value="1" className="j-checkbox" />
-          <span className="text-align-center"> 同訂購人</span>
-        </div>
-
-        <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-          <div className="mb-3 px-xl-5">
-            <div>
-              <label for="name">姓名</label>
+          <div className="step-process pb-3">
+            <div className="step complete">
+              <h1>1</h1>
+              <h3> 選擇課程組合 </h3>
             </div>
 
-            <div className="">
-              <input
-                type="text"
-                className="input-text"
-                value={s1}
-                required
-                placeholder="ex.王小明"
-                onChange={(e) => {
-                  let d = JSON.parse(localStorage.getItem('key4')) || {}
-                  d = { ...d, s1: e.target.value }
-                  localStorage.setItem('key4', JSON.stringify(d))
-                  sets1(e.target.value)
-                }}
-              />
+            <div className="step complete ">
+              <h1>2</h1>
+              <h3>選擇Bartender</h3>
             </div>
-          </div>
-          <div className="mb-3">
-            <div>
-              <label for="phone">電話</label>
+            <div className="step complete">
+              <h1>3</h1>
+              <h3>選擇日期時間&人數</h3>
             </div>
-
-            <div className="">
-              <input
-                type="tel"
-                className="input-text"
-                value={p1}
-                required
-                placeholder="ex.0912345678"
-                onChange={(e) => {
-                  let d = JSON.parse(localStorage.getItem('key4')) || {}
-                  d = { ...d, p1: e.target.value }
-                  localStorage.setItem('key4', JSON.stringify(d))
-                  setp1(e.target.value)
-                }}
-              />
+            <div className="step complete">
+              <h1>4</h1>
+              <h3>填寫資料</h3>
             </div>
           </div>
         </div>
-      </div>
-      <div className="container  ">
-        <div className="title-box  justify-content-between">
-          <span className="col-auto j-h2 j-deepSec">參與者</span>
-        </div>
-        <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-          <div className="mb-3 px-xl-5">
-            <div>
-              <label for="name">姓名</label>
-            </div>
 
-            <div className="">
-              <input
-                type="text"
-                className="input-text"
-                required
-                placeholder="ex.王小明"
-              />
+        {/* 填寫資料*/}
+        <div className="container pt-3">
+          <div className="title-box  justify-content-between">
+            <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
+            <input
+              type="checkbox"
+              name="food"
+              value="1"
+              className="j-checkbox"
+            />
+            <span className="text-align-center"> 同訂購人</span>
+          </div>
+
+          <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+            <div className="mb-3 px-xl-5">
+              <div>
+                <label for="name">姓名</label>
+              </div>
+
+              <div className="">
+                <input
+                  type="text"
+                  className="input-text"
+                  value={s1}
+                  required
+                  placeholder="ex.王小明"
+                  onChange={(e) => {
+                    let d = JSON.parse(localStorage.getItem('key4')) || {}
+                    d = { ...d, s1: e.target.value }
+                    localStorage.setItem('key4', JSON.stringify(d))
+                    sets1(e.target.value)
+                  }}
+                />
+              </div>
+            </div>
+            <div className="mb-3">
+              <div>
+                <label for="phone">電話</label>
+              </div>
+
+              <div className="">
+                <input
+                  type="tel"
+                  className="input-text"
+                  value={p1}
+                  required
+                  placeholder="ex.0912345678"
+                  onChange={(e) => {
+                    let d = JSON.parse(localStorage.getItem('key4')) || {}
+                    d = { ...d, p1: e.target.value }
+                    localStorage.setItem('key4', JSON.stringify(d))
+                    setp1(e.target.value)
+                  }}
+                />
+              </div>
             </div>
           </div>
-          <div className="mb-3">
-            <div>
-              <label for="phone">電話</label>
-            </div>
+        </div>
+        <div className="container  ">
+          <div className="title-box  justify-content-between">
+            <span className="col-auto j-h2 j-deepSec">參與者</span>
+          </div>
+          <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+            <div className="mb-3 px-xl-5">
+              <div>
+                <label for="name">姓名</label>
+              </div>
 
-            <div className="">
-              <input
-                type="tel"
-                className="inpu2t-text"
-                required
-                placeholder="ex.0912345678"
-              />
+              <div className="">
+                <input
+                  type="text"
+                  className="input-text"
+                  required
+                  placeholder="ex.王小明"
+                />
+              </div>
+            </div>
+            <div className="mb-3">
+              <div>
+                <label for="phone">電話</label>
+              </div>
+
+              <div className="">
+                <input
+                  type="tel"
+                  className="input-text"
+                  required
+                  placeholder="ex.0912345678"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container d-flex justify-content-end pb-3">
-        {/* <p className="text-center">再加一人</p> */}
-        <button className="o-line-btn j-h3">
-          <i className="fa-solid fa-plus"></i>參與者
-        </button>
-      </div>
-      <div className="container ">
-        <div className=" d-flex justify-content-around">
-          <Link className="gray-line-btn j-h3" to="/class/Classday">
-            上一步
-          </Link>
+        <div className="container d-flex justify-content-end pb-3">
+          {/* <p className="text-center">再加一人</p> */}
+          <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
+            <i className="fa-solid fa-plus"></i>參與者
+          </button>
+        </div>
+        <div className="container ">
+          <div className=" d-flex justify-content-around">
+            <Link className="gray-line-btn j-h3" to="/class/Classday">
+              上一步
+            </Link>
 
-          <a
-            className="o-long-btn j-h3 btnCall "
-            to="http://localhost:3002/cart/classOrder01"
-            href="#/"
-            onClick={(e) => {
-              e.preventDefault()
-              PostForm()
-            }}
-          >
-            立即購買
-          </a>
-          {/* <Link
+            <a
+              className="o-long-btn j-h3 btnCall "
+              to="http://localhost:3002/cart/classOrder01"
+              href="#/"
+              onClick={(e) => {
+                e.preventDefault()
+                PostForm()
+              }}
+            >
+              立即購買
+            </a>
+            {/* <Link
             className="o-long-btn j-h3 btnCall "
             to="/cart/classOrder01"
             onClick={(PostForm, Submit)}
           >
             立即購買
           </Link> */}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 
