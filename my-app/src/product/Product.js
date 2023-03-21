@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom'
 import React from 'react'
 import { useContext } from 'react'
 import AuthContext from '../Context/AuthContext'
-import LoginIndex from './LoginIndex'
 
 import Productdetail from './Productdetail'
 import Producttry1 from './Producttry1'

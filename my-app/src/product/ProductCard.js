@@ -122,6 +122,7 @@ function ProductCard(props) {
         to="/product/productdetail"
         state={{
           productId: `${props.productId}`,
+          amount: 1,
         }}
       >
         <div className="mycard product">

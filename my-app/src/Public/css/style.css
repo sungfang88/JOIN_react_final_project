@@ -634,68 +634,7 @@ h5 {
     background-repeat: no-repeat;
 }
 
-.mycard:hover .wrapper {
-    transform: perspective(1338px) translateY(-5%) rotateX(32deg) translateZ(0);
-    box-shadow: 2px 35px 32px -8px #FFD29B 0%;
-    -webkit-box-shadow: 2px 35px 32px -8px #FFD29B 0%;
-    -moz-box-shadow: 2px 35px 32px -8px #FFD29B 0%;
-    aspect-ratio: 1/1.1;
-}
 
-.mycard:hover .icon-button {
-    font-size: 2rem;
-    transform: translateY(-120%);
-    aspect-ratio: 1/1.1;
-}
-
-
-
-.mycard:hover .origin-color {
-    transform: perspective(800px) translateY(-5%) rotateX(35deg) translateZ(0);
-    /* background-image: linear-gradient(180deg, #ffd29b00 0%, #F36060 100%); */
-    /* transform: translateY(-10%); */
-    background-image: rgba(0, 0, 0, .25);
-    transform: translateY(-40%);
-    aspect-ratio: 1/0.4;
-}
-
-
-.wrapper::before,
-.wrapper::after {
-    content: "";
-    opacity: 0;
-    width: 100%;
-    height: 80px;
-    transition: all 0.5s;
-    position: absolute;
-    left: 0;
-}
-
-.wrapper::before {
-    top: 0;
-    height: 100%;
-    background-image: linear-gradient(180deg, #FFD29B 0%, #F36060 100%);
-    border-radius: 5%;
-}
-
-.wrapper::after {
-    bottom: 0;
-    opacity: 1;
-    /* background-image: linear-gradient(to bottom,
-            transparent 46%,
-            rgba(12, 13, 19, 0.2) 68%,
-            rgba(12, 13, 19, 0.5) 100%); */
-    border-radius: 5%;
-}
-
-.mycard:hover .wrapper::before,
-.wrapper::after {
-    opacity: 1;
-}
-
-.mycard:hover .wrapper::after {
-    height: 120px;
-}
 
 .mycard-title {
     display: block;
@@ -720,12 +659,7 @@ h5 {
 
 
 
-.mycard:hover .mycard-title {
-    transform: translate3d(0%, -55px, 100px);
-    color: #FFFFFF;
-    text-shadow: rgba(0, 0, 0, 0.493) 0.1em 0.1em 0.2em;
-    padding-bottom: 0rem;
-}
+
 
 .mycard .wo-line-btn {
     display: none;
@@ -733,9 +667,7 @@ h5 {
     /* transition: transform 0.5s;  好像把這個去掉才有transition*/
 }
 
-.mycard:hover .mycard-title .wo-line-btn {
-    display: block;
-}
+
 
 .character {
     width: 100%;
@@ -745,11 +677,7 @@ h5 {
     z-index: -1;
 }
 
-.mycard:hover .character {
-    opacity: 1;
-    transform: translate3d(0%, -55%, 100px);
 
-}
 
 .mycard-title h2,
 .mycard-title p {
@@ -776,9 +704,81 @@ h5 {
 
 }
 
-@media (max-width: 1200px) and (min-width: 768px) {
+@media screen and (min-width: 768px) {
 
     /* 平板 */
+    .mycard:hover .wrapper {
+        transform: perspective(1338px) translateY(-5%) rotateX(32deg) translateZ(0);
+        box-shadow: 2px 35px 32px -8px #FFD29B 0%;
+        -webkit-box-shadow: 2px 35px 32px -8px #FFD29B 0%;
+        -moz-box-shadow: 2px 35px 32px -8px #FFD29B 0%;
+        aspect-ratio: 1/1.1;
+    }
+    
+    .mycard:hover .icon-button {
+        font-size: 2rem;
+        transform: translateY(-120%);
+        aspect-ratio: 1/1.1;
+    }
+    .mycard:hover .origin-color {
+        transform: perspective(800px) translateY(-5%) rotateX(35deg) translateZ(0);
+        /* background-image: linear-gradient(180deg, #ffd29b00 0%, #F36060 100%); */
+        /* transform: translateY(-10%); */
+        background-image: rgba(0, 0, 0, .25);
+        transform: translateY(-40%);
+        aspect-ratio: 1/0.4;
+    }
+    .wrapper::before,
+.wrapper::after {
+    content: "";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+}
+.wrapper::before {
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(180deg, #FFD29B 0%, #F36060 100%);
+    border-radius: 5%;
+}
+
+.wrapper::after {
+    bottom: 0;
+    opacity: 1;
+    /* background-image: linear-gradient(to bottom,
+            transparent 46%,
+            rgba(12, 13, 19, 0.2) 68%,
+            rgba(12, 13, 19, 0.5) 100%); */
+    border-radius: 5%;
+}
+
+.mycard:hover .wrapper::before,
+.wrapper::after {
+    opacity: 1;
+}
+
+.mycard:hover .wrapper::after {
+    height: 120px;
+}
+
+.mycard:hover .mycard-title {
+    transform: translate3d(0%, -55px, 100px);
+    color: #FFFFFF;
+    text-shadow: rgba(0, 0, 0, 0.493) 0.1em 0.1em 0.2em;
+    padding-bottom: 0rem;
+}
+
+.mycard:hover .mycard-title .wo-line-btn {
+    display: block;
+}
+.mycard:hover .character {
+    opacity: 1;
+    transform: translate3d(0%, -55%, 100px);
+
+}
 
 }
 

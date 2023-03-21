@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import LikeButton from '../Public/Likebutton'
 import Counter from './Counter'
 
@@ -45,6 +46,30 @@ function Productinfo(props) {
 
   return (
     <>
+      <div className="container-fluid d-none d-md-block nav-space pb-5">
+        <div className="container">
+          <div className="row sec-navbar">
+            <div className="col-auto">
+              <Link to="/" className="me-1">
+                主頁
+              </Link>
+              /{' '}
+              <Link to="/product" className="me-1">
+                商品
+              </Link>
+              /{' '}
+              <Link
+                to="/product/productdetail"
+                state={{
+                  productId: `${props.productId}`,
+                }}
+              >
+                {props.product_ch}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="container-fluid nav-space pe-0 ps-0 ps-lg-auto nav-space">
         <div className="container d-md-flex flex-column flex-md-row">
           {/* <!-- section-left --> */}
@@ -156,7 +181,11 @@ function Productinfo(props) {
                       </div>
                     </div>
 
-                    <Counter productId={props.productId} />
+                    <Counter
+                      productId={props.productId}
+                      productCh={props.product_ch}
+                      productCount={1}
+                    />
                   </div>
                 </div>
               </div>
