@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import '../Public/style'
 import './css/booking.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,18 +6,37 @@ import { PERIOD, SEARCH } from './api_config'
 import axios from 'axios'
 import { usePopup } from '../Public/Popup'
 import AuthContext from '../Context/AuthContext'
-
-const options2 = [
-  { value: '1', label: '琴酒 Gin' },
-  { value: '2', label: '蘭姆酒 Rum' },
-  { value: '3', label: '伏特加 Vodka' },
-  { value: '4', label: '威士忌 Whisky' },
-  { value: '5', label: '龍舌蘭 Tequila' },
-  { value: '6', label: '白蘭地 Brandy' },
-]
+import JoinMap from './JoinMap'
+import Menu from './Menu'
 
 function Index() {
   const { myAuth } = useContext(AuthContext)
+
+  //*sidebar
+  const bookingRef = useRef(null)
+  const menuRef = useRef(null)
+  const mapRef = useRef(null)
+  const handlesidebar = (ref) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'auto' })
+      const navbarHeight = document.querySelector('.navbar').offsetHeight
+      const elementPosition =
+        ref.current.getBoundingClientRect().top +
+        window.pageYOffset -
+        (navbarHeight + 15)
+      window.scrollTo({ top: elementPosition, behavior: 'auto' })
+    }
+  }
+
+  //*日期驗證
+  const today = new Date()
+    .toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    .split(' ')[0]
+  const dateObj = new Date(today)
+  const year = dateObj.getFullYear()
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+  const day = dateObj.getDate().toString().padStart(2, '0')
+  const formattedToday = `${year}-${month}-${day}`
 
   //查詢用
   const [results, setResults] = useState([])
@@ -32,9 +51,16 @@ function Index() {
 
   //下拉選單
   const [options, setOptions] = useState([])
-  const [selectedValue2, setSelectedValue2] = useState('請選擇...')
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
-  const [isMenuOpen2, setIsMenuOpen2] = useState(false)
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('bookingData'))
+    if (storedData) {
+      setReserveDate(storedData.reserveDate)
+      setPeriod(storedData.period)
+      setPeople(storedData.people)
+    }
+  }, [])
 
   //*下拉式選單
   useEffect(() => {
@@ -65,42 +91,40 @@ function Index() {
     setIsMenuOpen1(false)
   }
 
-  const handleToggleDropdown2 = () => {
-    setIsMenuOpen2(!isMenuOpen2)
-  }
-
-  const handleSelectOption2 = (option) => {
-    setSelectedValue2(option.label)
-    setIsMenuOpen2(false)
-  }
-
+  const searchForm = document.getElementById('searchForm')
   //* 查詢
   const Search = async (event) => {
     event.preventDefault()
-    setSearchData({
-      reserveDate,
-      period,
-      people,
-    })
-    try {
-      // saveSearchData({ reserveDate, period, people })
-      const response = await axios.get(SEARCH, {
-        params: {
-          reserveDate,
-          period: +document.getElementById('selected1').value,
-          people,
-        },
+    if (searchForm.checkValidity() && (period == 1 || 2 || 3)) {
+      // console.log('Form is valid!')
+      setSearchData({
+        reserveDate,
+        period: +document.getElementById('selected1').value,
+        people,
       })
-      if (response && response.data) {
-        setResults(response.data)
+      try {
+        // saveSearchData({ reserveDate, period, people })
+        const response = await axios.get(SEARCH, {
+          params: {
+            reserveDate,
+            period: +document.getElementById('selected1').value,
+            people,
+          },
+        })
+        if (response && response.data) {
+          setResults(response.data)
+        }
+      } catch (error) {
+        console.error(error)
       }
-    } catch (error) {
-      console.error(error)
+    } else {
+      // console.log('Form is invalid!')
+      // 驗證以後再做...
     }
   }
 
   //*localStorage
-  //TODO 登入後localStorage會消失
+  //TODO 刷新頁面後localStorage會消失
   //讀取local資料
   useEffect(() => {
     const storageData = JSON.parse(localStorage.getItem('searchData')) || {}
@@ -116,9 +140,9 @@ function Index() {
   //   localStorage.setItem('queryResult', JSON.stringify(results))
   // }, [results])
 
-  //TODO 還沒把時段改成數字再存
   useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
+    console.log('刷新')
   }, [searchData])
 
   return (
@@ -130,32 +154,65 @@ function Index() {
         <div className="container d-flex flex-column flex-md-row">
           {/* <!-- section-left --> */}
           <div className="sec-left d-none d-md-block">
-            <button className="g-line-btn h3">訂位</button>
-            <button className="g-line-btn h3">菜單</button>
-            <button className="g-line-btn h3">營業據點</button>
+            <button
+              className="g-line-btn h3"
+              onClick={() => handlesidebar(bookingRef)}
+            >
+              訂位
+            </button>
+            <button
+              className="g-line-btn h3"
+              onClick={() => handlesidebar(menuRef)}
+            >
+              菜單
+            </button>
+            <button
+              className="g-line-btn h3"
+              onClick={() => handlesidebar(mapRef)}
+            >
+              營業據點
+            </button>
           </div>
 
           <div className="row d-flex d-md-none mb-5">
             <div className="col-auto flex-grow-1">
-              <button className="g-line-btn h3 w-100">訂位</button>
+              <button
+                className="g-line-btn h3 w-100"
+                onClick={() => handlesidebar(bookingRef)}
+              >
+                訂位
+              </button>
             </div>
             <div className="col-auto flex-grow-1">
-              <button className="g-line-btn h3 w-100">菜單</button>
+              <button
+                className="g-line-btn h3 w-100"
+                onClick={() => handlesidebar(menuRef)}
+              >
+                菜單
+              </button>
             </div>
             <div className="col-auto flex-grow-1">
-              <button className="g-line-btn h3 w-100">營業據點</button>
+              <button
+                className="g-line-btn h3 w-100"
+                onClick={() => handlesidebar(mapRef)}
+              >
+                營業據點
+              </button>
             </div>
           </div>
 
           {/* <!-- section-right --> */}
           <div className="sec-right ps-7 mb-5">
             {/* <!-- 訂位 --> */}
-            <section>
+            <section id="booking" ref={bookingRef}>
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 訂位</span>
                 <div className="title-line d-block d-md-none"></div>
               </div>
-              <form className="d-flex align-items-end justify-content-between mb-3 flex-column flex-md-row">
+              <form
+                className="d-flex align-items-end justify-content-between mb-3 flex-column flex-md-row"
+                id="searchForm"
+              >
                 <div className="d-flex col-12 col-md-8 mb-2 mb-md-0">
                   {/* 日期 */}
                   <div className="j-input col-6 m-0 px-1">
@@ -166,7 +223,9 @@ function Index() {
                       type="date"
                       className="input-text"
                       value={reserveDate}
+                      min={formattedToday}
                       onChange={(e) => setReserveDate(e.target.value)}
+                      required
                     />
                   </div>
                   {/* 時段 */}
@@ -176,7 +235,7 @@ function Index() {
                     </div>
                     <div className="dropdown">
                       <div
-                        className="dropdown-toggle"
+                        className="dropdown-toggle w-100"
                         onClick={handleToggleDropdown1}
                       >
                         <span className="dropdown-label">
@@ -211,6 +270,8 @@ function Index() {
                       type="number"
                       id="people"
                       className="input-text"
+                      min="1"
+                      max="50"
                       value={people}
                       onChange={(e) => setPeople(e.target.value)}
                       required
@@ -279,126 +340,23 @@ function Index() {
             </section>
 
             {/* 菜單 */}
-            <section>
-              <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
-                <span className="col-auto title j-deepSec"> 菜單</span>
-                <div className="title-line d-block d-md-none"></div>
-              </div>
-
-              <div className="mb-3 d-none d-lg-flex">
-                <div>
-                  <button className="g-line-btn h3 me-2">琴酒 Gin</button>
-                </div>
-                <div>
-                  <button className="g-line-btn h3 me-2">蘭姆酒 Rum</button>
-                </div>
-                <div>
-                  <button className="g-line-btn h3 me-2">伏特加 Vodka</button>
-                </div>
-                <div>
-                  <button className="g-line-btn h3 me-2">威士忌 Whisky</button>
-                </div>
-                <div>
-                  <button className="g-line-btn h3 me-2">龍舌蘭 Tequila</button>
-                </div>
-                <div>
-                  <button className="g-line-btn h3 me-2">白蘭地 Brandy</button>
-                </div>
-              </div>
-
-              <div className="j-input mb-3 d-block d-lg-none">
-                <div>
-                  <label htmlFor="period">基底酒種類</label>
-                </div>
-                <div className="dropdown">
-                  <div
-                    className="dropdown-toggle"
-                    onClick={handleToggleDropdown2}
-                  >
-                    <span className="dropdown-label">
-                      {selectedValue2 || '請選擇...'}
-                    </span>
-                    <i className="fas fa-caret-down"></i>
-                  </div>
-                  {isMenuOpen2 && (
-                    <ul className="dropdown-menu mt-2">
-                      {options2.map((option) => (
-                        <li
-                          key={option.value}
-                          onClick={() => handleSelectOption2(option)}
-                        >
-                          {option.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <input
-                    type="hidden"
-                    id="selected2"
-                    name="selected"
-                    value={selectedValue2}
-                  />
-                </div>
-              </div>
-              <div className="container-fluid">
-                <div className="j-bg-o-grad p-4 p-lg-5 row row-cols-1 row-cols-md-2 row-cols-lg-3 text-start justify-content-between">
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>
-                      特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片紅色甘露酒、義大利甜紅酒、橙片
-                    </h5>
-                  </div>
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-                  <div className="wine j-white my-4 my-lg-5">
-                    <h4 className="mb-2">血腥瑪麗 Bloody Mary</h4>
-                    <h5>特級朗姆酒、紅色甘露酒、義大利甜紅酒、橙片</h5>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <Menu ref={menuRef} />
             {/* 營業據點 */}
-            <section>
+            <section id="location" ref={mapRef}>
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between w-100">
                 <span className="col-auto title j-deepSec"> 營業據點</span>
                 <div className="title-line d-block d-md-none"></div>
               </div>
               <div className="d-flex flex-column flex-md-row">
-                <div className="map mb-4 mb-md-0"></div>
+                <div className="map mb-4 mb-md-0">
+                  <JoinMap />
+                </div>
                 <div className="map-info ps-0 ps-md-5">
                   <h2 className="j-deepPri">交通位置</h2>
                   <ul className="h4 j-deepSec mb-3 mb-md-5">
-                    <li className="my-2">台北市大安區復興南路一段390號2樓</li>
+                    <li className="my-2"> 台北市大安區復興南路一段390號2樓</li>
                     <li className="my-2">
-                      公車：搭乘xx號及xx號在xx站下車，走路三分鐘可到達
+                      公車：搭乘20號及22號在捷運大安站下車，走路三分鐘可到達
                     </li>
                     <li className="my-2">捷運：大安捷運站4號、6號出口</li>
                   </ul>

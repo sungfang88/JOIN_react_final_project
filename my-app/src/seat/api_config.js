@@ -16,3 +16,6 @@ export const SEARCH = `${HOST}/search`
 
 //confirm
 export const CONFIRM = `${HOST}/confirm`
+
+//menu
+export const MENU = `${HOST}/menu`
