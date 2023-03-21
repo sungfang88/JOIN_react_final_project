@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { CART_DATA, GETCART_DATA } from './api_comfig'
+import { GETCART_DATA } from './api_comfig'
 import { UPDATED } from './api_comfig'
 import { usePopup } from '../Public/Popup'
 import Stepprocess from './components/Stepprocess'

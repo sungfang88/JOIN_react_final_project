@@ -10,12 +10,11 @@ import {
   COUPON_DATA,
   MEMBER_DATA,
   UPDATED_ORDER,
+  UPDATED_COUPON,
 } from './api_comfig'
 
-const options2 = [
-  { value: 'type1', label: 'LINE PAY' },
-  { value: 'type2', label: '到店付款' },
-]
+const options2 = [{ value: 'type1', label: 'LINE PAY' }]
+
 function Cartsec() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
@@ -28,6 +27,7 @@ function Cartsec() {
         withCredentials: true,
       })
       setData(response.data)
+      console.log('getcartdata', response.data)
     } catch (error) {
       console.log(error)
     }
@@ -67,6 +67,7 @@ function Cartsec() {
   }
   const handleSelectOption1 = (coupon) => {
     setSelectedCoupon(coupon)
+    localStorage.setItem('itemId', JSON.stringify(coupon.itemId))
     console.log(coupon.code)
     setIsMenuOpen1(false)
   }
@@ -79,24 +80,7 @@ function Cartsec() {
       return acc
     }
   }, 0)
-  //算總金額
-  const totalPrice = data.reduce((acc, v, i) => {
-    if (
-      typeof v.price === 'number' &&
-      !isNaN(v.price) &&
-      typeof v.quantity === 'number' &&
-      !isNaN(v.quantity)
-    ) {
-      return acc + v.price * v.quantity
-    } else {
-      return acc
-    }
-  }, 0)
 
-  console.log('v.price', data.price)
-  // 根據選擇的優惠卷做折扣
-  const discount = selectedCoupon ? selectedCoupon.discount : 0
-  const discountedPrice = totalPrice - discount
   //coupon API資料(需要會員登入的m_id)
   const [coupons, setCoupon] = useState([])
   const getCouponData = async () => {
@@ -121,6 +105,43 @@ function Cartsec() {
     }
   }
 
+  //算總金額
+  let totalPrice = 0 // 先声明并初始化为 0
+  totalPrice = data.reduce((acc, v, i) => {
+    if (
+      typeof v.price === 'number' &&
+      !isNaN(v.price) &&
+      typeof v.quantity === 'number' &&
+      !isNaN(v.quantity)
+    ) {
+      return acc + v.price * v.quantity
+    } else {
+      return acc
+    }
+  }, 0)
+  console.log('totalPrice', totalPrice) // 使用 totalPrice 变量进行调试
+
+  // 優惠券折扣
+  let discount = 0
+  if (
+    selectedCoupon &&
+    coupons.some((coupon) => coupon.itemId === selectedCoupon.itemId)
+  ) {
+    const coupon = coupons.find(
+      (coupon) => coupon.itemId === selectedCoupon.itemId
+    )
+    if (coupon.discount_type === 1) {
+      // 固定金额折扣
+      discount = coupon.discount
+    } else if (coupon.discount_type === 2) {
+      // 百分比折扣
+      discount = (totalPrice * coupon.discount) / 100
+    }
+  }
+
+  // 折扣後總金額
+  const discountedPrice = totalPrice - discount
+  console.log('coupons', coupons)
   //付款方式 下拉式選單收合
   const [isMenuOpen2, setIsMenuOpen2] = useState(false)
   //控制input
@@ -141,104 +162,67 @@ function Cartsec() {
 
   //將訂單資料送回資料庫
   const updateOrder = async (data) => {
-    // if (data.payment === '到店付款') {
-    //   try {
-    //   const orderId = 'P' + Date.now() // 建立 orderId
-    //   const response = await axios.post(`${UPDATED_ORDER}${data[0].m_id}`, {
-    //     product_order: {
-    //       addressee: userName,
-    //       phone: phone,
-    //       address: address,
-    //       payment: selectedValue2,
-    //       amount: discountedPrice,
-    //       orderId: orderId, // 將 orderId 傳送到後端
-    //       product_order_details: data.map(
-    //         ({ product_ch, product_eg, price, quantity }) => ({
-    //           product_ch,
-    //           product_eg,
-    //           price,
-    //           quantity,
-    //         })
-    //       ),
-    //     },
-    //   })
-    //   localStorage.setItem('orderId', orderId) // 儲存 orderId 到 localStorage
-    //   console.log('result', response.data)
-    // } catch (error) {
-    //   console.log(error)
-    //   console.log(error.response.data)
-    //   // localStorage.removeItem('orderId')
-    // }
-    // } else {
+    console.log('data', data)
     const orderId = 'P' + Date.now()
-    const response = await axios.post(`${UPDATED_ORDER}${data[0].m_id}`, {
+    let totalQuantity = 0
+    let priceDiscount = 0
+    data.forEach(({ quantity }) => {
+      totalQuantity += quantity
+      priceDiscount = discount / totalQuantity
+    })
+    const response = await axios.post(`${UPDATED_ORDER}${myAuth.sid}`, {
       amount: discountedPrice,
       addressee: userName,
       orderId: orderId,
       phone: phone,
       address: address,
-      payment: 'LINE PAY',
-      products: data.map(({ product_ch, price, quantity, product_id }) => ({
-        id: product_id,
-        name: product_ch,
-        price: price,
-        quantity: quantity,
-      })),
+      payment: 'LINE PAY待付款',
+      products: data.map(({ product_ch, price, quantity, product_id }) => {
+        const discountedPrice = price - priceDiscount
+        return {
+          id: product_id,
+          name: product_ch,
+          price: discountedPrice,
+          quantity: quantity,
+          itemsAmount: discountedPrice,
+        }
+      }),
     })
     const resLINE = response.data
-    console.log('resLINE.data.web', resLINE.web)
+    console.log('resLINE.data.web', response.data)
     localStorage.setItem('orderId', orderId)
     console.log('result', response)
     window.location.href = resLINE.web
-    // }
   }
 
-  //無LINE PAY
-  // const updateOrder = async (data) => {
-  //   try {
-  //     const orderId = 'P' + Date.now() // 建立 orderId
-  //     const response = await axios.post(`${UPDATED_ORDER}${data[0].m_id}`, {
-  //       product_order: {
-  //         addressee: userName,
-  //         phone: phone,
-  //         address: address,
-  //         payment: selectedValue2,
-  //         amount: discountedPrice,
-  //         orderId: orderId, // 將 orderId 傳送到後端
-  //         product_order_details: data.map(
-  //           ({ product_ch, product_eg, price, quantity }) => ({
-  //             product_ch,
-  //             product_eg,
-  //             price,
-  //             quantity,
-  //           })
-  //         ),
-  //       },
-  //     })
-  //     localStorage.setItem('orderId', orderId) // 儲存 orderId 到 localStorage
-  //     console.log('result', response.data)
-  //   } catch (error) {
-  //     console.log(error)
-  //     console.log(error.response.data)
-  //     // locuseStatealStorage.removeItem('orderId')
-  //   }
-  //  }
-
-  //按下一步後將資料傳送到updateOrder
-  const handleNext = () => {
-    if (!userName && !phone && !address) {
-      return
+  //將優惠卷的資料庫改寫
+  const [couponsData, setCouponData] = useState([])
+  const upDataCoupon = async () => {
+    console.log('coupons.itemId', coupons.itemId)
+    try {
+      const response = await axios.post(
+        UPDATED_COUPON,
+        {
+          memberId: myAuth.sid,
+          orderId: localStorage.getItem('orderId'),
+          itemId: localStorage.getItem('itemId'),
+        },
+        { withCredentials: true }
+      )
+      console.log('couponsData', localStorage.getItem('orderId'))
+      setCouponData(selectedCoupon)
+    } catch (error) {
+      console.log(error)
     }
-    updateOrder(data)
-    console.log(data[0].m_id)
   }
 
-  //拆元件後無法判斷!!!
+  //判斷是否都有填寫
   const [addressInput, setAddressInput] = useState(false)
   const [phoneInput, setPhoneInput] = useState(false)
   const [usernameInput, setUserNameInput] = useState(false)
   const [paymentInput, setPaymentInput] = useState(false)
   const handleSubmit = (e) => {
+    e.preventDefault()
     if (!userName || !phone || !address || selectedValue2 === '請選擇...') {
       e.preventDefault()
       setPhoneInput(!phone)
@@ -246,7 +230,13 @@ function Cartsec() {
       setAddressInput(!address)
       setPaymentInput(true)
     } else {
-      handleNext()
+      getCartData().then(() => {
+        updateOrder(data).then(() => {
+          localStorage.getItem('orderId')
+          localStorage.getItem('itemId')
+          upDataCoupon(couponsData)
+        })
+      })
     }
   }
 
@@ -254,7 +244,6 @@ function Cartsec() {
     getCartData()
     getMemberData()
     getCouponData()
-    updateOrder()
     return () => {
       //解除功能
       console.log('unmount')
@@ -390,12 +379,12 @@ function Cartsec() {
                 </div>
                 <div className="dropdown">
                   <div
-                    className="dropdown-toggle"
+                    className="dropdown-toggle "
                     onClick={handleToggleDropdown1}
                   >
-                    <span className="dropdown-label">
+                    <span className="dropdown-label ellipsis">
                       {selectedCoupon
-                        ? selectedCoupon.couponTitle
+                        ? selectedCoupon.description
                         : '請選擇...'}
                     </span>
                     <i className="fas fa-caret-down"></i>
@@ -403,14 +392,16 @@ function Cartsec() {
 
                   {isMenuOpen1 && (
                     <ul className="dropdown-menu mt-2">
-                      {coupons.map((coupon) => (
-                        <li
-                          key={coupon.couponTitle}
-                          onClick={() => handleSelectOption1(coupon)}
-                        >
-                          {coupon.couponTitle}
-                        </li>
-                      ))}
+                      {coupons
+                        .filter((coupon) => totalPrice >= coupon.threshold)
+                        .map((coupon, index) => (
+                          <li
+                            key={`coupon-${index}`} // 使用 index 作为 key
+                            onClick={() => handleSelectOption1(coupon)}
+                          >
+                            {coupon.description}
+                          </li>
+                        ))}
                     </ul>
                   )}
                 </div>

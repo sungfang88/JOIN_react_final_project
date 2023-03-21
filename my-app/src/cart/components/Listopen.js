@@ -33,7 +33,7 @@ function Listopen(props) {
                       alt=""
                     />
                   </li>
-                  <ul className="col-md-10 col-6 g-0 row d-grid d-md-flex text-center">
+                  <ul className="col-md-10 col-6 g-0 row d-grid d-md-flex text-md-center text-start">
                     <li className="col fs-7">
                       <div>
                         {r.product_ch}

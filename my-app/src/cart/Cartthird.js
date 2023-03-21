@@ -1,12 +1,18 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
-import { CART_DATA, ORDER_DATA, DELETE_CART_DATA } from './api_comfig'
+import {
+  CART_DATA,
+  ORDER_DATA,
+  DELETE_CART_DATA,
+  ORDER_CONFIRM,
+} from './api_comfig'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Stepprocess from './components/Stepprocess'
 import Listopen from './components/Listopen'
 import Completion from './components/Completion'
 import AuthContext from '../Context/AuthContext'
+
 function Cartthird() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
@@ -24,11 +30,14 @@ function Cartthird() {
     }
   }
 
+  // 訂單完成後清除購物車資料的 API 請求
   const handleDeleteCart = async () => {
     try {
-      // 刪除購物車資料的 API 請求
       const storedSids = JSON.parse(localStorage.getItem('selectedSids')) || []
-      await axios.delete(`${DELETE_CART_DATA}${storedSids.join('/')}`, {
+      await axios.delete(`${DELETE_CART_DATA}`, {
+        data: {
+          sids: storedSids,
+        },
         withCredentials: true,
       })
     } catch (error) {
@@ -36,20 +45,40 @@ function Cartthird() {
     }
   }
 
-  //取得訂單資料(LINE PAY 轉址不成功)
-  const [order, setOrder] = useState({})
-  const params = new URLSearchParams(window.location.search)
-  const transactionId = params.get('transactionId')
-  const orderId = params.get('orderId')
+  //訂單資訊
+  const [order, setOrder] = useState()
+  const orderId = localStorage.getItem('orderId')
   const getOrderData = async () => {
     try {
-      const response = await axios.get(`${ORDER_DATA}`, {
+      const response = await axios.get(`${ORDER_DATA}${orderId}`, {
         withCredentials: true,
       })
+      console.log('order', response.data)
+      setOrder(response.data[0])
     } catch (error) {
       console.log(error)
     }
+    console.log('order', order)
   }
+
+  //更新訂單付款(LINE PAY  取不到)
+  // const [payment, setPayment] = useState({})
+  // const getOrderPayment = async () => {
+  //   try {
+  //     await getCartData()
+  //     console.log({ data })
+  //     const response = await axios.get(`${ORDER_CONFIRM}${orderId}`, {
+  //       withCredentials: true,
+  //       params: {
+  //         amount: data.amount,
+  //       },
+  //     })
+  //     setPayment(response.data)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   //控制商品明細收合
   const [isOpen, setIsOpen] = useState(false)
   const toggleTable = () => {
@@ -59,6 +88,25 @@ function Cartthird() {
   useEffect(() => {
     getCartData()
     getOrderData()
+    const getOrderPayment = async () => {
+      try {
+        await getCartData()
+        const search = window.location.search
+        const params = new URLSearchParams(search)
+        const transactionId = params.get('transactionId')
+        const orderId = params.get('orderId')
+        const response = await axios.get(
+          `${ORDER_CONFIRM}?transactionId=${transactionId}&orderId=${orderId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        console.log(response.data) // response.data 是後端返回的數據
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     return () => {
       //解除功能
       console.log('unmount')
@@ -83,73 +131,77 @@ function Cartthird() {
       {/* 訂購人資訊 */}
 
       <section className="container-fluid">
-        <div className="container myWidth">
-          <table className="mb-3">
-            <tbody className="j-deepGray">
-              <tr className="row g-0">
-                <td className="tableTitle h3 j-deepSec headTitle text-start">
-                  收件人
-                </td>
-              </tr>
-              <tr className="row g-0">
-                <td className="col-md-2 col-3 j-deepPri h3">姓名</td>
-                <td className="col-md-10 col-9 j-deepGray text-start h3">
-                  {order.addressee}
-                </td>
-              </tr>
-              <tr className="row g-0">
-                <td className="col-md-2 col-3 j-deepPri h3">手機</td>
-                <td className="col-md-10 col-9 j-deepGray text-start h3">
-                  {order.phone}
-                </td>
-              </tr>
-              <tr className="row g-0">
-                <td className="col-md-2 col-3 j-deepPri h3">地址</td>
-                <td className="col-md-10 col-9 j-deepGray text-start h3">
-                  {order.address}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        {order && order.sid && (
+          <div className="container myWidth" key={order.sid}>
+            <table className="mb-3">
+              <tbody className="j-deepGray">
+                <tr className="row g-0">
+                  <td className="tableTitle h3 j-deepSec headTitle text-start">
+                    收件人
+                  </td>
+                </tr>
+                <tr className="row g-0">
+                  <td className="col-md-2 col-3 j-deepPri h3">姓名</td>
+                  <td className="col-md-10 col-9 j-deepGray text-start h3">
+                    {order.addressee}
+                  </td>
+                </tr>
+                <tr className="row g-0">
+                  <td className="col-md-2 col-3 j-deepPri h3">手機</td>
+                  <td className="col-md-10 col-9 j-deepGray text-start h3">
+                    {order.phone}
+                  </td>
+                </tr>
+                <tr className="row g-0">
+                  <td className="col-md-2 col-3 j-deepPri h3">地址</td>
+                  <td className="col-md-10 col-9 j-deepGray text-start h3">
+                    {order.address}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
-
       {/* 訂單編號資訊 */}
       <section className="container-fluid">
-        <div className="container myWidth">
-          <div>
-            <div className="h3 j-deepSec headTitle">配送方式</div>
-            <h2 className="j-deepSec text-center bottomLine">
-              {order.payment}
-            </h2>
+        {order && order.sid && (
+          <div className="container myWidth">
+            <div>
+              <div className="h3 j-deepSec headTitle">配送方式</div>
+              <h2 className="j-deepSec text-center bottomLine">宅配到府</h2>
+            </div>
+            <div>
+              <div className="h3 j-deepSec headTitle">訂單編號</div>
+              <h2 className="j-deepSec text-center bottomLine">
+                {order.orderId}
+              </h2>
+            </div>
           </div>
-          <div>
-            <div className="h3 j-deepSec headTitle">訂單編號</div>
-            <h2 className="j-deepSec text-center bottomLine">
-              {order.orderId}
-            </h2>
-          </div>
-        </div>
+        )}
       </section>
+
       {/* 返回按鈕 */}
       <section className="container-fluid px-5">
         <div className="text-center">
           <Link
             to="/member/orderlist"
             className="gray-line-btn j-h3 title-button me-3"
-            onClick={() => {
-              localStorage.removeItem('orderData')
-              handleDeleteCart()
+            onClick={async () => {
+              await handleDeleteCart()
+              localStorage.removeItem('selectedSids')
+              localStorage.removeItem('orderId')
             }}
           >
             查看歷史訂單
           </Link>
           <Link
             to="/product"
-            className="g-line-btn j-h3 title-button"
-            onClick={() => {
-              localStorage.removeItem('orderData')
-              handleDeleteCart()
+            className="gray-line-btn j-h3 title-button me-3"
+            onClick={async () => {
+              await handleDeleteCart()
+              localStorage.removeItem('selectedSids')
+              localStorage.removeItem('orderId')
             }}
           >
             繼續購物
