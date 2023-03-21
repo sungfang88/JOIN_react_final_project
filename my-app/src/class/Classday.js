@@ -166,6 +166,7 @@ function Classday() {
               onChange={myChange}
               value={value}
               tileDisabled={({ date }) => isDisabled(date)}
+              minDate={new Date()}
             />
 
             {/* </div> */}
