@@ -44,6 +44,7 @@ function Classpeople() {
       // console.log('unmount')
     }
   }, [])
+
   const handleAddParticipant = () => {
     // 檢查特定的元素是否存在於頁面中
     const pageElement = document.getElementById('my-page-element')
@@ -201,14 +202,14 @@ function Classpeople() {
               </div>
             </div>
           </div>
+          <div className="container d-flex justify-content-end pb-3">
+            {/* <p className="text-center">再加一人</p> */}
+            <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
+              <i className="fa-solid fa-plus"></i>參與者
+            </button>
+          </div>
         </div>
 
-        <div className="container d-flex justify-content-end pb-3">
-          {/* <p className="text-center">再加一人</p> */}
-          <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
-            <i className="fa-solid fa-plus"></i>參與者
-          </button>
-        </div>
         <div className="container ">
           <div className=" d-flex justify-content-around">
             <Link className="gray-line-btn j-h3" to="/class/Classday">
@@ -236,6 +237,7 @@ function Classpeople() {
           </div>
         </div>
       </section>
+      <div className="pb-0 pb-md-5"></div>
     </>
   )
 }
