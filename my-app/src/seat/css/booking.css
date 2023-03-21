@@ -1,5 +1,5 @@
 .b-bg {
-  min-height: 25rem;
+  min-height: 15rem;
   background: url(../img/seat.jpeg);
   background-size: 100%;
   background-position-y: 30%;
@@ -39,6 +39,10 @@ input[type='date']::before {
 }
 
 @media screen and (min-width: 768px) {
+  .b-bg {
+    min-height: 25rem;
+  }
+
   .b-bg2 {
     height: 100vh;
   }
@@ -60,6 +64,18 @@ input[type='date']::before {
 
 .list-circle {
   list-style: circle;
+}
+
+.g-line-btn.active {
+  color: #fff;
+  background: linear-gradient(90deg, #40d2b8 0%, #3c7cc8 108.09%);
+  transition: 0.6s;
+}
+
+.g-line-btn:active {
+  color: #fff;
+  background: linear-gradient(90deg, #40d2b8 0%, #3c7cc8 108.09%);
+  transition: 0.6s;
 }
 
 .map {

@@ -14,17 +14,48 @@ const Menu = forwardRef((props, ref) => {
   const [menuData, setMenuData] = useState([])
   //* 按鈕切換菜單
   const MenuButton = ({ name, category, onMenuDataLoaded }) => {
-    const handleClick = async () => {
-      try {
-        const response = await axios.get(`${MENU}/${category}`)
-        onMenuDataLoaded(response.data)
-      } catch (error) {
-        console.error(error)
+    const [isActive, setIsActive] = useState(false)
+    // const handleClick = async () => {
+    //   try {
+    //     const response = await axios.get(`${MENU}/${category}`)
+    //     onMenuDataLoaded(response.data)
+    //     setIsActive(true)
+    //     console.log(response.data)
+    //     console.log(isActive)
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+    // }
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`${MENU}/${category}`)
+          onMenuDataLoaded(response.data)
+          setIsActive(true)
+          //   console.log(response.data)
+        } catch (error) {
+          console.error(error)
+        }
       }
-    }
 
+      if (isActive) {
+        fetchData()
+        // console.log(isActive)
+      }
+
+      return () => {
+        // 處理需要清理的資源
+      }
+    }, [isActive, category, onMenuDataLoaded])
+
+    const handleClick = () => {
+      setIsActive(true)
+    }
     return (
-      <button className="g-line-btn h3 me-2" onClick={handleClick}>
+      <button
+        className={`g-line-btn h3 me-2 ${isActive ? 'active' : ''}`}
+        onClick={handleClick}
+      >
         {name}
       </button>
     )
@@ -34,7 +65,7 @@ const Menu = forwardRef((props, ref) => {
   }
 
   //* 下拉式選單
-  const [selectedValue2, setSelectedValue2] = useState('請選擇...')
+  const [selectedValue2, setSelectedValue2] = useState('GI')
   const [selectedName, setSelectedName] = useState('')
   const [isMenuOpen2, setIsMenuOpen2] = useState(false)
   const handleToggleDropdown2 = () => {
@@ -61,6 +92,7 @@ const Menu = forwardRef((props, ref) => {
     setSelectedValue2(option.value)
     setSelectedName(option.label)
     setIsMenuOpen2(false)
+    // handleMenuDataLoaded(option.value)
   }
   return (
     <section id="menu" ref={ref}>
