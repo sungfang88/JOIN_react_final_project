@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './css/Index.css'
 import ProductCard from '../product/ProductCard'
 import axios from 'axios'
+import Navbar from '../Layout/Mainlayout/Navbar'
 
 function Home() {
   const [likedProducts, setLikedProducts] = useState([])
@@ -134,7 +135,7 @@ function Home() {
       </header>
       <div className="pt-5"></div>
       <div className="pt-5"></div>
-
+      <Navbar />
       {/* <!-- section 1 第一個section要加nav-space pt-md-0--> */}
       <section className="container-fluid nav-space">
         <div className="container">
