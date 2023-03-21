@@ -31,7 +31,9 @@ function Classpeople() {
       axios
         .post('http://localhost:3008/class/classform', formObj)
         .then((response) => {
-          navigate('/cart/classOrder01')
+          navigate(
+            `/cart/classOrder01?classformsid=${response.data.classformsid}`
+          )
         })
     } catch (error) {
       console.error(error)
@@ -114,6 +116,9 @@ function Classpeople() {
         <div className="container pt-3">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
+            <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
+              <i className="fa-solid fa-plus"></i>參與者
+            </button>
             {/*<input
               type="checkbox"
               name="food"
@@ -121,54 +126,52 @@ function Classpeople() {
               className="j-checkbox"
             />
              <span className="text-align-center"> 同訂購人</span> */}
-          </div>
 
-          <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-            <div className="mb-3 px-xl-5">
-              <div>
-                <label for="name">姓名</label>
+            <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+              <div className="mb-3 px-xl-5">
+                <div>
+                  <label for="name">姓名</label>
+                </div>
+
+                <div className="">
+                  <input
+                    type="text"
+                    className="input-text"
+                    value={s1}
+                    required
+                    placeholder="ex.王小明"
+                    onChange={(e) => {
+                      let d = JSON.parse(localStorage.getItem('key4')) || {}
+                      d = { ...d, s1: e.target.value }
+                      localStorage.setItem('key4', JSON.stringify(d))
+                      sets1(e.target.value)
+                    }}
+                  />
+                </div>
               </div>
+              <div className="mb-3">
+                <div>
+                  <label for="phone">電話</label>
+                </div>
 
-              <div className="">
-                <input
-                  type="text"
-                  className="input-text"
-                  value={s1}
-                  required
-                  placeholder="ex.王小明"
-                  onChange={(e) => {
-                    let d = JSON.parse(localStorage.getItem('key4')) || {}
-                    d = { ...d, s1: e.target.value }
-                    localStorage.setItem('key4', JSON.stringify(d))
-                    sets1(e.target.value)
-                  }}
-                />
+                <div className="">
+                  <input
+                    type="tel"
+                    className="input-text"
+                    value={p1}
+                    required
+                    placeholder="ex.0912345678"
+                    onChange={(e) => {
+                      let d = JSON.parse(localStorage.getItem('key4')) || {}
+                      d = { ...d, p1: e.target.value }
+                      localStorage.setItem('key4', JSON.stringify(d))
+                      setp1(e.target.value)
+                    }}
+                  />
+                </div>
               </div>
             </div>
-            <div className="mb-3">
-              <div>
-                <label for="phone">電話</label>
-              </div>
-
-              <div className="">
-                <input
-                  type="tel"
-                  className="input-text"
-                  value={p1}
-                  required
-                  placeholder="ex.0912345678"
-                  onChange={(e) => {
-                    let d = JSON.parse(localStorage.getItem('key4')) || {}
-                    d = { ...d, p1: e.target.value }
-                    localStorage.setItem('key4', JSON.stringify(d))
-                    setp1(e.target.value)
-                  }}
-                />
-              </div>
-            </div>
           </div>
-        </div>
-        <div className="container  ">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec">參與者</span>
           </div>
@@ -202,6 +205,7 @@ function Classpeople() {
               </div>
             </div>
           </div>
+
           <div className="container d-flex justify-content-end pb-3">
             {/* <p className="text-center">再加一人</p> */}
             <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
