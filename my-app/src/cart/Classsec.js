@@ -5,13 +5,16 @@ import Classstepprocess from './components/Classstepprocess'
 import Completion from './components/Completion'
 import AuthContext from '../Context/AuthContext'
 import { MEMBER_DATA, CLASS_DATA, CLASSORDER_DATA } from './api_comfig'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+
 function Classsec() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
   //取得classOrder資料
   const [data, setData] = useState([])
-  const class_form_sid = 2
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const class_form_sid = searchParams.get('class_form_sid')
   const getClassData = async () => {
     try {
       const response = await axios.get(`${CLASS_DATA}${class_form_sid}`, {
@@ -103,7 +106,9 @@ function Classsec() {
                       <li className="col">{r.class_id}課程</li>
                       <li className="col">{r.Bartender}</li>
                       <li className="col d-md-flex d-none">$2,400</li>
-                      <li className="col d-md-flex d-none">-200</li>
+                      <li className="col d-md-flex d-none">
+                        -{2400 * r.class_prople - r.amount}
+                      </li>
                       <li className="col">{r.class_prople}人</li>
                     </ul>
                   </div>

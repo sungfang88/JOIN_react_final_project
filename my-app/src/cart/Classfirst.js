@@ -1,30 +1,32 @@
 import React, { useState, useEffect, useContext } from 'react'
 import '../Public/style'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import Line from './components/Line'
 import Classmember from './components/Classmember'
 import Classstepprocess from './components/Classstepprocess'
 import AuthContext from '../Context/AuthContext'
 import {
-  CLASS_DATA,
-  MEMBER_DATA,
   CLASSFORM_DATA,
+  MEMBER_DATA,
   UPDATED_CLASSFORM,
   UPDATED_COUPON,
   COUPON_DATA,
 } from './api_comfig'
 
 const options2 = [{ value: 'type1', label: '到店付款' }]
+
 function Classfirst() {
   const { myAuth } = useContext(AuthContext)
   console.log('myAuth', myAuth)
   //取得classOrder資料
   const [data, setData] = useState([])
-  const class_form_sid = 2
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const class_form_sid = searchParams.get('class_form_sid')
   const getClassData = async () => {
     try {
-      const response = await axios.get(`${CLASS_DATA}${class_form_sid}`, {
+      const response = await axios.get(`${CLASSFORM_DATA}${class_form_sid}`, {
         withCredentials: true,
       })
       setData(response.data)
@@ -47,20 +49,6 @@ function Classfirst() {
     }
   }
 
-  //取得classform資料
-  // const [formData, setForm] = useState({})
-  // const getFormData = async () => {
-  //   try {
-  //     const response = await axios.get(`${CLASSFORM_DATA}${class_form_sid}`, {
-  //       withCredentials: true,
-  //     })
-  //     console.log(response.data)
-  //     setForm(response.data)
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
-
   //優惠卷 下拉式選單收合
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
   //控制input
@@ -70,7 +58,8 @@ function Classfirst() {
   }
   const handleSelectOption1 = (coupon) => {
     setSelectedCoupon(coupon)
-    console.log(coupon.code)
+    localStorage.setItem('itemId', JSON.stringify(coupon.itemId))
+    console.log('couponcoupon', coupon)
     setIsMenuOpen1(false)
   }
   //總金額
@@ -78,11 +67,7 @@ function Classfirst() {
   if (data && data.length && data[0].class_prople) {
     totalPrice = parseInt(data[0].class_prople, 10) * 2400
   }
-
   console.log('class_people', data[0]?.class_prople)
-  // 根據選擇的優惠卷做折扣
-  const discount = selectedCoupon ? selectedCoupon.discount : 0
-  const discountedPrice = totalPrice - discount
 
   //coupon API資料(需要會員登入的m_id)
   const [coupons, setCoupon] = useState([])
@@ -102,11 +87,32 @@ function Classfirst() {
         (coupon) => coupon.type === 1 || coupon.type === 3
       )
       setCoupon(filteredCoupons)
-      console.log()
     } catch (error) {
       console.log(error)
     }
   }
+
+  // 優惠券折扣
+  let discount = 0
+  if (
+    selectedCoupon &&
+    coupons.some((coupon) => coupon.itemId === selectedCoupon.itemId)
+  ) {
+    const coupon = coupons.find(
+      (coupon) => coupon.itemId === selectedCoupon.itemId
+    )
+    if (coupon.discount_type === 1) {
+      // 固定金额折扣
+      discount = coupon.discount
+    } else if (coupon.discount_type === 2) {
+      // 百分比折扣
+      discount = (totalPrice * coupon.discount) / 100
+    }
+  }
+
+  // 總金額
+  const discountedPrice = totalPrice - discount
+  console.log('coupons', coupons)
 
   //判斷選擇付款方式是否正確
   const [paymentInput, setPaymentInput] = useState(false)
@@ -115,7 +121,13 @@ function Classfirst() {
       e.preventDefault()
       setPaymentInput(selectedValue2 === '請選擇...')
     } else {
-      handleNext()
+      updateForm().then(() => {
+        localStorage.getItem('orderId')
+        localStorage.getItem('itemId')
+        upDataCoupon(couponsData).then(() => {
+          window.location.href = '/cart/classOrder02'
+        })
+      })
     }
   }
 
@@ -131,13 +143,6 @@ function Classfirst() {
     setIsMenuOpen2(false)
   }
 
-  //按下一步後將資料傳送到updateClassItem
-  const handleNext = () => {
-    updateForm().then(() => {
-      const orderIdString = localStorage.getItem('orderId')
-      upDataCoupon(couponsData, orderIdString)
-    })
-  }
   //送出課程訂單
   const [classOrder, setClassOrder] = useState()
   const updateForm = async (data) => {
@@ -150,7 +155,7 @@ function Classfirst() {
           orderId: orderId,
           m_id: myAuth.sid,
           class_form_sid: class_form_sid, //
-          amount: discountedPrice, //
+          amount: discountedPrice,
         },
         {
           withCredentials: true,
@@ -167,25 +172,21 @@ function Classfirst() {
   //將優惠卷的資料庫改寫
   const [couponsData, setCouponData] = useState([])
   const upDataCoupon = async () => {
-    const orderIdString = localStorage.getItem('orderId')
-    if (orderIdString === null) {
-      console.log('NO')
-    } else {
-      try {
-        const response = await axios.post(
-          UPDATED_COUPON,
-          {
-            memberId: myAuth.sid,
-            orderId: orderIdString,
-            itemId: coupons.sid,
-          },
-          { withCredentials: true }
-        )
-        console.log('couponsData', orderIdString)
-        setCouponData(selectedCoupon)
-      } catch (error) {
-        console.log(error)
-      }
+    console.log('coupons.itemId', coupons.itemId)
+    try {
+      const response = await axios.post(
+        UPDATED_COUPON,
+        {
+          memberId: myAuth.sid,
+          orderId: JSON.parse(localStorage.getItem('orderId')),
+          itemId: localStorage.getItem('itemId'),
+        },
+        { withCredentials: true }
+      )
+      console.log('couponsData', localStorage.getItem('orderId'))
+      setCouponData(selectedCoupon)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -221,7 +222,7 @@ function Classfirst() {
                 <li className="col">人數</li>
               </ul>
             </div>
-            {data.map((r) => {
+            {data.slice(0, 1).map((r) => {
               return (
                 <div className=" d-flex tableTbody" key={r.sid}>
                   <li className="col-md-2 col-6 ">
@@ -274,24 +275,26 @@ function Classfirst() {
                     className="dropdown-toggle"
                     onClick={handleToggleDropdown1}
                   >
-                    <span className="dropdown-label">
+                    <span className="dropdown-label ellipsis">
                       {selectedCoupon
-                        ? selectedCoupon.couponTitle
+                        ? selectedCoupon.description
                         : '請選擇...'}
                     </span>
                     <i className="fas fa-caret-down"></i>
                   </div>
 
                   {isMenuOpen1 && (
-                    <ul className="dropdown-menu mt-2">
-                      {coupons.map((coupon) => (
-                        <li
-                          key={coupon.couponTitle}
-                          onClick={() => handleSelectOption1(coupon)}
-                        >
-                          {coupon.couponTitle}
-                        </li>
-                      ))}
+                    <ul className="dropdown-menu mt-2 ">
+                      {coupons
+                        .filter((coupon) => totalPrice >= coupon.threshold)
+                        .map((coupon, index) => (
+                          <li
+                            key={`coupon-${index}`} // 使用 index 作为 key
+                            onClick={() => handleSelectOption1(coupon)}
+                          >
+                            {coupon.description}
+                          </li>
+                        ))}
                     </ul>
                   )}
                 </div>
@@ -360,8 +363,9 @@ function Classfirst() {
                       <td className="classTd text-start h3 j-deepPri">
                         應付總金額
                       </td>
+
                       <td className="classTd text-end h2 j-deepSec">
-                        NT ${discountedPrice}
+                        {discountedPrice}
                       </td>
                     </tr>
                   </tbody>
@@ -376,7 +380,7 @@ function Classfirst() {
                 回課程資訊
               </Link>
               <Link
-                to="/cart/classOrder02"
+                to="#"
                 className="g-line-btn j-h3 j-white"
                 onClick={handleSubmit}
                 type="submit"

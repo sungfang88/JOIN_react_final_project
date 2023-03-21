@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { usePopup } from '../../Public/Popup'
 import { DELETE_DATA } from '../api_comfig'
+
 function List(props) {
   const { data, setData, handleCheckboxChange } = props
   const { Popup, openPopup, closePopup } = usePopup() //必要const

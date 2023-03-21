@@ -32,7 +32,9 @@ function Classmember(props) {
       {memberData && memberData.sid && (
         <div className="container myWidth" key={memberData.sid}>
           <table className="mb-3">
-            <div className="tableTitle h3 j-deepSec headTitle ">訂購人</div>
+            <td className="tableTitle h3 j-deepSec headTitle text-start">
+              訂購人
+            </td>
             <tbody className="j-deepGray">
               <tr className="row g-0">
                 <td className="col-md-2 col-3  j-deepPri h3">姓名</td>
@@ -51,9 +53,9 @@ function Classmember(props) {
           {formData.map((a) => {
             return (
               <table className="mb-3" key={a.sid}>
-                <div className="tableTitle h3 j-deepSec headTitle ">
+                <td className="tableTitle h3 j-deepSec headTitle text-start">
                   參與者{counter++}
-                </div>
+                </td>
                 <tbody className="j-deepGray">
                   <tr className="row g-0">
                     <td className="col-md-2 col-3 j-deepPri h3 fa-16">姓名</td>
