@@ -31,6 +31,27 @@ function Coupon() {
     seatdata: false,
     mystoredata: false,
   })
+  const [fivecoupon, setFivecoupon] = useState([
+    {
+      title: '',
+      end_date: '',
+      status: 0,
+      expire_soon: '',
+      expirecolor: '',
+    },
+  ])
+  const [expectfivecoupon, setExpectFivecoupon] = useState([
+    {
+      title: '',
+      end_date: '',
+      status: 0,
+      expire_soon: '',
+      expirecolor: '',
+    },
+  ])
+
+  const [showallcoupon, setShowallcoupon] = useState(false)
+
   const getAllData = async () => {
     const getall = await axios.get(ALLDATA + '/' + myAuth.sid)
     console.log('getall.data', getall.data)
@@ -41,6 +62,17 @@ function Coupon() {
     const response = await axios.get(COUPONDATA + '/' + myAuth.sid)
     console.log(response.data.data)
     setCoupondata(response.data.data)
+    setFivecoupon(
+      response.data.data.filter((v, i) => {
+        return i < 5
+      })
+    )
+    setExpectFivecoupon(
+      response.data.data.filter((v, i) => {
+        return i >= 5
+      })
+    )
+    console.log('fivecoupon', fivecoupon)
     if (response.data.member_level === 1) {
       setMemberLevel('text-secondary')
       setLevelTitle('銀牌會員')
@@ -54,7 +86,7 @@ function Coupon() {
   }
   useEffect(() => {
     getData()
-  }, [])
+  }, [showallcoupon])
   useEffect(() => {
     getAllData()
   }, [])
@@ -219,7 +251,7 @@ function Coupon() {
                       </thead>
 
                       <tbody className="j-deepGray">
-                        {coupondata.map((v, i) => {
+                        {fivecoupon.map((v, i) => {
                           return (
                             <tr key={i}>
                               <td>{v.title}</td>
@@ -232,8 +264,57 @@ function Coupon() {
                             </tr>
                           )
                         })}
+                        {showallcoupon
+                          ? expectfivecoupon.map((v, i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>{v.title}</td>
+                                  <td>
+                                    {dayjs(v.end_date).format('YYYY-MM-DD')}
+                                  </td>
+                                  <td>
+                                    <span className={v.expirecolor}>
+                                      {v.expire_soon}
+                                    </span>
+                                  </td>
+                                </tr>
+                              )
+                            })
+                          : []}
                       </tbody>
                     </table>
+                    {expectfivecoupon.length > 0 ? (
+                      <div className="col-12">
+                        <div className="j-deepPri d-flex justify-content-center border-top border-3 mt-3 pt-3 sec-navbar">
+                          {showallcoupon ? (
+                            <a
+                              href="#/"
+                              className="j-deepSec"
+                              onClick={() => {
+                                setShowallcoupon(!showallcoupon)
+                              }}
+                            >
+                              顯示部分優惠券&nbsp;&nbsp;
+                              <i className="fa-sharp fa-solid fa-caret-up"></i>
+                            </a>
+                          ) : (
+                            <a
+                              href="#/"
+                              className="j-deepSec"
+                              onClick={() => {
+                                setShowallcoupon(!showallcoupon)
+                              }}
+                            >
+                              顯示所有優惠券&nbsp;&nbsp;
+                              <i className="fa-sharp fa-solid fa-caret-down"></i>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+
                     <div className="button-group d-flex justify-content-end mt-5 mb-5">
                       <button
                         className="o-line-btn j-h3 me-2"
@@ -277,7 +358,7 @@ function Coupon() {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                     分頁清單
+                      分頁清單
                     </span>
                   </div>
                   <ul

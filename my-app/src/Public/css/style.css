@@ -23,6 +23,23 @@ a {
 section {
     margin-bottom: 5rem;
 }
+.cart-icon {
+    position: relative;
+    display: inline-block;
+  }
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color:  #25858B;
+    color: white;
+    border-radius: 50%;
+    padding: 2px;
+    font-size: 6px;
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+  }
 
 /* 大電腦 */
 @media screen and (min-width: 1600px) {

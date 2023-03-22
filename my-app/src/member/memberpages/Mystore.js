@@ -1,4 +1,5 @@
 import { useState, useRef, useContext, useEffect } from 'react'
+import { usePopup } from '../../Public/Popup'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -9,6 +10,8 @@ import {
   ALLDATA,
 } from '../membercomponents/memberapi_config'
 import AuthContext from '../../Context/AuthContext'
+import NavbarContext from '../../Context/NavbarContext'
+
 
 import axios from 'axios'
 
@@ -17,6 +20,8 @@ function Mystore() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const dropdownRef = useRef(null)
   const { myAuth } = useContext(AuthContext)
+  const { getcartlistnumber } = useContext(NavbarContext)
+
   const [mystoreData, setMystoreData] = useState([
     {
       member: 0,
@@ -40,23 +45,56 @@ function Mystore() {
     console.log('getall.data', getall.data)
     setAlldata(getall.data)
   }
+  const { Popup, openPopup, closePopup } = usePopup() //必要const
+  const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
+  const initialState = useRef(true)
+  const openDefaultPopup = (message, btntext, fn) => {
+    initialState.current = false
+
+    // content 字串 彈窗內容
+    setPopupProps({
+      content: message,
+      btnGroup: [
+        {
+          text: btntext,
+          handle: fn,
+        },
+        {
+          text: '關閉',
+          handle: closePopup,
+        },
+      ],
+    })
+    // openPopup()
+  }
 
   //加入購物車
-  const addCart = async (itemdata) => {
-    // itemdata 會是個 { } 物件
-    console.log('itemdata', itemdata)
-    const mystore = await axios.post(ADDCART + '/' + myAuth.sid, itemdata)
-    console.log(mystore.data)
-    getData()
+  const addCart = (itemdata) => {
+    const addtocart = async () => {
+      // itemdata 會是個 { } 物件
+      console.log('itemdata', itemdata)
+      const mystore = await axios.post(ADDCART + '/' + myAuth.sid, itemdata)
+      console.log(mystore.data)
+      getData()
+      getcartlistnumber()
+      closePopup()
+    }
+
+    openDefaultPopup('1件商品加入購物車', '加入購物車', addtocart)
   }
 
   //刪除我的收藏
-  const deleteMystore = async (product_id) => {
-    const deletitem = await axios.get(
-      MYSTOREDELETE + '/' + myAuth.sid + '/' + product_id
-    )
-    console.log(deletitem.data)
-    getData()
+  const deleteMystore = (product_id) => {
+    const deleteiteming = async () => {
+      const deletitem = await axios.get(
+        MYSTOREDELETE + '/' + myAuth.sid + '/' + product_id
+      )
+      console.log(deletitem.data)
+      getData()
+      closePopup()
+    }
+
+    openDefaultPopup('確認取消收藏', '取消收藏', deleteiteming)
   }
 
   //要取資料
@@ -86,6 +124,11 @@ function Mystore() {
   useEffect(() => {
     getAllData()
   }, [])
+  useEffect(() => {
+    if (initialState.current !== true) {
+      openPopup() //可以直接打開pop up
+    }
+  }, [popupProps])
 
   return (
     <>
@@ -287,7 +330,7 @@ function Mystore() {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-              分頁清單
+                      分頁清單
                     </span>
                   </div>
                   <ul
@@ -428,6 +471,7 @@ function Mystore() {
           </div>
         </div>
       </section>
+      <Popup {...popupProps} />
     </>
   )
 }

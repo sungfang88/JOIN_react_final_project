@@ -1,13 +1,30 @@
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import React from 'react'
 import Logo from './img/Logo.png'
 import AuthContext from '../../Context/AuthContext'
+import NavbarContext from '../../Context/NavbarContext'
+import { useLocation } from 'react-router-dom'
 
 // 這支是有登入的版本
 
 function Navbar() {
+  const [path, setpath] = useState('')
+  const location = useLocation()
+  console.log('location.pathname', location.pathname)
+  const getpath = () => {
+    const pathArray = location.pathname.split('/')
+    const mainPath = pathArray[1]
+    console.log(mainPath) // 'member'
+    setpath(mainPath)
+  }
+
   const { myAuth, logout } = useContext(AuthContext)
+  const { cartlistnum } = useContext(NavbarContext)
+  useEffect(() => {
+    getpath()
+  }, [location])
+
   return (
     <nav className="navbar container-fluid">
       <div className="container py-2">
@@ -57,13 +74,18 @@ function Navbar() {
                   登出
                 </a>
                 <Link
-                  className="o-line-btn j-h3"
+                  className="o-line-btn j-h3 cart-icon"
                   to="/cart"
                   onClick={() => {
                     localStorage.removeItem('presentURL')
                   }}
                 >
-                  <i className="fa-solid fa-cart-shopping"></i>
+                  <i className="fa-solid fa-cart-shopping "></i>
+                  {cartlistnum === 0 ? (
+                    <></>
+                  ) : (
+                    <span class="cart-count">{cartlistnum}</span>
+                  )}
                 </Link>
               </>
             ) : (
@@ -98,32 +120,70 @@ function Navbar() {
           </div>
         </div>
 
-        <button className="o-line-btn col-auto d-block d-md-none j-primary">
+        <button className="o-line-btn col-auto d-block d-md-none j-primary ">
           <i className="fa-solid fa-cart-shopping"></i>
         </button>
 
         {/* 手機版menu */}
         <div className="menu-sm d-flex d-md-none">
-          <div className="menu-sm-option">
-            <i className="fa-solid fa-newspaper"></i>
-            <h5>消息</h5>
-          </div>
-          <div className="menu-sm-option active">
-            <i className="fa-solid fa-wine-bottle"></i>
-            <h5>商品</h5>
-          </div>
-          <div className="menu-sm-option">
-            <i className="fa-solid fa-champagne-glasses"></i>
-            <h5>訂位</h5>
-          </div>
-          <div className="menu-sm-option">
-            <i className="fa-solid fa-chalkboard"></i>
-            <h5>課程</h5>
-          </div>
-          <div className="menu-sm-option">
-            <i className="fa-solid fa-user"></i>
-            <h5>會員</h5>
-          </div>
+          <Link to="/news">
+            <div
+              className={
+                path === 'news' ? 'menu-sm-option active' : 'menu-sm-option'
+              }
+            >
+              <i className="fa-solid fa-newspaper"></i>
+              <h5>消息</h5>
+            </div>
+          </Link>
+          <Link to="/product">
+            <div
+              className={
+                path === 'product' ? 'menu-sm-option active' : 'menu-sm-option'
+              }
+            >
+              <i className="fa-solid fa-wine-bottle"></i>
+              <h5>商品</h5>
+            </div>
+          </Link>
+          <Link to="/seat">
+            <div
+              className={
+                path === 'seat' ? 'menu-sm-option active' : 'menu-sm-option'
+              }
+            >
+              <i className="fa-solid fa-champagne-glasses"></i>
+              <h5>訂位</h5>
+            </div>
+          </Link>
+          <Link to="/class">
+            <div
+              className={
+                path === 'class' ? 'menu-sm-option active' : 'menu-sm-option'
+              }
+            >
+              <i className="fa-solid fa-chalkboard"></i>
+              <h5>課程</h5>
+            </div>
+          </Link>
+          {myAuth.authorized ? (
+            <>
+              <Link to="/member">
+                <div
+                  className={
+                    path === 'member'
+                      ? 'menu-sm-option active'
+                      : 'menu-sm-option'
+                  }
+                >
+                  <i className="fa-solid fa-user"></i>
+                  <h5>會員</h5>
+                </div>
+              </Link>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </nav>

@@ -637,7 +637,7 @@ function Register() {
                     className="input-group-text labelinput"
                     for="checkregisterpassword"
                   >
-                    驗證密碼
+                    確認密碼
                   </label>
 
                   <input

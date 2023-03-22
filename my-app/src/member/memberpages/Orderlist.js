@@ -157,7 +157,7 @@ function Orderlist() {
       pagelength = 1
       setPageNow(1)
     } else {
-      pagelength = newOrderlist.length / perPage
+      pagelength = Math.ceil(newOrderlist.length / perPage)
     }
     setPageTotal(pagelength)
     if (pagelength < 2) {
@@ -336,7 +336,7 @@ function Orderlist() {
           <a
             href="#/"
             role="button"
-            className="j-deepSec"
+            className={usersDisplay[i].length===1?"d-none":"j-deepSec"}
             onClick={(e) => {
               e.preventDefault()
               toggleProduct(listid)
@@ -647,7 +647,7 @@ function Orderlist() {
                             if (beginPage === 1) {
                               setPageNow(1)
                             } else {
-                              setPageNow(beginPage - 1)
+                              setPageNow(pageNow - 1)
                             }
                           }}
                         >
@@ -683,7 +683,7 @@ function Orderlist() {
                             if (pageNow === endPage) {
                               setPageNow(endPage)
                             } else {
-                              setPageNow(beginPage + 1)
+                              setPageNow(pageNow + 1)
                             }
                           }}
                         >
@@ -912,7 +912,7 @@ function Orderlist() {
                       <a
                         href="#/"
                         role="button"
-                        className="j-deepSec"
+                        className={usersDisplay[i].length===1?"d-none":"j-deepSec"}
                         onClick={(e) => {
                           e.preventDefault()
                           toggleProduct(listNameArray[i]['orderId'])
@@ -926,6 +926,7 @@ function Orderlist() {
                         )}
                       </a>
                     </div>
+
                     {showList[listNameArray[i]['orderId']] && (
                       <div id={listNameArray[i]['orderId']}>
                         {usersDisplay[i]
@@ -997,7 +998,7 @@ function Orderlist() {
                 if (beginPage === 1) {
                   setPageNow(1)
                 } else {
-                  setPageNow(beginPage - 1)
+                  setPageNow(pageNow - 1)
                 }
               }}
             >
@@ -1033,7 +1034,7 @@ function Orderlist() {
                 if (pageNow === endPage) {
                   setPageNow(endPage)
                 } else {
-                  setPageNow(beginPage + 1)
+                  setPageNow(pageNow + 1)
                 }
               }}
             >

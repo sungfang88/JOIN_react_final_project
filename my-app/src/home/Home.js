@@ -133,6 +133,7 @@ function Home() {
           </div>
         </div>
       </header>
+      <Navbar />
       <div className="pt-5"></div>
       <div className="pt-5"></div>
       <Navbar />
