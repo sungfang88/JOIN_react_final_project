@@ -159,16 +159,18 @@ function Booking() {
 
   //* 上傳資料
   // navigate(`/seat/book-seat`)
-  // const [check, setCheck] = useState()
-  // useEffect(() => {
-  //   console.log('check 更新了:', check)
-  //   if (check !== 'ok') {
-  //     console.log(check)
-  //     console.log('不ok')
-  //     openDefaultPopup(check, '關閉', closePopup)
-  //     return
-  //   }
-  // }, [check])
+  const [check, setCheck] = useState(null)
+  useEffect(() => {
+    if (check !== null) {
+      console.log('check 更新了:', check)
+      if (check !== 'ok') {
+        console.log(check)
+        console.log('不ok')
+
+        return
+      }
+    }
+  }, [check])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -190,23 +192,26 @@ function Booking() {
         return
       }
       console.log('查詢剩餘座位')
-      // const check_response = await axios
-      //   .get(CHECK, {
-      //     params: {
-      //       reserveDate,
-      //       period: +document.getElementById('selected1').value || periodSid,
-      //       people,
-      //       table: +document.getElementById('selected2').value,
-      //     },
-      //   })
-      //   .catch((error) => {
-      //     console.log(error)
-      //   })
-      // console.log(check_response.data)
-      // if (check_response && check_response.data) {
-      //   setCheck(check_response.data)
-      // }
-
+      const check_response = await axios
+        .get(CHECK, {
+          params: {
+            reserveDate,
+            period: +document.getElementById('selected1').value || periodSid,
+            people,
+            table: +document.getElementById('selected2').value,
+          },
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      console.log(check_response.data)
+      if (check_response && check_response.data) {
+        setCheck(check_response.data)
+      }
+      if (check !== 'ok') {
+        openDefaultPopup(check, '關閉', closePopup)
+        return // 如果check不是ok，停止handleSubmit的執行
+      }
       const response = await axios.post(
         SEAT_ADD,
         {
