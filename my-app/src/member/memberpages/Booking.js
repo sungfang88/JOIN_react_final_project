@@ -9,6 +9,7 @@ import {
 import axios from 'axios'
 import AuthContext from '../../Context/AuthContext'
 import dayjs from 'dayjs'
+import { usePopup } from '../../Public/Popup'
 
 function Booking() {
   const navigate = useNavigate()
@@ -47,6 +48,9 @@ function Booking() {
       quantity: 0,
     },
   ])
+  const { Popup, openPopup, closePopup } = usePopup() //必要const
+  const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
+  const initialState = useRef(true)
 
   // 點擊下拉式選單裡的項目時，在隱藏的input中告知選到誰，並關閉下拉式選單
   function handleMenuItemClick(event) {
@@ -68,13 +72,37 @@ function Booking() {
     console.log('bookingSeat', bookingSeat)
     setSeatbooking(bookingSeat)
   }
+  const openDefaultPopup = (message, btntext, fn) => {
+    initialState.current = false
 
-  const deleteSeating = async (deletenum) => {
-    const bookingSeatRes = await axios.get(
-      DELETEBOOK + '/' + myAuth.sid + '/' + deletenum
-    )
-    console.log(bookingSeatRes.data)
-    getData()
+    // content 字串 彈窗內容
+    setPopupProps({
+      content: message,
+      btnGroup: [
+        {
+          text: btntext,
+          handle: fn,
+        },
+        {
+          text: '關閉',
+          handle: closePopup,
+        },
+      ],
+    })
+    // openPopup()
+  }
+
+  const deleteSeating = (deletenum) => {
+    const deletebooking = async () => {
+      const bookingSeatRes = await axios.get(
+        DELETEBOOK + '/' + myAuth.sid + '/' + deletenum
+      )
+      console.log(bookingSeatRes.data)
+      getData()
+      closePopup()
+    }
+
+    openDefaultPopup('確認取消訂位', '取消訂位', deletebooking)
   }
 
   useEffect(() => {
@@ -84,6 +112,11 @@ function Booking() {
   useEffect(() => {
     getAllData()
   }, [])
+  useEffect(() => {
+    if (initialState.current !== true) {
+      openPopup() //可以直接打開pop up
+    }
+  }, [popupProps])
 
   return (
     <>
@@ -476,6 +509,7 @@ function Booking() {
           })}
         </div>
       </section>
+      <Popup {...popupProps} />
     </>
   )
 }

@@ -21,8 +21,10 @@ function Login() {
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
+
   const location = useLocation()
   const productstate = location.state
+
   console.log('state', productstate)
 
   const gmaillogin = async () => {
@@ -360,6 +362,14 @@ function Login() {
     // openPopup()
   }
 
+  const fastlogin = () => {
+    setloginForm((prev) => ({
+      ...loginForm,
+      email: 'lf2nt0301@gmail.com',
+      password: 'a123456789',
+    }))
+  }
+
   useEffect(() => {
     if (initialState.current !== true) {
       openPopup() //可以直接打開pop up
@@ -372,7 +382,12 @@ function Login() {
         <div className="row  d-flex mainPage j-bg-p-grad">
           <div className="col-12  d-flex flex-column justify-content-center align-items-center">
             <div className="d-flex justify-content-center">
-              <div className="logo">
+              <div
+                className="logo"
+                onClick={() => {
+                  fastlogin()
+                }}
+              >
                 <img src="../img/joinplusglasses.png" className="enterLogo" />
               </div>
             </div>

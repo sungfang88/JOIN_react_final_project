@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './css/Index.css'
 import ProductCard from '../product/ProductCard'
 import axios from 'axios'
+import Navbar from '../Layout/Mainlayout/Navbar'
 
 function Home() {
   const [likedProducts, setLikedProducts] = useState([])
@@ -132,6 +133,7 @@ function Home() {
           </div>
         </div>
       </header>
+      <Navbar />
       <div className="pt-5"></div>
       <div className="pt-5"></div>
 

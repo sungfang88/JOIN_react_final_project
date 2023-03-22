@@ -67,3 +67,7 @@ export const LOGINCART = `${HOST}/member/logincart`
 
 ///登入時有新增會員收藏
 export const LOGINSTORE = `${HOST}/member/loginstore`
+
+//Navabr 購物車清單的數量
+export const NAVBARCART = `${HOST}/member/navbarcart`
+
