@@ -136,7 +136,6 @@ function Home() {
       <Navbar />
       <div className="pt-5"></div>
       <div className="pt-5"></div>
-      <Navbar />
       {/* <!-- section 1 第一個section要加nav-space pt-md-0--> */}
       <section className="container-fluid nav-space">
         <div className="container">
