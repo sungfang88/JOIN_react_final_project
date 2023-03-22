@@ -61,24 +61,6 @@ function Cartthird() {
     console.log('order', order)
   }
 
-  //更新訂單付款(LINE PAY  取不到)
-  // const [payment, setPayment] = useState({})
-  // const getOrderPayment = async () => {
-  //   try {
-  //     await getCartData()
-  //     console.log({ data })
-  //     const response = await axios.get(`${ORDER_CONFIRM}${orderId}`, {
-  //       withCredentials: true,
-  //       params: {
-  //         amount: data.amount,
-  //       },
-  //     })
-  //     setPayment(response.data)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
   //控制商品明細收合
   const [isOpen, setIsOpen] = useState(false)
   const toggleTable = () => {
@@ -88,25 +70,6 @@ function Cartthird() {
   useEffect(() => {
     getCartData()
     getOrderData()
-    const getOrderPayment = async () => {
-      try {
-        await getCartData()
-        const search = window.location.search
-        const params = new URLSearchParams(search)
-        const transactionId = params.get('transactionId')
-        const orderId = params.get('orderId')
-        const response = await axios.get(
-          `${ORDER_CONFIRM}?transactionId=${transactionId}&orderId=${orderId}`,
-          {
-            withCredentials: true,
-          }
-        )
-        console.log(response.data) // response.data 是後端返回的數據
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
     return () => {
       //解除功能
       console.log('unmount')
@@ -191,6 +154,7 @@ function Cartthird() {
               await handleDeleteCart()
               localStorage.removeItem('selectedSids')
               localStorage.removeItem('orderId')
+              localStorage.removeItem('itemId')
             }}
           >
             查看歷史訂單
@@ -202,6 +166,7 @@ function Cartthird() {
               await handleDeleteCart()
               localStorage.removeItem('selectedSids')
               localStorage.removeItem('orderId')
+              localStorage.removeItem('itemId')
             }}
           >
             繼續購物

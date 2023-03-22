@@ -176,13 +176,13 @@ function Cartsec() {
       orderId: orderId,
       phone: phone,
       address: address,
-      payment: 'LINE PAY待付款',
+      payment: 'LINE PAY',
       products: data.map(({ product_ch, price, quantity, product_id }) => {
-        const discountedPrice = price - priceDiscount
+        const discountedPrice = discount
         return {
           id: product_id,
           name: product_ch,
-          price: discountedPrice,
+          price: price,
           quantity: quantity,
           itemsAmount: discountedPrice,
         }
@@ -444,41 +444,6 @@ function Cartsec() {
                     value={selectedValue2}
                   />
                 </div>
-                {/* <div>
-                  <label htmlFor="period">付款方式</label>
-                </div>
-                <div className="dropdown">
-                  <div
-                    className="dropdown-toggle"
-                    onClick={handleToggleDropdown2}
-                  >
-                    <span className="dropdown-label">
-                      {selectedValue2 || '請選擇...'}
-                    </span>
-                    <i className="fas fa-caret-down"></i>
-                  </div>
-                  {paymentInput && (
-                    <span className="error-message red">請選擇付款方式</span>
-                  )}
-                  {isMenuOpen2 && (
-                    <ul className="dropdown-menu mt-2">
-                      {options2.map((option) => (
-                        <li
-                          key={option.value}
-                          onClick={() => handleSelectOption2(option)}
-                        >
-                          {option.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <input
-                    type="hidden"
-                    id="selected"
-                    name="selected"
-                    value={selectedValue2}
-                  />
-                </div> */}
               </div>
             </div>
 
@@ -503,14 +468,16 @@ function Cartsec() {
                       <td className="classTd text-start h3 j-deepPri">
                         優惠券折扣
                       </td>
-                      <td className="classTd text-end h3">{discount}</td>
+                      <td className="classTd text-end h3">
+                        {Math.round(discount)}
+                      </td>
                     </tr>
                     <tr>
                       <td className="classTd text-start h3 j-deepPri">
                         應付總金額
                       </td>
                       <td className="classTd text-end h2 j-deepSec">
-                        NT {discountedPrice}
+                        NT {Math.round(discountedPrice)}
                       </td>
                     </tr>
                   </tbody>

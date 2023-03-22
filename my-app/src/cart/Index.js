@@ -21,14 +21,21 @@ function Index() {
     JSON.parse(localStorage.getItem('selectedSids') || '[]')
   )
   // 將 handleCheckboxChange 改為更新 selectedSids 狀態
+  // 在这里清空 localStorage
+  useEffect(() => {
+    localStorage.removeItem('selectedSids')
+    setSelectedSids([])
+  }, [])
+
+  // 将 handleCheckboxChange 改为更新 selectedSids 状态
   const handleCheckboxChange = (e, sid) => {
     if (e.target.checked) {
       setSelectedSids([...selectedSids, sid])
     } else {
       setSelectedSids(selectedSids.filter((selectedSid) => selectedSid !== sid))
     }
-    localStorage.setItem('selectedSids', JSON.stringify([...selectedSids, sid]))
   }
+
   useEffect(() => {
     localStorage.setItem('selectedSids', JSON.stringify(selectedSids))
   }, [selectedSids])
@@ -149,7 +156,6 @@ function Index() {
       {/* 返回按鈕  */}
       <section className="container-fluid">
         <div className="text-center">
-          {/* <a className="gray-line-btn j-h3 title-button me-3">繼續購物</a> */}
           <Link
             className="gray-line-btn j-h3 title-button me-3"
             to="/cart/classOrder01"
@@ -157,7 +163,7 @@ function Index() {
               localStorage.removeItem('selectedSids')
             }}
           >
-            課程
+            繼續購物
           </Link>
           <Link
             className="g-line-btn j-h3 title-button"

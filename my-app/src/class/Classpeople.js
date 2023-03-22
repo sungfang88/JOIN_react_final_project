@@ -10,6 +10,8 @@ function Classpeople() {
   const [phone, setphone] = useState('')
   const navigate = useNavigate()
 
+  const [people, setPeople] = useState([])
+
   // const Submit = () => {
   //   const alldata = {
   //     student: student,
@@ -22,11 +24,11 @@ function Classpeople() {
     const key1 = JSON.parse(localStorage.getItem('key1')) || {}
     const key2 = JSON.parse(localStorage.getItem('key2')) || {}
     const key3 = JSON.parse(localStorage.getItem('key3')) || {}
-    const key4 = JSON.parse(localStorage.getItem('key4')) || {}
+    const key4 = JSON.parse(localStorage.getItem('key4')) || []
     try {
-      const classformId = 'C' + Date.now() // 建立 orderId
+      // const classformId = 'C' + Date.now() // 建立 orderId
 
-      const formObj = { classformId, ...key1, ...key2, ...key3, ...key4 }
+      const formObj = { ...key1, ...key2, ...key3, people: key4 }
       console.log(formObj)
       axios
         .post('http://localhost:3008/class/classform', formObj)
@@ -39,49 +41,111 @@ function Classpeople() {
       console.error(error)
     }
   }
-
+  // 當頁面載入時，從localStorage中讀取人數，並初始化填寫框陣列
   useEffect(() => {
-    return () => {
-      //解除功能
-      // console.log('unmount')
+    const localData = JSON.parse(localStorage.getItem('key3'))
+    if (localData && localData.class_prople) {
+      const peopleArr = []
+      for (let i = 0; i < localData.class_prople; i++) {
+        peopleArr.push({ student: '', phone: '' })
+      }
+      setPeople(peopleArr)
     }
   }, [])
 
-  const handleAddParticipant = () => {
-    // 檢查特定的元素是否存在於頁面中
-    const pageElement = document.getElementById('my-page-element')
-    if (!pageElement) {
-      return
-    }
-
-    const container = document.createElement('div')
-    container.className = 'container'
-    container.innerHTML = `
-      <div class="title-box justify-content-between">
-        <span class="col-auto j-h2 j-deepSec">參與者</span>
-      </div>
-      <div class="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-        <div class="mb-3 px-xl-5">
-          <div>
-            <label for="name">姓名</label>
-          </div>
-          <div class="">
-            <input type="text" class="input-text" required placeholder="ex.王小明">
-          </div>
-        </div>
-        <div class="mb-3">
-          <div>
-            <label for="phone">電話</label>
-          </div>
-          <div class="">
-            <input type="tel" class="input-text" required placeholder="ex.0912345678">
-          </div>
-        </div>
-      </div>
-    `
-    // 添加到特定的元素中
-    pageElement.appendChild(container)
+  // 當填寫框的內容改變時，更新localStorage
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target
+    setPeople((prevState) => {
+      const updatedPeople = [...prevState]
+      updatedPeople[index][name] = value
+      localStorage.setItem('key4', JSON.stringify(updatedPeople))
+      return updatedPeople
+    })
   }
+
+  // 用迴圈寫填寫框
+  const inputFields = people.map((person, index) => (
+    <div
+      key={index}
+      className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center"
+    >
+      <div className="mb-3 px-xl-5">
+        <div>
+          <label htmlFor={`name${index}`}>姓名</label>
+        </div>
+        <div className="">
+          <input
+            type="text"
+            className="input-text"
+            name="student"
+            value={person.student}
+            required
+            placeholder="ex.王小明"
+            onChange={(e) => handleInputChange(e, index)}
+          />
+        </div>
+      </div>
+      <div className="mb-3">
+        <div>
+          <label htmlFor={`phone${index}`}>電話</label>
+        </div>
+        <div className="">
+          <input
+            type="tel"
+            className="input-text"
+            name="phone"
+            value={person.phone}
+            required
+            placeholder="ex.0912345678"
+            onChange={(e) => handleInputChange(e, index)}
+          />
+        </div>
+      </div>
+    </div>
+  ))
+  // useEffect(() => {
+  //   return () => {
+  //     //解除功能
+  //     // console.log('unmount')
+  //   }
+  // }, [])
+
+  // const handleAddParticipant = () => {
+  //   // 檢查特定的元素是否存在於頁面中
+  //   const pageElement = document.getElementById('my-page-element')
+  //   if (!pageElement) {
+  //     return
+  //   }
+
+  //   const container = document.createElement('div')
+  //   container.className = 'container'
+  //   container.innerHTML = `
+  //     <div class="title-box justify-content-between">
+  //       <span class="col-auto j-h2 j-deepSec">參與者</span>
+  //     </div>
+  //     <div class="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+  //       <div class="mb-3 px-xl-5">
+  //         <div>
+  //           <label for="name">姓名</label>
+  //         </div>
+  //         <div class="">
+  //           <input type="text" class="input-text" required placeholder="ex.王小明">
+  //         </div>
+  //       </div>
+  //       <div class="mb-3">
+  //         <div>
+  //           <label for="phone">電話</label>
+  //         </div>
+  //         <div class="">
+  //           <input type="tel" class="input-text" required placeholder="ex.0912345678">
+  //         </div>
+  //       </div>
+  //     </div>
+  //   `
+  //   // 添加到特定的元素中
+  //   pageElement.appendChild(container)
+  // }
 
   return (
     <>
@@ -115,11 +179,15 @@ function Classpeople() {
         {/* 填寫資料*/}
         <div className="container pt-3 pb-3 " id="my-page-element">
           <div className="title-box  justify-content-between">
+            <span className="col-auto j-h2 j-deepSec">參與者</span>
+          </div>
+          <div>{inputFields}</div>
+          {/* <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec pe-5">參與者</span>
-            <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
+            {/* <button className="o-line-btn j-h3" onClick={handleAddParticipant}>
               <i className="fa-solid fa-plus"></i>參與者
-            </button>
-            {/*<input
+            </button> 
+           <input
               type="checkbox"
               name="food"
               value="1"
@@ -127,12 +195,11 @@ function Classpeople() {
             />
              <span className="text-align-center"> 同訂購人</span> */}
 
-            <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
+          {/* <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
               <div className="mb-3 px-xl-5">
                 <div>
                   <label for="name">姓名</label>
                 </div>
-
                 <div className="">
                   <input
                     type="text"
@@ -153,7 +220,6 @@ function Classpeople() {
                 <div>
                   <label for="phone">電話</label>
                 </div>
-
                 <div className="">
                   <input
                     type="tel"
@@ -171,40 +237,7 @@ function Classpeople() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="title-box  justify-content-between">
-            <span className="col-auto j-h2 j-deepSec">參與者</span>
-          </div>
-          <div className="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-            <div className="mb-3 px-xl-5">
-              <div>
-                <label for="name">姓名</label>
-              </div>
-
-              <div className="">
-                <input
-                  type="text"
-                  className="input-text"
-                  required
-                  placeholder="ex.王小明"
-                />
-              </div>
-            </div>
-            <div className="mb-3">
-              <div>
-                <label for="phone">電話</label>
-              </div>
-
-              <div className="">
-                <input
-                  type="tel"
-                  className="input-text"
-                  required
-                  placeholder="ex.0912345678"
-                />
-              </div>
-            </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="container ">
@@ -234,7 +267,6 @@ function Classpeople() {
           </div>
         </div>
       </section>
-      <div className="pb-0 pb-md-5"></div>
     </>
   )
 }
