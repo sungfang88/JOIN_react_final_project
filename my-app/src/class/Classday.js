@@ -56,6 +56,13 @@ function Classday() {
     }
   }
 
+  // function isDisabled(date) {
+  //   // 获取星期几的值，其中 0 表示星期日，1 表示星期一，2 表示星期二，以此类推
+  //   const day = date.getDay()
+  //   // 禁用周一、三、五、日
+  //   return day === 1 || day === 3 || day === 5 || day === 0
+  // }
+
   // 日期禁用周一、三、五、日
   function isDisabled(date) {
     const day = date.getDay()
