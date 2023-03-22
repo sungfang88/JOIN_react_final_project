@@ -369,6 +369,13 @@ function Login() {
       password: 'a123456789',
     }))
   }
+  const blacklogin = () => {
+    setloginForm((prev) => ({
+      ...loginForm,
+      email: 'joseph@gmail.com',
+      password: 'abcd1234',
+    }))
+  }
 
   useEffect(() => {
     if (initialState.current !== true) {
@@ -473,7 +480,12 @@ function Login() {
                 </div>
               </form>
               <div className="text-center mt-2 d-flex justify-content-around">
-                <span className="d-none d-lg-block registertext text-center ">
+                <span
+                  className="d-none d-lg-block registertext text-center "
+                  onClick={() => {
+                    blacklogin()
+                  }}
+                >
                   尚未加入
                 </span>
                 <span className=" registertext text-center  registertext-phone">
