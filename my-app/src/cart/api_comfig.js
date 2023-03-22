@@ -24,9 +24,6 @@ export const UPDATED_COUPON = `${HOST}/coupon/applyCoupon/`
 //OEDER POST:
 export const UPDATED_ORDER = `${HOST}/cart/order/`
 
-//CONFIRM GET:
-export const ORDER_CONFIRM = `${HOST}/cart/linePay/confirm/`
-
 //ORDER GET:
 export const ORDER_DATA = `${HOST}/cart/order/`
 

@@ -200,7 +200,6 @@ function Classpeople() {
                 <div>
                   <label for="name">姓名</label>
                 </div>
-
                 <div className="">
                   <input
                     type="text"
@@ -221,7 +220,6 @@ function Classpeople() {
                 <div>
                   <label for="phone">電話</label>
                 </div>
-
                 <div className="">
                   <input
                     type="tel"

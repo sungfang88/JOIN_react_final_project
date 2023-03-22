@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { CLASSFORM_DATA } from '../api_comfig'
+import { useLocation } from 'react-router-dom'
 
 function Classmember(props) {
   //取得classform資料
   const [formData, setForm] = useState({})
-  const class_form_sid = 2
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const class_form_sid = searchParams.get('classformsid')
   const getFormData = async () => {
     try {
       const response = await axios.get(`${CLASSFORM_DATA}${class_form_sid}`, {
@@ -60,13 +63,13 @@ function Classmember(props) {
                   <tr className="row g-0">
                     <td className="col-md-2 col-3 j-deepPri h3 fa-16">姓名</td>
                     <td className="col-md-10 col-9 j-deepGray text-start h3">
-                      {a.s1}
+                      {a.student}
                     </td>
                   </tr>
                   <tr className="row g-0">
                     <td className="col-md-2 col-3 j-deepPri h3">手機</td>
                     <td className="col-md-10 col-9 j-deepGray text-start h3">
-                      {a.p1}
+                      {a.phone}
                     </td>
                   </tr>
                 </tbody>

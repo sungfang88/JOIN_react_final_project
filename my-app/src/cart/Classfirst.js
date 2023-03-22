@@ -124,9 +124,8 @@ function Classfirst() {
       updateForm().then(() => {
         localStorage.getItem('orderId')
         localStorage.getItem('itemId')
-        upDataCoupon(couponsData).then(() => {
-          window.location.href = `/cart/classOrder02`
-        })
+        upDataCoupon(couponsData)
+        window.location.href = `/cart/classOrder02?classformsid=${class_form_sid}`
       })
     }
   }
@@ -148,6 +147,7 @@ function Classfirst() {
   const updateForm = async (data) => {
     try {
       const orderId = 'C' + Date.now() // 建立 orderId
+      const searchParams = new URLSearchParams(location.search)
       const class_form_sid = searchParams.get('classformsid')
       const response = await axios.post(
         `${UPDATED_CLASSFORM}${class_form_sid}`,
@@ -375,7 +375,7 @@ function Classfirst() {
             </div>
             <div className="text-center">
               <Link
-                to="/class/Classsec" //尚未確認
+                to="/class/Classpeople" //尚未確認
                 className="gray-line-btn j-h3 title-button me-2"
               >
                 回課程資訊

@@ -14,7 +14,7 @@ function Classsec() {
   const [data, setData] = useState([])
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
-  const class_form_sid = searchParams.get('class_form_sid')
+  const class_form_sid = searchParams.get('classformsid')
   const getClassData = async () => {
     try {
       const response = await axios.get(`${CLASS_DATA}${class_form_sid}`, {
@@ -105,7 +105,11 @@ function Classsec() {
                       </li>
                       <li className="col">{r.class_id}課程</li>
                       <li className="col">{r.Bartender}</li>
-                      <li className="col d-md-flex d-none">$2,400</li>
+                      <li className="col d-md-flex d-none">
+                        $
+                        {2400 * r.class_prople -
+                          (2400 * r.class_prople - r.amount)}
+                      </li>
                       <li className="col d-md-flex d-none">
                         -{2400 * r.class_prople - r.amount}
                       </li>
@@ -147,6 +151,11 @@ function Classsec() {
             to="/member/orderclass"
             onClick={() => {
               localStorage.removeItem('orderId')
+              localStorage.removeItem('itemId')
+              localStorage.removeItem('key1')
+              localStorage.removeItem('key2')
+              localStorage.removeItem('key3')
+              localStorage.removeItem('key4')
             }}
           >
             查看歷史訂單
@@ -156,6 +165,11 @@ function Classsec() {
             className="g-line-btn j-h3 title-button"
             onClick={() => {
               localStorage.removeItem('orderId')
+              localStorage.removeItem('itemId')
+              localStorage.removeItem('key1')
+              localStorage.removeItem('key2')
+              localStorage.removeItem('key3')
+              localStorage.removeItem('key4')
             }}
           >
             繼續購物

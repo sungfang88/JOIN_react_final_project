@@ -8,7 +8,7 @@ function Completion() {
         <p className="h3 j-deepGray mb-5">
           感謝您的訂購
           <br />
-          您的訂單明細如下
+          這是您的訂單資訊
         </p>
       </div>
     </>
