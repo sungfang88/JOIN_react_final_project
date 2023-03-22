@@ -1,0 +1,208 @@
+.loadingnoball {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background-color: rgb(255, 248, 240);
+
+}
+
+.noball-container {
+    width: 100%;
+    height: 40vh;
+    position: relative;
+}
+
+.noball-title{
+text-align: center;
+padding-left: 20%;
+}
+
+.noball-title span{
+text-align: center;
+padding-right: 20%;
+}
+
+.noball-title span:nth-child(1) {
+/* 添加樣式 */
+color: #F58807;
+animation:firstspan 2s ease-in-out  infinite;
+}
+.noball-title span:nth-child(2) {
+/* 添加樣式 */
+color: #F58807;
+animation:secondspan 2s ease-in-out  infinite;
+}
+.noball-title span:nth-child(3) {
+/* 添加樣式 */
+color: #25858B;
+animation:thirdspan 2s ease-in-out  infinite;
+}
+.noball-title span:nth-child(4) {
+/* 添加樣式 */
+color: #25858B;
+animation:forthspan 2s ease-in-out  infinite;
+}
+
+
+@keyframes firstspan {
+0% {
+opacity:0;
+}
+14% {
+opacity:0;
+}
+15% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 0%;
+}
+
+}
+
+@keyframes secondspan {
+0% {
+opacity:0;
+}
+34% {
+opacity:0;
+}
+35% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 0%;
+}
+}
+
+@keyframes thirdspan {
+0% {
+opacity:0;
+}
+50% {
+opacity:0;
+}
+51% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 0%;
+}
+}
+
+@keyframes forthspan {
+0% {
+opacity:0;
+}
+70% {
+opacity:0;
+}
+71% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 20%;
+}
+}
+
+@media screen and (max-width: 768px) {
+    .animation-title{
+        text-align: center;
+        padding-left: 10%;
+        }
+        .animation-title span{
+            text-align: center;
+            padding-right: 10%;
+            }
+
+
+
+
+        @keyframes firstspan {
+            0% {
+            opacity:0;
+            }
+            14% {
+            opacity:0;
+            }
+            15% {
+            opacity:1;
+            }
+            85%{
+                padding-right: 10%;
+
+            }
+            90%{
+
+            padding-right:0%;
+            }
+            
+            }
+
+            
+@keyframes secondspan {
+    0% {
+    opacity:0;
+    }
+    34% {
+    opacity:0;
+    }
+    35% {
+    opacity:1;
+    }
+    85%{
+        padding-right: 10%;
+    }
+    90%{
+    padding-right: 0%;
+    }
+    }
+    
+    @keyframes thirdspan {
+    0% {
+    opacity:0;
+    }
+    50% {
+    opacity:0;
+    }
+    51% {
+    opacity:1;
+    }
+    85%{
+    padding-right: 10%;
+    }
+    90%{
+    padding-right: 0%;
+    }
+    }
+    
+    @keyframes forthspan {
+    0% {
+    opacity:0;
+    }
+    70% {
+    opacity:0;
+    }
+    71% {
+    opacity:1;
+    }
+    85%{
+    padding-right: 10%;
+    }
+    90%{
+    padding-right: 10%;
+    }
+    }
+}

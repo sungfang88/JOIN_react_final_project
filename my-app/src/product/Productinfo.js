@@ -1,34 +1,88 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import LikeButton from '../Public/Likebutton'
 import Counter from './Counter'
+import AuthContext from '../Context/AuthContext'
 
 function Productinfo(props) {
-  const [likedProducts, setLikedProducts] = useState(() => {
-    const likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
-    return likedProducts || {}
-  })
-  const [isLiked, setIsLiked] = useState(false)
+  const [isLiked, setIsLiked] = useState(props.isLiked)
 
-  useEffect(() => {
-    if (likedProducts[props.productId]) {
-      setIsLiked(true)
-    }
-  }, [props.productId, likedProducts])
-
-  const handleClick = (event) => {
+  const [Memberlike, setMemberlike] = useState([])
+  // 登入判斷設定愛心
+  const { myAuth } = useContext(AuthContext)
+  let likedProducts = {}
+  const addTolike = (event) => {
     event.preventDefault()
-    const newLikedProducts = { ...likedProducts }
-    if (isLiked) {
-      delete newLikedProducts[props.productId]
-      setIsLiked(false)
-    } else {
-      newLikedProducts[props.productId] = true
-      setIsLiked(true)
-    }
-    setLikedProducts(newLikedProducts)
-    localStorage.setItem('likedProducts', JSON.stringify(newLikedProducts))
+
+    setIsLiked((prev) => {
+      if (myAuth.authorized) {
+        console.log('Memberlike', Memberlike)
+        if (prev) {
+          fetch(
+            `http://localhost:3008/product/api/productlikedelete/${myAuth.sid}/${props.productId}`,
+            {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+          console.log('刪除')
+          setIsLiked(false)
+        } else {
+          fetch(`http://localhost:3008/product/api/productlikeadd`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              member: myAuth.sid,
+              productmanage: props.productId,
+            }),
+          })
+
+          console.log('新增')
+          setIsLiked(true)
+        }
+        return !prev
+      } else {
+        if (localStorage.getItem('likedProducts') !== null) {
+          likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
+        }
+        if (prev) {
+          delete likedProducts[props.productId]
+        } else {
+          likedProducts[props.productId] = true
+        }
+
+        localStorage.setItem('likedProducts', JSON.stringify(likedProducts))
+
+        return !prev
+      }
+    })
+
+    // const likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
   }
+
+  // useEffect(() => {
+  //   if (likedProducts[props.productId]) {
+  //     setIsLiked(true)
+  //   }
+  // }, [props.productId, likedProducts])
+
+  // const handleClick = (event) => {
+  //   event.preventDefault()
+  //   const newLikedProducts = { ...likedProducts }
+  //   if (isLiked) {
+  //     delete newLikedProducts[props.productId]
+  //     setIsLiked(false)
+  //   } else {
+  //     newLikedProducts[props.productId] = true
+  //     setIsLiked(true)
+  //   }
+  //   setLikedProducts(newLikedProducts)
+  //   localStorage.setItem('likedProducts', JSON.stringify(newLikedProducts))
+  // }
 
   const handleMouseEnter = (e) => {
     if (!isLiked) {
@@ -46,7 +100,7 @@ function Productinfo(props) {
 
   return (
     <>
-      <div className="container-fluid d-none d-md-block nav-space pb-5">
+      <div className="container-fluid d-none d-md-block nav-space pb-5 product-nav">
         <div className="container">
           <div className="row sec-navbar">
             <div className="col-auto">
@@ -99,11 +153,14 @@ function Productinfo(props) {
                             <button
                               type="button"
                               className="no-line-btn h1 icon-button like-btn productinfo-like"
-                              onClick={handleClick}
-                              onMouseEnter={handleMouseEnter}
-                              onMouseLeave={handleMouseLeave}
                             >
-                              <LikeButton isLiked={isLiked} />
+                              <LikeButton
+                                productId={props.productId}
+                                onClick={addTolike}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                                isLiked={isLiked}
+                              />
                             </button>
                           </div>
                         </div>
