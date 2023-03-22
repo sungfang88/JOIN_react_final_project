@@ -6,7 +6,13 @@ import AuthContext from '../Context/AuthContext'
 import '../Public/style'
 import './css/product.css'
 
+import Loading from '../Public/Loading'
+
 function Product() {
+  // loading畫面
+  const [loadingOne, setLoadingOne] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
   const [allProductData, setAllProductData] = useState([])
   const [allProductCatagory, setallProductCatagory] = useState([])
   const [filterProductCatagory, setfilterProductCatagory] = useState('')
@@ -53,6 +59,16 @@ function Product() {
     setshowCatogory(false)
   }
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadingOne(true)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  useEffect(() => {
     async function fetchData() {
       const res = await fetch(
         `http://localhost:3008/product/api/getproductlike/${myAuth.sid} `
@@ -72,6 +88,7 @@ function Product() {
     }
     fetchData()
     setfilterProductPrice('')
+    setIsLoading(true)
   }, [])
 
   useEffect(() => {
@@ -125,8 +142,11 @@ function Product() {
 
   return (
     <>
+      {loadingOne ? '' : <Loading />}
+
+      {isLoading ? '' : <Loading />}
       {/* <!-- Sec-navbar 要用nav-space 空出上面的距離 --> */}
-      <div className="container-fluid d-none d-md-block nav-space pb-5">
+      <div className="container-fluid d-none d-md-block nav-space pb-5 product-nav">
         <div className="container">
           <div className="row sec-navbar">
             <div className="col-auto">
@@ -151,7 +171,6 @@ function Product() {
           </div>
         </div>
       </div>
-
       <div className="container-fluid nav-space pt-md-0">
         <div className="container d-flex flex-column flex-md-row">
           {/* <!-- section-left --> */}
@@ -290,6 +309,7 @@ function Product() {
                     productprice={product.productprice}
                     isLiked={likedProducts[product.product_id]}
                     productimg={product.product_img}
+                    catagory={product.product_catagory_id}
                   />
                 ))}
             </div>

@@ -1,0 +1,483 @@
+.animation-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background-color: rgb(255, 248, 240);
+}
+
+.ball-container {
+    width: 100%;
+    height: 40vh;
+    position: relative;
+
+animation:ballbackground 3s ease-in-out infinite;
+
+}
+
+.animation-title{
+text-align: center;
+padding-left: 20%;
+}
+
+.animation-title span{
+text-align: center;
+padding-right: 20%;
+}
+
+.animation-title span:nth-child(1) {
+/* 添加樣式 */
+color: #F58807;
+animation:firstspan 3s ease-in-out infinite;
+}
+.animation-title span:nth-child(2) {
+/* 添加樣式 */
+color: #F58807;
+animation:secondspan 3s ease-in-out infinite;
+}
+.animation-title span:nth-child(3) {
+/* 添加樣式 */
+color: #25858B;
+animation:thirdspan 3s ease-in-out infinite;
+}
+.animation-title span:nth-child(4) {
+/* 添加樣式 */
+color: #25858B;
+animation:forthspan 3s ease-in-out infinite;
+}
+
+
+
+.ball {
+    width: 30px;
+    height: 30px;
+    background-color: #FFF8F0;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0% {
+left: 26%;
+        bottom: 40%;
+opacity:0;
+    }
+5% {
+left: 26%;
+        bottom: 40%;
+background-color: #F58807;
+opacity:1;
+    }
+    10% {
+left: 26%;
+        bottom: 0;
+background-color: #F58807;
+ opacity:1;
+    }
+15% {
+left: 26%;
+        bottom: 40%;
+background-color:#F58807;
+opacity:1;
+    }
+20% {
+left: 26%;
+        bottom: 40%;
+background-color:#F58807;
+opacity:0;
+    }
+        26% {
+            left: calc(40% + 52px);
+        bottom: 40%;
+opacity:0;
+    }
+30% {
+    left: calc(40% + 52px);
+    bottom: 40%;
+background-color: #F58807;
+opacity:1;
+    }
+    35% {
+        left: calc(40% + 52px);
+        bottom: 0;
+background-color: #F58807;
+ opacity:1;
+    }
+40% {
+    left: calc(40% + 52px);
+    bottom: 40%;
+background-color:#F58807;
+opacity:1;
+    }
+45% {
+    left: calc(40% + 52px);
+    bottom: 40%;
+background-color:#F58807;
+opacity:0;
+    }
+  46% {
+left: 60%;
+        bottom: 40%;
+opacity:0;
+    }
+50% {
+left: 60%;
+        bottom: 40%;
+background-color: #F58807;
+opacity:1;
+    }
+    55% {
+ left: 60%;
+        bottom: 0;
+background-color: #F58807;
+ opacity:1;
+    }
+60% {
+left: 60%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:1;
+    }
+65% {
+left: 60%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:0;
+    }
+  66% {
+left: 77%;
+        bottom: 40%;
+opacity:0;
+    }
+70% {
+    left: 77%;
+        bottom: 40%;
+background-color: #25858B;
+opacity:1;
+    }
+    75% {
+        left: 77%;
+        bottom: 0;
+background-color: #25858B;
+ opacity:1;
+    }
+80% {
+    left: 77%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:1;
+    }
+85% {
+    left: 77%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:0;
+    }
+  
+    100% {
+ left: 0%;
+        bottom: 0;
+background-color: #F58807;
+ opacity:0;
+    }
+
+}
+
+@keyframes firstspan {
+0% {
+opacity:0;
+}
+14% {
+opacity:0;
+}
+15% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 0%;
+}
+
+}
+
+@keyframes secondspan {
+0% {
+opacity:0;
+}
+34% {
+opacity:0;
+}
+35% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 0%;
+}
+}
+
+@keyframes thirdspan {
+0% {
+opacity:0;
+}
+50% {
+opacity:0;
+}
+51% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 0%;
+}
+}
+
+@keyframes forthspan {
+0% {
+opacity:0;
+}
+70% {
+opacity:0;
+}
+71% {
+opacity:1;
+}
+85%{
+padding-right: 20%;
+}
+90%{
+padding-right: 20%;
+}
+}
+
+@media screen and (max-width: 768px) {
+    .animation-title{
+        text-align: center;
+        padding-left: 10%;
+        }
+        .animation-title span{
+            text-align: center;
+            padding-right: 10%;
+            }
+        .ball {
+            width: 20px;
+            height: 20px;
+            background-color: #FFF8F0;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 10;
+            /* animation: bounce 3s ease-in-out infinite; */
+        }
+
+
+
+@keyframes bounce {
+    0% {
+left: 26%;
+        bottom: 40%;
+opacity:0;
+    }
+5% {
+left: 26%;
+        bottom: 40%;
+background-color: #F58807;
+opacity:1;
+    }
+    10% {
+left: 26%;
+        bottom: 0;
+background-color: #F58807;
+ opacity:1;
+    }
+15% {
+left: 26%;
+        bottom: 40%;
+background-color:#F58807;
+opacity:1;
+    }
+20% {
+left: 26%;
+        bottom: 40%;
+background-color:#F58807;
+opacity:0;
+    }
+        26% {
+        left: 42% ;
+        bottom: 40%;
+opacity:0;
+    }
+30% {
+    left: 42% ;
+    bottom: 40%;
+background-color: #F58807;
+opacity:1;
+    }
+    35% {
+        left: 42% ;
+        bottom: 0;
+background-color: #F58807;
+ opacity:1;
+    }
+40% {
+    left: 42% ;
+    bottom: 40%;
+background-color:#F58807;
+opacity:1;
+    }
+45% {
+    left: 42% ;
+    bottom: 40%;
+background-color:#F58807;
+opacity:0;
+    }
+  46% {
+left: 60%;
+        bottom: 40%;
+opacity:0;
+    }
+50% {
+left: 60%;
+        bottom: 40%;
+background-color: #F58807;
+opacity:1;
+    }
+    55% {
+ left: 60%;
+        bottom: 0;
+background-color: #F58807;
+ opacity:1;
+    }
+60% {
+left: 60%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:1;
+    }
+65% {
+left: 60%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:0;
+    }
+  66% {
+left: 75%;
+        bottom: 40%;
+opacity:0;
+    }
+70% {
+    left: 75%;
+    bottom: 40%;
+background-color: #25858B;
+opacity:1;
+    }
+    75% {
+        left: 75%;
+        bottom: 0;
+background-color: #25858B;
+ opacity:1;
+    }
+80% {
+    left: 75%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:1;
+    }
+85% {
+    left: 75%;
+        bottom: 40%;
+background-color:#25858B;
+opacity:0;
+    }
+  
+    100% {
+ left: 0%;
+        bottom: 0;
+background-color: #F58807;
+ opacity:0;
+    }
+
+}
+
+        @keyframes firstspan {
+            0% {
+            opacity:0;
+            }
+            14% {
+            opacity:0;
+            }
+            15% {
+            opacity:1;
+            }
+            85%{
+                padding-right: 10%;
+
+            }
+            90%{
+
+            padding-right:0%;
+            }
+            
+            }
+
+            
+@keyframes secondspan {
+    0% {
+    opacity:0;
+    }
+    34% {
+    opacity:0;
+    }
+    35% {
+    opacity:1;
+    }
+    85%{
+        padding-right: 10%;
+    }
+    90%{
+    padding-right: 0%;
+    }
+    }
+    
+    @keyframes thirdspan {
+    0% {
+    opacity:0;
+    }
+    50% {
+    opacity:0;
+    }
+    51% {
+    opacity:1;
+    }
+    85%{
+    padding-right: 10%;
+    }
+    90%{
+    padding-right: 0%;
+    }
+    }
+    
+    @keyframes forthspan {
+    0% {
+    opacity:0;
+    }
+    70% {
+    opacity:0;
+    }
+    71% {
+    opacity:1;
+    }
+    85%{
+    padding-right: 10%;
+    }
+    90%{
+    padding-right: 10%;
+    }
+    }
+}

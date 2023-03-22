@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './Public/style'
 import Home from './home/Home'
-// import Test_2 from './test/Test_2'
+import Test_loading from './test/Test_loading'
 import Cart from './cart/Cart'
 import Class from './class/Class'
 import News from './news/News'
@@ -25,9 +25,8 @@ function App() {
       <Router>
         <AuthContextProvider>
           <Routes>
-
             <Route path="/" element={<Mainlayoutwithnavbar />}>
-              <Route index element={<Home />} />
+              <Route index element={<Test_loading />} />
             </Route>
 
             <Route element={<Mainlayout />}>
