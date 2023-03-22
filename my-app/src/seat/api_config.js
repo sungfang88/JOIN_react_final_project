@@ -19,3 +19,6 @@ export const CONFIRM = `${HOST}/confirm`
 
 //menu
 export const MENU = `${HOST}/menu`
+
+//check
+export const CHECK = `${HOST}/check`

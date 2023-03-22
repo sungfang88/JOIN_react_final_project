@@ -3,7 +3,7 @@ import '../Public/style'
 import './css/booking.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { SEAT_ADD, SEAT_ALL } from './api_config'
+import { SEAT_ADD, SEAT_ALL, CHECK } from './api_config'
 import { usePopup } from '../Public/Popup'
 import '../Public/css/popup.css'
 import AuthContext from '../Context/AuthContext'
@@ -25,10 +25,33 @@ function Booking() {
   const { myAuth, logout } = useContext(AuthContext)
   // console.log('myAuth', myAuth)
 
+  //*popup
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
+  const openDefaultPopup = (message, btntext, fn) => {
+    initialState.current = false
 
+    // content 字串 彈窗內容
+    setPopupProps({
+      content: message,
+      btnGroup: [
+        {
+          text: btntext,
+          handle: fn,
+        },
+      ],
+    })
+    // openPopup()
+  }
+  //當popupProps被改動時 促發popup
+  useEffect(() => {
+    if (initialState.current !== true) {
+      openPopup() //可以直接打開pop up
+    }
+  }, [popupProps])
+
+  //*下拉選單
   const [period, setPeriod] = useState('請選擇...')
   const [periodSid, setPeriodSid] = useState()
   const [table, setTable] = useState('請選擇...')
@@ -132,17 +155,61 @@ function Booking() {
     }
   }, [checked])
 
+  const phoneRegex = /^09\d{8}$/
+
   //* 上傳資料
+  // navigate(`/seat/book-seat`)
+  // const [check, setCheck] = useState()
+  // useEffect(() => {
+  //   console.log('check 更新了:', check)
+  //   if (check !== 'ok') {
+  //     console.log(check)
+  //     console.log('不ok')
+  //     openDefaultPopup(check, '關閉', closePopup)
+  //     return
+  //   }
+  // }, [check])
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log('上傳中')
+    console.log('訂位中')
     try {
-      const response = await fetch(SEAT_ADD, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      if (period == '請選擇...') {
+        console.log('沒有時段')
+        openDefaultPopup('沒有選擇時段', '關閉', closePopup)
+        return
+      }
+      if (table == '請選擇...') {
+        console.log('沒有座位')
+        openDefaultPopup('沒有選擇座位種類', '關閉', closePopup)
+        return
+      }
+      if (!phoneRegex.test(phone)) {
+        console.log('手機號碼格式錯誤')
+        openDefaultPopup('手機號碼格式錯誤', '關閉', closePopup)
+        return
+      }
+      console.log('查詢剩餘座位')
+      // const check_response = await axios
+      //   .get(CHECK, {
+      //     params: {
+      //       reserveDate,
+      //       period: +document.getElementById('selected1').value || periodSid,
+      //       people,
+      //       table: +document.getElementById('selected2').value,
+      //     },
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //   })
+      // console.log(check_response.data)
+      // if (check_response && check_response.data) {
+      //   setCheck(check_response.data)
+      // }
+
+      const response = await axios.post(
+        SEAT_ADD,
+        {
           member_sid: myAuth.sid,
           name: name,
           phone: phone,
@@ -150,16 +217,25 @@ function Booking() {
           period_sid: +document.getElementById('selected1').value || periodSid,
           table_sid: +document.getElementById('selected2').value,
           people: people,
-        }),
-      })
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       console.log(response.data)
       //解決popup路徑重複問題
-      const data = await response.json()
+      const data = response.data
       const sid = data.result.insertId
       setSid(sid)
       console.log(data)
       console.log(sid)
-      openPopup()
+      openDefaultPopup(
+        '訂位成功！',
+        '關閉',
+        navigate(`/seat/confirm-seat/${sid}`)
+      )
     } catch (error) {
       console.log(error)
     }
@@ -336,7 +412,7 @@ function Booking() {
           </form>
         </div>
       </section>
-      <Popup
+      {/* <Popup
         content={'訂位成功！'}
         icon={<i className="fa-solid fa-circle-check"></i>}
         btnGroup={[
@@ -347,7 +423,8 @@ function Booking() {
             },
           },
         ]}
-      />
+      /> */}
+      <Popup {...popupProps} />
     </>
   )
 }
