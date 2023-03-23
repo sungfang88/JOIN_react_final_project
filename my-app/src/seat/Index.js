@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react'
 import '../Public/style'
 import './css/booking.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { PERIOD, SEARCH } from './api_config'
+import { PERIOD, SEARCH, BLACK } from './api_config'
 import axios from 'axios'
 import { usePopup } from '../Public/Popup'
 import AuthContext from '../Context/AuthContext'
@@ -42,7 +42,6 @@ function Index() {
   const storedBookingData =
     JSON.parse(localStorage.getItem('bookingData')) || {}
   const { reserveDate_lo, period_lo, people_lo } = storedBookingData
-  console.log(period_lo)
 
   const [results, setResults] = useState([])
   // const [reserveDate, setReserveDate] = useState(reserveDate_lo || '')
@@ -53,7 +52,6 @@ function Index() {
   const [people, setPeople] = useState(people_lo || '')
 
   const [searchData, setSearchData] = useState(storedBookingData)
-  // console.log(reserveDate)
 
   //popup
   const { Popup, openPopup, closePopup } = usePopup()
@@ -141,7 +139,7 @@ function Index() {
     // const storageData = JSON.parse(localStorage.getItem('bookingData') || {})
     const storageData = JSON.parse(localStorage.getItem('bookingData')) || {}
     const { reserveDate_lo, period_lo, people_lo } = storageData
-    console.log(storageData)
+
     setSearchData(storageData)
     if (storageData) {
       setReserveDate(reserveDate_lo)
@@ -152,25 +150,14 @@ function Index() {
       } else if (period_lo == 3) {
         setPeriod('12am-2am')
       }
-      console.log(period_lo)
       setPeople(people_lo)
     }
-    console.log(storageData)
+    // console.log(storageData)
     setResults(JSON.parse(localStorage.getItem('results')) || [])
   }, [])
 
   useEffect(() => {
-    console.log('reserveDate 更新了！', period, 'hi')
-  }, [period])
-  //狀態變化時將其寫入 `localStorage`
-  // useEffect(() => {
-  //   localStorage.setItem('queryResult', JSON.stringify(results))
-  // }, [results])
-
-  useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
-    console.log(period)
-    console.log('刷新')
   }, [searchData])
 
   return (
