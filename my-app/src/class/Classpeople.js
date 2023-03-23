@@ -134,11 +134,7 @@ function Classpeople() {
             required
             placeholder="ex.0912345678"
             onChange={(e) => handleInputChange(e, index)}
-            pattern="^(09)[0-9]{8}$"
           />
-          <div className="invalid-feedback">
-            請輸入正確的電話格式，例如：0912345678
-          </div>
         </div>
       </div>
     </div>
@@ -177,7 +173,7 @@ function Classpeople() {
         <div className="container pt-3 pb-3 " id="my-page-element">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec">參與者</span>
-            <input
+            {/* <input
               type="checkbox"
               name="food"
               value="1"
@@ -186,7 +182,7 @@ function Classpeople() {
               onChange={handleAutoInput}
             />
 
-            <span className="text-align-center"> 同訂購人</span>
+            <span className="text-align-center"> 同訂購人</span> */}
           </div>
           <div>{inputFields}</div>
           {/* <div className="title-box  justify-content-between">
