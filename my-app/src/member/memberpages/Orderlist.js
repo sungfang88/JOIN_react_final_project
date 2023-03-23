@@ -492,7 +492,7 @@ function Orderlist() {
         <div className="container">
           <div className="row">
             <div className="col-md-2 d-none d-lg-block border-end border-2">
-              <div className="d-flex flex-column">
+              <div className="d-flex flex-column memsticky">
                 <button
                   className="g-line-btn j-h3 mb-2 me-4"
                   onClick={() => {
