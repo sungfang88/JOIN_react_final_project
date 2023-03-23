@@ -6,20 +6,13 @@ import axios from 'axios'
 import Navbar from '../Layout/Mainlayout/Navbar'
 
 function Home() {
+  //TODO首頁動畫
+
   const [likedProducts, setLikedProducts] = useState([])
   const [bestProductData, setBestProductData] = useState([])
   const [news, setNews] = useState([])
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const res = await fetch('http://localhost:3008/seat/news')
-  //     const data = await res.json()
-  //     setNews(data.rows)
-  //     console.log(data.rows)
-  //   }
-  //   fetchData()
-  // }, [])
-
+  //*最新消息
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,7 +56,7 @@ function Home() {
           <div className="d-none d-md-flex">
             <div className="w-100 text-center d-flex flex-column justify-content-between">
               <div className="card-flip-1">
-                <div className="flip">
+                <div className="flip flip-1">
                   <div className="front-1 cardf-1">
                     <img src={`/img/index-1.png`} alt="" className="w-75" />
                   </div>
@@ -72,13 +65,15 @@ function Home() {
                   </div>
                 </div>
               </div>
-              <div>
-                <img src={`/img/index-3.png`} className="w-75" alt="" />
-              </div>
+              <Link to="/product">
+                <div>
+                  <img src={`/img/index-3.png`} className="w-75" alt="" />
+                </div>
+              </Link>
             </div>
             <div className="w-100">
               <div className="card-flip-2">
-                <div className="flip">
+                <div className="flip flip-2">
                   <div className="front-2 cardf-2">
                     <img src={`/img/index-1.png`} alt="..." className="w-75" />
                   </div>
@@ -89,11 +84,13 @@ function Home() {
               </div>
             </div>
             <div className="w-100 text-center d-flex flex-column justify-content-between">
-              <div>
-                <img src={`/img/index-2.png`} className="w-75" alt="" />
-              </div>
+              <Link to="/seat">
+                <div>
+                  <img src={`/img/index-2.png`} className="w-75" alt="" />
+                </div>
+              </Link>
               <div className="card-flip-1">
-                <div className="flip">
+                <div className="flip flip-3">
                   <div className="front-1 cardf-3"></div>
                   <div className="back-1 cardb-3">
                     <img src={`img/index-9.jpeg`} alt="" />
@@ -103,7 +100,7 @@ function Home() {
             </div>
             <div className="w-100">
               <div className="card-flip-2">
-                <div className="flip">
+                <div className="flip flip-4">
                   <div className="front-2 cardf-4"></div>
                   <div className="back-2 cardb-4">
                     <img src={`/img/index-8.jpeg`} alt="" />
@@ -113,7 +110,7 @@ function Home() {
             </div>
             <div className="w-100 text-center d-flex flex-column justify-content-between">
               <div className="card-flip-1">
-                <div className="flip">
+                <div className="flip flip-5">
                   <div className="front-1 cardf-5">
                     <img src={`/img/index-1.png`} alt="" className="w-75" />
                   </div>
@@ -122,9 +119,11 @@ function Home() {
                   </div>
                 </div>
               </div>
-              <div>
-                <img src={`/img/index-4.png`} className="w-75" alt="" />
-              </div>
+              <Link to="/class">
+                <div>
+                  <img src={`/img/index-4.png`} className="w-75" alt="" />
+                </div>
+              </Link>
             </div>
           </div>
           <div className="d-flex d-md-none align-items-center flex-column">
