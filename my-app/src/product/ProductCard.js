@@ -137,7 +137,7 @@ function ProductCard(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCartani(false)
-    }, 2000)
+    }, 800)
 
     return () => clearTimeout(timer)
   }, [cartAni])

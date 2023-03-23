@@ -10,7 +10,7 @@
     left: 60%;
     bottom: 50%;
     opacity: 0.8;
-    animation: cartanima 2s ease-in-out infinite;
+    animation: cartanima 0.8s ease-in-out 1 forwards;
 }
 
 @keyframes cartanima {
@@ -28,7 +28,7 @@
     100% {
         width: 100px;
         height: 100px;
-        left: 90%;
+        left: 80%;
         bottom: 90%;
         opacity: 0;
     }

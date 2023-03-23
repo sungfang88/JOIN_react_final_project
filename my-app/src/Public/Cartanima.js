@@ -2,7 +2,6 @@ import React from 'react'
 import './css/cartanima.css'
 
 function Cartanima(props) {
-  console.log(props.productimg)
   return (
     <>
       <div className="cartbox">

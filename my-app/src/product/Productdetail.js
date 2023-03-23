@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import AuthContext from '../Context/AuthContext'
+import NavbarContext from '../Context/NavbarContext'
 
 import LikeButton from '../Public/Likebutton'
 import Productinfo from './Productinfo'
@@ -26,9 +27,14 @@ function Productdetail() {
   // const [likedProducts, setLikedProducts] = useState([])
   const [bestProductData, setBestProductData] = useState([])
 
+  const { getcartlistnumber } = useContext(NavbarContext)
+
   const [Memberlike, setMemberlike] = useState([])
   const { myAuth } = useContext(AuthContext)
   let likedProducts = {}
+  if (myAuth.authorized) {
+    getcartlistnumber()
+  }
 
   if (myAuth.authorized) {
     const Array = Memberlike.map((v, i) => {

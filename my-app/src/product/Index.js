@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import { useContext } from 'react'
 import AuthContext from '../Context/AuthContext'
+import NavbarContext from '../Context/NavbarContext'
 import { usePopup } from '../Public/Popup'
 import '../Public/style'
 import './css/product.css'
@@ -13,6 +14,8 @@ function Product() {
   // loading畫面
   const [loadingOne, setLoadingOne] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { getcartlistnumber } = useContext(NavbarContext)
 
   const [allProductData, setAllProductData] = useState([])
   const [allProductCatagory, setallProductCatagory] = useState([])
@@ -31,11 +34,11 @@ function Product() {
   // 搜尋功能
   const [inputText, setInputText] = useState('')
   const [keyword, setKeyword] = useState('')
-  console.log('inputText', inputText)
-  console.log('keyword', keyword)
+  // console.log('inputText', inputText)
+  // console.log('keyword', keyword)
   // 如果搜尋keyword有的話才會執行setfilterKeyword並呈現畫面
   const [filterKeyword, setfilterKeyword] = useState('')
-  console.log('filterKeyword', filterKeyword)
+  // console.log('filterKeyword', filterKeyword)
 
   // 搜尋沒有資料的彈跳視窗
   const { Popup, openPopup, closePopup } = usePopup()
@@ -63,6 +66,9 @@ function Product() {
       // console.log('localStoragelikedProducts', likedProducts)
       //{BD0002FR: true, BD0003FR: true, BD0004FR: true}
     }
+  }
+  if (myAuth.authorized) {
+    getcartlistnumber()
   }
 
   const categoryselect = () => {
@@ -96,6 +102,22 @@ function Product() {
     likeData()
   }, [])
 
+  // 模擬網路很差的時候有動畫效果
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     async function fetchData() {
+  //       const res = await fetch('http://localhost:3008/product/api/allproduct')
+  //       const data = await res.json()
+  //       setAllProductData(data.rows)
+  //     }
+  //     fetchData()
+  //     setfilterProductPrice('')
+  //     setIsLoading(true)
+  //   }, 1000)
+
+  //   return () => clearTimeout(timer)
+  // }, [])
+
   useEffect(() => {
     async function fetchData() {
       const res = await fetch('http://localhost:3008/product/api/allproduct')
@@ -113,13 +135,13 @@ function Product() {
         .filter((product) => product.product_id.includes(filterProductCatagory))
         .filter((product) => product.product_ch.includes(inputText))
       if (filteredProducts.length === 0) {
-        console.log('沒有資料')
+        // console.log('沒有資料')
         setfilterProductCatagory('')
         setSelectedCategory('選擇商品種類')
         setfilterKeyword('')
         openPopup()
       } else {
-        console.log('有資料')
+        // console.log('有資料')
         setfilterKeyword(keyword)
       }
     }
@@ -178,16 +200,16 @@ function Product() {
     setfilterKeyword('')
   }
   useEffect(() => {
-    console.log('filterKeyword', filterKeyword)
-    console.log('filterProductCatagory', filterProductCatagory)
-    console.log('filterProductPrice', filterProductPrice)
+    // console.log('filterKeyword', filterKeyword)
+    // console.log('filterProductCatagory', filterProductCatagory)
+    // console.log('filterProductPrice', filterProductPrice)
     const filteredProducts = allProductData
       .filter((product) => product.product_id.includes(filterProductCatagory))
       .filter((product) => product.product_ch.includes(filterKeyword))
 
-    console.log('.length', filteredProducts.length)
+    // console.log('.length', filteredProducts.length)
     const pageCount = Math.ceil(filteredProducts.length / productsPerPage)
-    console.log('.lenpageCount', pageCount)
+    // console.log('.lenpageCount', pageCount)
     const newPageNumbers = []
 
     for (let i = 1; i <= pageCount; i++) {
@@ -220,7 +242,7 @@ function Product() {
 
   return (
     <>
-      {loadingOne ? '' : <Loading />}
+      {/* {loadingOne ? '' : <Loading />} */}
 
       {isLoading ? '' : <Loading />}
       {/* <!-- Sec-navbar 要用nav-space 空出上面的距離 --> */}

@@ -29,7 +29,7 @@ function App() {
           <NavbarContextProvider>
             <Routes>
               <Route path="/" element={<Mainlayoutwithnavbar />}>
-                <Route index element={<Test_cartanima />} />
+                <Route index element={<Home />} />
               </Route>
 
               <Route element={<Mainlayout />}>
