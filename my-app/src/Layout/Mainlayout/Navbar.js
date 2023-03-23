@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom'
 function Navbar() {
   const [path, setpath] = useState('')
   const location = useLocation()
-  console.log('location.pathname', location.pathname)
+  // console.log('location.pathname', location.pathname)
   const getpath = () => {
     const pathArray = location.pathname.split('/')
     const mainPath = pathArray[1]
@@ -84,7 +84,7 @@ function Navbar() {
                   {cartlistnum === 0 ? (
                     <></>
                   ) : (
-                    <span class="cart-count">{cartlistnum}</span>
+                    <span className="cart-count">{cartlistnum}</span>
                   )}
                 </Link>
               </>

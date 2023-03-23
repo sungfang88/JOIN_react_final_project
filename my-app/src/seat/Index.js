@@ -39,11 +39,21 @@ function Index() {
   const formattedToday = `${year}-${month}-${day}`
 
   //查詢用
+  const storedBookingData =
+    JSON.parse(localStorage.getItem('bookingData')) || {}
+  const { reserveDate_lo, period_lo, people_lo } = storedBookingData
+  console.log(period_lo)
+
   const [results, setResults] = useState([])
-  const [reserveDate, setReserveDate] = useState('')
-  const [period, setPeriod] = useState('請選擇...')
-  const [people, setPeople] = useState('')
-  const [searchData, setSearchData] = useState({})
+  // const [reserveDate, setReserveDate] = useState(reserveDate_lo || '')
+  // const [period, setPeriod] = useState(period_lo || '請選擇...')
+  // const [people, setPeople] = useState(people_lo || '')
+  const [reserveDate, setReserveDate] = useState(reserveDate_lo || '')
+  const [period, setPeriod] = useState(period_lo || '請選擇...')
+  const [people, setPeople] = useState(people_lo || '')
+
+  const [searchData, setSearchData] = useState(storedBookingData)
+  // console.log(reserveDate)
 
   //popup
   const { Popup, openPopup, closePopup } = usePopup()
@@ -98,16 +108,16 @@ function Index() {
     if (searchForm.checkValidity() && (period == 1 || 2 || 3)) {
       // console.log('Form is valid!')
       setSearchData({
-        reserveDate,
-        period: +document.getElementById('selected1').value,
-        people,
+        reserveDate_lo: reserveDate,
+        period_lo: +document.getElementById('selected1').value || period_lo,
+        people_lo: people,
       })
       try {
         // saveSearchData({ reserveDate, period, people })
         const response = await axios.get(SEARCH, {
           params: {
             reserveDate,
-            period: +document.getElementById('selected1').value,
+            period: period_lo || +document.getElementById('selected1').value,
             people,
           },
         })
@@ -127,14 +137,31 @@ function Index() {
   //TODO 刷新頁面後localStorage會消失
   //讀取local資料
   useEffect(() => {
-    const storageData = JSON.parse(localStorage.getItem('searchData')) || {}
+    console.log('讀取localstorage')
+    // const storageData = JSON.parse(localStorage.getItem('bookingData') || {})
+    const storageData = JSON.parse(localStorage.getItem('bookingData')) || {}
+    const { reserveDate_lo, period_lo, people_lo } = storageData
+    console.log(storageData)
     setSearchData(storageData)
-    setReserveDate(storageData.date || '')
-    setPeriod(storageData.period || '')
-    setPeople(storageData.people || '')
+    if (storageData) {
+      setReserveDate(reserveDate_lo)
+      if (period_lo == 1) {
+        setPeriod('8pm-10pm')
+      } else if (period_lo == 2) {
+        setPeriod('10pm-12am')
+      } else if (period_lo == 3) {
+        setPeriod('12am-2am')
+      }
+      console.log(period_lo)
+      setPeople(people_lo)
+    }
+    console.log(storageData)
     setResults(JSON.parse(localStorage.getItem('results')) || [])
   }, [])
 
+  useEffect(() => {
+    console.log('reserveDate 更新了！', period, 'hi')
+  }, [period])
   //狀態變化時將其寫入 `localStorage`
   // useEffect(() => {
   //   localStorage.setItem('queryResult', JSON.stringify(results))
@@ -142,6 +169,7 @@ function Index() {
 
   useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
+    console.log(period)
     console.log('刷新')
   }, [searchData])
 

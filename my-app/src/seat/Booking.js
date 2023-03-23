@@ -99,19 +99,19 @@ function Booking() {
   useEffect(() => {
     const bookingData = JSON.parse(localStorage.getItem('bookingData'))
     if (bookingData) {
-      setReserveDate(bookingData.reserveDate)
+      setReserveDate(bookingData.reserveDate_lo)
       // setPeriod(bookingData.period)
-      if (bookingData.period == options1[0].value) {
+      if (bookingData.period_lo == options1[0].value) {
         setPeriod(options1[0].label)
         setPeriodSid(1)
-      } else if (bookingData.period == options1[1].value) {
+      } else if (bookingData.period_lo == options1[1].value) {
         setPeriod(options1[1].label)
         setPeriodSid(2)
-      } else if (bookingData.period == options1[2].value) {
+      } else if (bookingData.period_lo == options1[2].value) {
         setPeriod(options1[2].label)
         setPeriodSid(3)
       }
-      setPeople(bookingData.people)
+      setPeople(bookingData.people_lo)
     }
   }, [])
 
