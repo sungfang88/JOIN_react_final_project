@@ -40,6 +40,12 @@ section {
     min-width: 25px;
     text-align: center;
   }
+.custom {
+    background-color:  #25848b00;
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
 
 /* 大電腦 */
 @media screen and (min-width: 1600px) {

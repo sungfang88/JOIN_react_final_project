@@ -124,7 +124,7 @@ function OrderClass() {
         <div className="container">
           <div className="row">
             <div className="col-2 d-none d-lg-block">
-              <div className="d-flex flex-column">
+              <div className="d-flex flex-column memsticky">
                 <button
                   className="g-line-btn j-h3 mb-2 me-4"
                   onClick={() => {

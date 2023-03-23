@@ -110,7 +110,7 @@ function Login() {
                       window.location.href = lasturl
                     } else {
                       console.log('沒有presentURL', HOST)
-                      window.location.href = HOST
+                      window.location.href = 'http://localhost:3002'
                     }
                   } else {
                     localStorage.setItem(
@@ -141,7 +141,7 @@ function Login() {
                       window.location.href = lasturl
                     } else {
                       console.log('沒有presentURL', HOST)
-                      window.location.href = HOST
+                      window.location.href = 'http://localhost:3002'
                     }
                   }
                 })
@@ -173,7 +173,7 @@ function Login() {
                   window.location.href = lasturl
                 } else {
                   console.log('沒有presentURL', HOST)
-                  window.location.href = HOST
+                  window.location.href = 'http://localhost:3002'
                 }
               }
             }
@@ -272,7 +272,7 @@ function Login() {
                     window.location.href = lasturl
                   } else {
                     console.log('沒有presentURL', HOST)
-                    window.location.href = HOST
+                    window.location.href = 'http://localhost:3002'
                   }
                 } else {
                   localStorage.setItem(
@@ -302,7 +302,7 @@ function Login() {
                     window.location.href = lasturl
                   } else {
                     console.log('沒有presentURL', HOST)
-                    window.location.href = HOST
+                    window.location.href = 'http://localhost:3002'
                   }
                 }
               })
@@ -334,7 +334,7 @@ function Login() {
                 window.location.href = lasturl
               } else {
                 console.log('沒有presentURL', HOST)
-                window.location.href = HOST
+                window.location.href = 'http://localhost:3002'
               }
             }
           }
