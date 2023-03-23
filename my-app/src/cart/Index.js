@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { GETCART_DATA } from './api_comfig'
+import { GETCART_DATA, CART_DATA } from './api_comfig'
 import { UPDATED } from './api_comfig'
 import { usePopup } from '../Public/Popup'
 import Stepprocess from './components/Stepprocess'
@@ -20,14 +20,30 @@ function Index() {
   const [selectedSids, setSelectedSids] = useState(
     JSON.parse(localStorage.getItem('selectedSids') || '[]')
   )
-  // 將 handleCheckboxChange 改為更新 selectedSids 狀態
-  // 在这里清空 localStorage
+  const [sidTotalPrice, setSidTotalPrice] = useState([])
+  //選取的sid找他的所有資料
+  const getSelectedSidsData = async () => {
+    try {
+      const response = await axios.get(
+        `${CART_DATA}${selectedSids.join('/')}`,
+        {
+          withCredentials: true,
+        }
+      )
+      setSidTotalPrice(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log('sidTotalPrice', sidTotalPrice)
+
+  // 一開始先清空 localStorage
   useEffect(() => {
     localStorage.removeItem('selectedSids')
     setSelectedSids([])
   }, [])
 
-  // 将 handleCheckboxChange 改为更新 selectedSids 状态
+  // 將 handleCheckboxChange 改為更新 selectedSids 內容
   const handleCheckboxChange = (e, sid) => {
     if (e.target.checked) {
       setSelectedSids([...selectedSids, sid])
@@ -37,8 +53,19 @@ function Index() {
   }
 
   useEffect(() => {
+    getSelectedSidsData()
     localStorage.setItem('selectedSids', JSON.stringify(selectedSids))
   }, [selectedSids])
+
+  //算金額
+  const totalPrice = sidTotalPrice.reduce(
+    (acc, v, i) => acc + (v.price || 0) * (v.quantity || 0),
+    0
+  )
+  const totalCount = sidTotalPrice.reduce(
+    (acc, v, i) => acc + (v.quantity || 0),
+    0
+  )
 
   // btnGroup array {text: 按鍵字, handle: onclick function}
   const openDupBtnPopup = () => {
@@ -68,13 +95,6 @@ function Index() {
     }
   }
 
-  //算金額
-  const totalPrice = data.reduce(
-    (acc, v, i) => acc + (v.price || 0) * (v.quantity || 0),
-    0
-  )
-  const totalCount = data.reduce((acc, v, i) => acc + (v.quantity || 0), 0)
-
   //將購物車資料送回資料庫
   const updateCartItem = async (item) => {
     try {
@@ -93,9 +113,9 @@ function Index() {
     }
   }
 
-  //按下一部後將資料傳送到updateCartItem
+  //按下一步後將資料傳送到updateCartItem
   const handleNext = () => {
-    data.forEach((item) => {
+    sidTotalPrice.forEach((item) => {
       updateCartItem(item)
     })
   }
@@ -122,6 +142,8 @@ function Index() {
           data={data}
           setData={setData}
           handleCheckboxChange={handleCheckboxChange}
+          sidTotalPrice={sidTotalPrice}
+          setSidTotalPrice={setSidTotalPrice}
         />
       </section>
       {/* 金額總計 */};

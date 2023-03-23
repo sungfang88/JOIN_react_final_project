@@ -89,7 +89,7 @@ function Cartsec() {
         COUPON_DATA,
         {
           memberId: myAuth.sid,
-          types: [1, 2],
+          types: [1, 2, 3],
         },
         { withCredentials: true }
       )
