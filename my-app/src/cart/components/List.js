@@ -3,7 +3,13 @@ import { usePopup } from '../../Public/Popup'
 import { DELETE_DATA } from '../api_comfig'
 
 function List(props) {
-  const { data, setData, handleCheckboxChange } = props
+  const {
+    data,
+    setData,
+    handleCheckboxChange,
+    setSidTotalPrice,
+    sidTotalPrice,
+  } = props
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
@@ -109,32 +115,37 @@ function List(props) {
                         <i
                           className="fa-solid fa-square-minus"
                           onClick={() => {
-                            const newData = data.map((v, i) => {
-                              console.log('hi')
-                              if (v.sid === r.sid && v.quantity > 1) {
+                            const newData = sidTotalPrice.map((item) => {
+                              if (item.sid === r.sid && item.quantity > 1) {
                                 return {
-                                  ...v,
-                                  quantity: v.quantity - 1,
-                                  amount: v.quantity * v.price,
+                                  ...item,
+                                  quantity: item.quantity - 1,
+                                  amount: item.amount - item.price,
                                 }
                               }
-                              return v
+                              return { ...item }
                             })
-                            console.log('newData', newData)
-                            setData(newData)
+                            setSidTotalPrice(newData)
                           }}
                         ></i>
-                        <span className="px-4">{r.quantity}</span>
+                        <span className="px-4">
+                          {sidTotalPrice.find((item) => item.sid === r.sid)
+                            ?.quantity || 0}
+                        </span>
                         <i
                           className="fa-solid fa-square-plus"
                           onClick={() => {
-                            const newData = data.map((v, i) => {
-                              if (v.sid === r.sid) {
-                                return { ...v, quantity: v.quantity + 1 }
+                            const newData = sidTotalPrice.map((item) => {
+                              if (item.sid === r.sid) {
+                                return {
+                                  ...item,
+                                  quantity: item.quantity + 1,
+                                  amount: item.amount + item.price,
+                                }
                               }
-                              return v
+                              return { ...item }
                             })
-                            setData(newData)
+                            setSidTotalPrice(newData)
                           }}
                         ></i>
                       </li>

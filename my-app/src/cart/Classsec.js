@@ -46,6 +46,7 @@ function Classsec() {
     setIsOpen(!isOpen)
   }
   const orderId = JSON.parse(localStorage.getItem('orderId'))
+
   useEffect(() => {
     getClassData()
     getMemberData()
