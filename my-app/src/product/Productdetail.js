@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import ProductCard from './ProductCard'
+import AuthContext from '../Context/AuthContext'
+
 import LikeButton from '../Public/Likebutton'
 import Productinfo from './Productinfo'
 import '../Public/style'
@@ -17,12 +19,48 @@ function Productdetail() {
       productId: 'BD0002FR',
     }
   }
-  console.log(state.productId)
-
+  // console.log('state.productId', state.productId)
+  // console.log('isLiked', state.isLiked)
   // console.log(props)
   const [productData, setProductData] = useState({})
-  const [likedProducts, setLikedProducts] = useState([])
+  // const [likedProducts, setLikedProducts] = useState([])
   const [bestProductData, setBestProductData] = useState([])
+
+  const [Memberlike, setMemberlike] = useState([])
+  const { myAuth } = useContext(AuthContext)
+  let likedProducts = {}
+
+  if (myAuth.authorized) {
+    const Array = Memberlike.map((v, i) => {
+      return v.productmanage
+    }).map((v, i) => {
+      return { [v]: true }
+    })
+    let obj = {}
+    Array.map((v, i) => {
+      obj = { ...obj, ...v }
+    })
+    likedProducts = obj
+    // console.log('MemberlikedProducts', likedProducts)
+    //{BD0002FR: true, BD0003FR: true, BD0004FR: true}
+  } else {
+    if (localStorage.getItem('likedProducts') !== null) {
+      likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
+      // console.log('localStoragelikedProducts', likedProducts)
+      //{BD0002FR: true, BD0003FR: true, BD0004FR: true}
+    }
+  }
+  const likeData = async () => {
+    const res = await fetch(
+      `http://localhost:3008/product/api/getproductlike/${myAuth.sid} `
+    )
+    const data = await res.json()
+    // console.log(data.rows)
+    setMemberlike(data.rows)
+  }
+  useEffect(() => {
+    likeData()
+  }, [state.productId])
 
   useEffect(() => {
     async function fetchData() {
@@ -49,25 +87,25 @@ function Productdetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [productData])
+  }, [state.productId])
 
-  const handleLike = (productId) => {
-    if (likedProducts.includes(productId)) {
-      setLikedProducts(likedProducts.filter((id) => id !== productId))
-      localStorage.removeItem(productId)
-    } else {
-      setLikedProducts([...likedProducts, productId])
-      localStorage.setItem(productId, true)
-    }
-  }
+  // const handleLike = (productId) => {
+  //   if (likedProducts.includes(productId)) {
+  //     setLikedProducts(likedProducts.filter((id) => id !== productId))
+  //     localStorage.removeItem(productId)
+  //   } else {
+  //     setLikedProducts([...likedProducts, productId])
+  //     localStorage.setItem(productId, true)
+  //   }
+  // }
 
   return (
     <>
       {productData.product_id ? (
         <Productinfo
           productId={productData.product_id}
-          isLiked={likedProducts.includes(productData.product_id)}
-          onLike={() => handleLike(productData.product_id)}
+          isLiked={state.isLiked}
+          // onLike={() => handleLike(productData.product_id)}
           product_ch={productData.product_ch}
           product_eg={productData.product_eg}
           product_capacity={productData.capacity}
@@ -77,6 +115,7 @@ function Productdetail() {
           product_price={productData.productprice}
           product_country_ch={productData.country_ch}
           product_alcohol={productData.alcohol}
+          likeData={likeData}
           amount={1}
         />
       ) : (
@@ -111,9 +150,9 @@ function Productdetail() {
                       productch={product.product_ch}
                       producteg={product.product_eg}
                       productprice={product.productprice}
-                      isLiked={likedProducts.includes(product.product_id)}
+                      isLiked={likedProducts[product.product_id]}
                       productimg={product.product_img}
-                      onLike={handleLike}
+                      likeData={likeData}
                     />
                   ))}
               </div>

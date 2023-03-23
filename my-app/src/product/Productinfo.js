@@ -5,11 +5,16 @@ import Counter from './Counter'
 import AuthContext from '../Context/AuthContext'
 
 function Productinfo(props) {
+  // console.log('propsinfo', props.isLiked)
   const [isLiked, setIsLiked] = useState(props.isLiked)
 
   const [Memberlike, setMemberlike] = useState([])
   // 登入判斷設定愛心
   const { myAuth } = useContext(AuthContext)
+  useEffect(() => {
+    setIsLiked(props.isLiked)
+  }, [props.productId])
+
   let likedProducts = {}
   const addTolike = (event) => {
     event.preventDefault()
@@ -29,6 +34,7 @@ function Productinfo(props) {
           )
           console.log('刪除')
           setIsLiked(false)
+          props.likeData()
         } else {
           fetch(`http://localhost:3008/product/api/productlikeadd`, {
             method: 'POST',
@@ -43,6 +49,7 @@ function Productinfo(props) {
 
           console.log('新增')
           setIsLiked(true)
+          props.likeData()
         }
         return !prev
       } else {
@@ -116,6 +123,7 @@ function Productinfo(props) {
                 to="/product/productdetail"
                 state={{
                   productId: `${props.productId}`,
+                  isLiked: isLiked,
                 }}
               >
                 {props.product_ch}
@@ -141,7 +149,7 @@ function Productinfo(props) {
             </div>
             <div className="col-12 col-xl-6 mt-3 mt-lg-0">
               <div className="prodctde-r ps-auto ps-md-0 ps-lg-5  mb-5">
-                <div className="row text-center text-md-start">
+                <div className="row text-start">
                   <div className="col-12 ">
                     <div className="div">
                       <div className="row">
@@ -219,7 +227,7 @@ function Productinfo(props) {
                       </div>
                     </div>
 
-                    <div className="row mt-4 text-center text-md-start">
+                    <div className="row mt-4 textstart discrip-box">
                       <h4
                         className="product-discrip"
                         dangerouslySetInnerHTML={{

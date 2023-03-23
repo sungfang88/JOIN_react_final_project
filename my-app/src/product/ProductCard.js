@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import LikeButton from '../Public/Likebutton'
 import { useContext } from 'react'
 import AuthContext from '../Context/AuthContext'
+import NavbarContext from '../Context/NavbarContext'
+import Cartanima from '../Public/Cartanima'
 
 function ProductCard(props) {
+  // 購物車動畫
+  const [cartAni, setCartani] = useState(false)
+  // console.log('props',props)
   const navigate = useNavigate()
   const [count, setCount] = useState(1)
   const [isLiked, setIsLiked] = useState(props.isLiked)
+
+  const { getcartlistnumber } = useContext(NavbarContext)
 
   const [Memberlike, setMemberlike] = useState([])
   // 登入判斷設定愛心
@@ -32,6 +39,7 @@ function ProductCard(props) {
           )
           console.log('刪除')
           setIsLiked(false)
+          props.likeData()
         } else {
           fetch(`http://localhost:3008/product/api/productlikeadd`, {
             method: 'POST',
@@ -46,6 +54,7 @@ function ProductCard(props) {
 
           console.log('新增')
           setIsLiked(true)
+          props.likeData()
         }
         return !prev
       } else {
@@ -80,6 +89,14 @@ function ProductCard(props) {
       e.target.classList.add('fa-regular')
     }
   }
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setCartani(null)
+  //   }, 3000)
+  //   return () => clearTimeout(timer)
+  // }, cartAni)
+
   function settomember() {
     // const cartItem = {
     //   productId: props.productId,
@@ -97,6 +114,8 @@ function ProductCard(props) {
       }),
     })
     console.log('加入資料庫')
+    getcartlistnumber()
+    setCartani(true)
   }
   function nologin() {
     const cartItem = {
@@ -115,7 +134,13 @@ function ProductCard(props) {
       },
     })
   }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCartani(false)
+    }, 2000)
 
+    return () => clearTimeout(timer)
+  }, [cartAni])
   return (
     <div className="col">
       <Link
@@ -123,8 +148,10 @@ function ProductCard(props) {
         state={{
           productId: `${props.productId}`,
           amount: 1,
+          isLiked: isLiked,
         }}
       >
+        {cartAni ? <Cartanima productimg={props.productimg} /> : ''}
         <div className="mycard product">
           <div className="wrapper">
             <img

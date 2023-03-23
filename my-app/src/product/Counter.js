@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react'
 import AuthContext from '../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { usePopup } from '../Public/Popup'
+import NavbarContext from '../Context/NavbarContext'
 
 function Counter(props) {
   const navigate = useNavigate()
   const [count, setCount] = useState(1)
   // const [isCart, setIsCart] = useState(false)
   const { myAuth } = useContext(AuthContext)
+  const { getcartlistnumber } = useContext(NavbarContext)
   const { Popup, openPopup, closePopup } = usePopup()
   useEffect(() => {
     setCount(1)
@@ -39,6 +41,7 @@ function Counter(props) {
     }).then(() => {
       console.log('加入資料庫')
       openPopup()
+      getcartlistnumber()
     })
   }
 
@@ -152,10 +155,10 @@ function Counter(props) {
           </div>
         </div>
         <div className="col-12 col-xl-6 col-xl px-auto pe-auto pe-md-0 px-xl-0 pe-lg-auto mt-3 mt-md-0">
-          <div className="row mt-xl-0">
-            <div className="col">
+          <div className="row mt-xl-0 ">
+            <div className="col px-xl-1">
               <button
-                className="o-line-btn j-h3 d-md-block w-100"
+                className="o-line-btn j-h3 d-md-block w-100 "
                 onClick={() => {
                   if (myAuth.authorized) {
                     settomembertocart()
@@ -167,7 +170,7 @@ function Counter(props) {
                 立即購買
               </button>
             </div>
-            <div className="col">
+            <div className="col px-xl-0">
               <button
                 className="cart-btn j-h3 w-100"
                 onClick={() => {
@@ -185,33 +188,6 @@ function Counter(props) {
           </div>
         </div>
       </div>
-      {/* 分隔 */}
-      {/* <div className="row justify-content-center">
-        <div className="col-3">
-          <button
-            className="g-line-btn j-h3 minus w-100"
-            onClick={handleMinusClick}
-          >
-            <i className="fa-solid fa-minus"></i>
-          </button>
-        </div>
-        <div className="col-6 px-0">
-          <input
-            type="text"
-            className="j-h3 g-line-input text-align-center product-amount input-text w-100"
-            value={count}
-            readOnly
-          />
-        </div>
-        <div className="col-3">
-          <button
-            className="g-line-btn me-0 me-md-2 j-h3 plus w-100"
-            onClick={handlePlusClick}
-          >
-            <i className="fa-solid fa-plus"></i>
-          </button>
-        </div>
-      </div> */}
     </>
   )
 }

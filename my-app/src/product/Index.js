@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import { useContext } from 'react'
 import AuthContext from '../Context/AuthContext'
+import { usePopup } from '../Public/Popup'
 import '../Public/style'
 import './css/product.css'
 
@@ -22,8 +23,22 @@ function Product() {
   const [filterProductPrice, setfilterProductPrice] = useState('')
   const [selectedPrice, setSelectedPrice] = useState('選擇價格排序')
   const [showPrice, setshowPrice] = useState(false)
+
+  const [pageNumbers, setPageNumbers] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [productsPerPage] = useState(12)
+
+  // 搜尋功能
+  const [inputText, setInputText] = useState('')
+  const [keyword, setKeyword] = useState('')
+  console.log('inputText', inputText)
+  console.log('keyword', keyword)
+  // 如果搜尋keyword有的話才會執行setfilterKeyword並呈現畫面
+  const [filterKeyword, setfilterKeyword] = useState('')
+  console.log('filterKeyword', filterKeyword)
+
+  // 搜尋沒有資料的彈跳視窗
+  const { Popup, openPopup, closePopup } = usePopup()
 
   const [Memberlike, setMemberlike] = useState([])
   // 登入判斷設定愛心
@@ -58,6 +73,15 @@ function Product() {
     setshowPrice(!showPrice)
     setshowCatogory(false)
   }
+  const likeData = async () => {
+    const res = await fetch(
+      `http://localhost:3008/product/api/getproductlike/${myAuth.sid} `
+    )
+    const data = await res.json()
+    // console.log(data.rows)
+    setMemberlike(data.rows)
+  }
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoadingOne(true)
@@ -69,15 +93,7 @@ function Product() {
     window.scrollTo(0, 0)
   }, [])
   useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(
-        `http://localhost:3008/product/api/getproductlike/${myAuth.sid} `
-      )
-      const data = await res.json()
-      // console.log(data.rows)
-      setMemberlike(data.rows)
-    }
-    fetchData()
+    likeData()
   }, [])
 
   useEffect(() => {
@@ -92,6 +108,24 @@ function Product() {
   }, [])
 
   useEffect(() => {
+    if (keyword.length !== 0) {
+      const filteredProducts = allProductData
+        .filter((product) => product.product_id.includes(filterProductCatagory))
+        .filter((product) => product.product_ch.includes(inputText))
+      if (filteredProducts.length === 0) {
+        console.log('沒有資料')
+        setfilterProductCatagory('')
+        setSelectedCategory('選擇商品種類')
+        setfilterKeyword('')
+        openPopup()
+      } else {
+        console.log('有資料')
+        setfilterKeyword(keyword)
+      }
+    }
+  }, [keyword, filterProductCatagory])
+
+  useEffect(() => {
     async function fetchData() {
       const res = await fetch(
         'http://localhost:3008/product/api/productcatagory'
@@ -101,6 +135,20 @@ function Product() {
     }
     fetchData()
   }, [])
+
+  // for (
+  //   let i = 1;
+  //   i <=
+  //   Math.ceil(
+  //     allProductData.filter((product) =>
+  //       product.product_id.includes(filterProductCatagory)
+  //     ).length / productsPerPage
+  //   );
+  //   i++
+  // ) {
+  //   pageNumbers.push(i)
+  // }
+  // 分頁
 
   const ScrollToTopButton = () => {
     window.scrollTo({
@@ -123,22 +171,52 @@ function Product() {
     setCurrentPage(1)
     ScrollToTopButton()
   }
+  const handleClosePopup = () => {
+    closePopup()
+    setInputText('')
+    setKeyword('')
+    setfilterKeyword('')
+  }
+  useEffect(() => {
+    console.log('filterKeyword', filterKeyword)
+    console.log('filterProductCatagory', filterProductCatagory)
+    console.log('filterProductPrice', filterProductPrice)
+    const filteredProducts = allProductData
+      .filter((product) => product.product_id.includes(filterProductCatagory))
+      .filter((product) => product.product_ch.includes(filterKeyword))
+
+    console.log('.length', filteredProducts.length)
+    const pageCount = Math.ceil(filteredProducts.length / productsPerPage)
+    console.log('.lenpageCount', pageCount)
+    const newPageNumbers = []
+
+    for (let i = 1; i <= pageCount; i++) {
+      newPageNumbers.push(i)
+    }
+    setPageNumbers(newPageNumbers)
+  }, [
+    filterKeyword,
+    filterProductCatagory,
+    filterProductPrice,
+    allProductData,
+    productsPerPage,
+  ])
 
   // 分頁
 
-  const pageNumbers = []
-  for (
-    let i = 1;
-    i <=
-    Math.ceil(
-      allProductData.filter((product) =>
-        product.product_id.includes(filterProductCatagory)
-      ).length / productsPerPage
-    );
-    i++
-  ) {
-    pageNumbers.push(i)
-  }
+  // const pageNumbers = []
+  // for (
+  //   let i = 1;
+  //   i <=
+  //   Math.ceil(
+  //     allProductData.filter((product) =>
+  //       product.product_id.includes(filterProductCatagory)
+  //     ).length / productsPerPage
+  //   );
+  //   i++
+  // ) {
+  //   pageNumbers.push(i)
+  // }
 
   return (
     <>
@@ -146,10 +224,22 @@ function Product() {
 
       {isLoading ? '' : <Loading />}
       {/* <!-- Sec-navbar 要用nav-space 空出上面的距離 --> */}
+      <Popup
+        content={`沒有關於\n"${inputText}"\n的商品`
+          .replace(/<br>/g, '\n')
+          .replace(/<\/?[^>]+>/gi, '')}
+        btnGroup={[{ text: '再看看別的', handle: handleClosePopup }]}
+        icon={<i className="fa-solid fa-circle-check"></i>}
+      />
+      <div className="d-md-none totop-box">
+        <button className="btn totop" onClick={ScrollToTopButton}>
+          <h2 className="j-deepSec">⬆</h2>
+        </button>
+      </div>
       <div className="container-fluid d-none d-md-block nav-space pb-5 product-nav">
         <div className="container">
-          <div className="row sec-navbar">
-            <div className="col-auto">
+          <div className="row sec-navbar justify-content-between w-100">
+            <div className="col-2">
               <Link to="/" className="me-1">
                 主頁
               </Link>
@@ -168,6 +258,7 @@ function Product() {
                 </>
               )}
             </div>
+            <div className="col-4"></div>
           </div>
         </div>
       </div>
@@ -281,12 +372,53 @@ function Product() {
           {/* <Select /> */}
 
           {/* <!-- section-right --> */}
-          <div className="sec-right ps-7 mb-5 pt-4 pt-md-0">
-            <div className="row row-cols-2  row-cols-xl-3 g-4 g-lg-5 g-xl-5">
+          <div className="sec-right ps-7 mb-5 pt-0">
+            <div className="row justify-content-end  j-input w-100 ms-0 ms-md-auto">
+              <div className="col-auto px-0">
+                <div className="row product-search">
+                  <div className="col-8 pe-0 ">
+                    <input
+                      name="search"
+                      type="text"
+                      value={inputText}
+                      placeholder="商品查詢"
+                      className="d-inline-block me-1 search-input me-0 me-md-5 bg"
+                      onChange={(e) => {
+                        setInputText(e.target.value)
+                        // 如果使用者清除所有輸入時要回復為原本列表
+                        // 注意：這裡要以e.target.value來判斷，"不可"使用inputText(異步，尚未更動)
+                        if (e.target.value === '') {
+                          setKeyword('')
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          setKeyword(inputText)
+                          // setfilterKeyword(inputText)
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="col-4 ps-1 ">
+                    <button
+                      onClick={() => {
+                        setKeyword(inputText)
+                        // setfilterKeyword(inputText)
+                      }}
+                      className="g-line-btn j-h3 j-white ms-0 ms-md-3 bg"
+                    >
+                      搜尋
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="row row-cols-2 mt-5 mt-xl-4  row-cols-xl-3 g-4 g-lg-5 g-xl-5 product-secright">
               {allProductData
                 .filter((product) =>
                   product.product_id.includes(filterProductCatagory)
                 )
+                .filter((product) => product.product_ch.includes(filterKeyword))
                 .sort((a, b) => {
                   if (filterProductPrice === 'ASC') {
                     return a.productprice - b.productprice
@@ -300,7 +432,6 @@ function Product() {
                   (currentPage - 1) * productsPerPage,
                   currentPage * productsPerPage
                 )
-
                 .map((product) => (
                   <ProductCard
                     key={product.product_id}
@@ -310,6 +441,7 @@ function Product() {
                     isLiked={likedProducts[product.product_id]}
                     productimg={product.product_img}
                     catagory={product.product_catagory_id}
+                    likeData={likeData}
                   />
                 ))}
             </div>
