@@ -210,7 +210,20 @@ function Navbar() {
               </Link>
             </>
           ) : (
-            <></>
+            <>
+              <Link to="/member/login">
+                <div
+                  className={
+                    path === 'member'
+                      ? 'menu-sm-option active'
+                      : 'menu-sm-option'
+                  }
+                >
+                  <i className="fa-solid fa-user"></i>
+                  <h5>會員</h5>
+                </div>
+              </Link>
+            </>
           )}
         </div>
       </div>
