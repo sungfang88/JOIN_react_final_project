@@ -99,54 +99,29 @@ function Classpeople() {
             required
             placeholder="ex.0912345678"
             onChange={(e) => handleInputChange(e, index)}
+            pattern="^(09)[0-9]{8}$"
           />
+          <div className="invalid-feedback">
+            請輸入正確的電話格式，例如：0912345678
+          </div>
         </div>
       </div>
     </div>
   ))
-  // useEffect(() => {
-  //   return () => {
-  //     //解除功能
-  //     // console.log('unmount')
-  //   }
-  // }, [])
 
-  // const handleAddParticipant = () => {
-  //   // 檢查特定的元素是否存在於頁面中
-  //   const pageElement = document.getElementById('my-page-element')
-  //   if (!pageElement) {
-  //     return
+  //*帶入會員資料
+  // const [checked, setChecked] = useState(false)
+  // const handleCheckboxChange = (event) => {
+  //   const { checked } = event.target
+  //   setChecked(checked)
+  //   if (checked) {
+  //     // console.log('check')
+  //   } else {
+  //     // console.log('not check')
+  //     setName('')
+  //     setPhone('')
   //   }
-
-  //   const container = document.createElement('div')
-  //   container.className = 'container'
-  //   container.innerHTML = `
-  //     <div class="title-box justify-content-between">
-  //       <span class="col-auto j-h2 j-deepSec">參與者</span>
-  //     </div>
-  //     <div class="j-input w-lg-50 w-md-100 d-md-flex flex-column-md-reverse align-items-center">
-  //       <div class="mb-3 px-xl-5">
-  //         <div>
-  //           <label for="name">姓名</label>
-  //         </div>
-  //         <div class="">
-  //           <input type="text" class="input-text" required placeholder="ex.王小明">
-  //         </div>
-  //       </div>
-  //       <div class="mb-3">
-  //         <div>
-  //           <label for="phone">電話</label>
-  //         </div>
-  //         <div class="">
-  //           <input type="tel" class="input-text" required placeholder="ex.0912345678">
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `
-  //   // 添加到特定的元素中
-  //   pageElement.appendChild(container)
   // }
-
   return (
     <>
       <section className="container-fluid">
@@ -180,6 +155,15 @@ function Classpeople() {
         <div className="container pt-3 pb-3 " id="my-page-element">
           <div className="title-box  justify-content-between">
             <span className="col-auto j-h2 j-deepSec">參與者</span>
+            <input
+              type="checkbox"
+              name="food"
+              value="1"
+              className="j-checkbox"
+              // checked={checked}
+              // onChange={handleCheckboxChange}
+            />
+            <span className="text-align-center"> 同訂購人</span>
           </div>
           <div>{inputFields}</div>
           {/* <div className="title-box  justify-content-between">

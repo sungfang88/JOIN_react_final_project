@@ -1,8 +1,35 @@
 import React, { useState } from 'react'
 import './css/Class.css'
 import { Link } from 'react-router-dom'
+import { usePopup } from '../Public/Popup'
+import { useNavigate } from 'react-router-dom'
 
 function Index() {
+  const { Popup, openPopup, closePopup } = usePopup() //必要const
+  const [PopupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
+  const navigate = useNavigate()
+
+  const CheckIn = () => {
+    const myAuth = localStorage.getItem('myAuth')
+    localStorage.setItem('presentURL', '"http://localhost:3002/class"')
+    if (!myAuth) {
+      setPopupProps({
+        content: '請先登入會員',
+        btnGroup: [
+          {
+            text: '立即登入',
+            handle: () => {
+              navigate('/member/login')
+            },
+          },
+          { text: '關閉', handle: closePopup },
+        ],
+      })
+    } else {
+      navigate('/class/Classsec')
+    }
+  }
+
   return (
     <>
       {/* <!-- Sec-navbar 要用nav-space 空出上面的距離 --> */}
@@ -26,7 +53,16 @@ function Index() {
               </p>
               <p className="j-deepGray">組合D： 自選、自選、bartander特調 </p>
               <div className="col-auto">
-                <Link className="o-long-btn j-h3" to="/class/Classsec">
+                <Link
+                  className="o-long-btn j-h3"
+                  to="/class/Classsec"
+                  // onClick={CheckIn}
+                  onClick={(e) => {
+                    CheckIn()
+                    e.preventDefault()
+                    openPopup()
+                  }}
+                >
                   報名
                 </Link>
               </div>
@@ -164,12 +200,35 @@ function Index() {
             </ul>
           </div>
           <div className=" d-flex justify-content-center pt-3">
-            <Link className="o-long-btn j-h3 " to="/class/Classsec">
+            <Link
+              className="o-long-btn j-h3 "
+              to="/class/Classsec"
+              onClick={(e) => {
+                CheckIn()
+                e.preventDefault()
+                openPopup()
+              }}
+            >
               報名課程
             </Link>
           </div>
         </div>
       </section>
+      {PopupProps && (
+        <Popup
+          content={'請先登入會員'}
+          icon={<i className="fa-solid fa-circle-exclamation"></i>}
+          btnGroup={[
+            {
+              text: '立即登入',
+              handle: () => {
+                navigate('/member/login')
+              },
+            },
+            { text: '關閉', handle: closePopup },
+          ]}
+        />
+      )}
     </>
   )
 }
