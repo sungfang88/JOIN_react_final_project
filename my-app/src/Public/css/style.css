@@ -2,7 +2,11 @@
     /* --card-height: 30rem;
     --card-width: calc(var(--card-height) / 1.5); */
 }
-
+#root{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 * {
     margin: 0;
     padding: 0;
@@ -159,6 +163,7 @@ body {
 
 /* footer */
 .footer {
+    flex-shrink: 0;
     background: linear-gradient(90deg, #FFA63E 0%, #E77E7E 100%);
 }
 
@@ -178,6 +183,7 @@ footer img {
 
 .nav-space {
     padding-top: 2rem;
+    flex: 1;
 }
 
 .sec-navbar {
