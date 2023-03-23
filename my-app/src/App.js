@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './Public/style'
 import Home from './home/Home'
-import Test_loading from './test/Test_loading'
+import Test_cartanima from './test/Test_cartanima'
 import Cart from './cart/Cart'
 import Class from './class/Class'
 import News from './news/News'
