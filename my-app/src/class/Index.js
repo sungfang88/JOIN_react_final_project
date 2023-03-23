@@ -81,15 +81,15 @@ function Index() {
 
           <div className="container">
             <div className="row">
-              <div className="col-md-6 order-md-2 mb-4 mb-md-0">
+              <div className="col-md-6 order-md-2 mb-4 mb-md-0 classimg">
                 <img src={`/img/2.png`} alt="2" className="img-fluid" />
               </div>
               <div className="col-md-6 order-md-1">
-                <h2 className="j-primary">架構化的學習脈絡：</h2>
+                <h2 className="j-primary py-3">架構化的學習脈絡：</h2>
 
-                <h3 className="text-justify j-deepGray lh-lg">
+                <h3 className=" j-deepGray lh-lg classtext ">
                   從六大基酒與經典調酒開始
-                  調酒世界中最常使用的基礎風味酒（簡稱基酒）可分成6大類，包括伏特加、琴酒、蘭姆酒、龍舌蘭、威士忌、白蘭地。在課程中，幫助學生提升味覺和嗅覺的認知和靈敏度，透過6大基酒的特色，讓學生系統化建立起對6大基酒的認識。透過練習，學生可以熟悉和辨識出不同的酒類風味。
+                  調酒世界中最常使用的基礎風味酒（簡稱基酒）可分成6大類，包括伏特加、琴酒、蘭姆酒、龍舌蘭、威士忌、白蘭地。在課程中幫助學生提升味覺和嗅覺的認知和靈敏度，透過6大基酒的特色，讓學生系統化建立起對6大基酒的認識。透過練習，學生可以熟悉和辨識出不同的酒類風味。
                 </h3>
               </div>
             </div>

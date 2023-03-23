@@ -17,59 +17,15 @@
     height: 100%;
     
 }
+/* 課程特色背景 */
 
-/*calendar*/
-
-.calendarTable {
-    border-collapse: collapse;
-   
-  }
-  
-.calendarTable th {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    vertical-align: middle;
-    color: #25858B;
-    font-weight: 800;
-  }
-  
-  .calendarTable td {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    vertical-align: middle;
-    color: #F58807;
-    font-weight: 800;
-  }
-  
-  .calendarTable .last-month {
-    color: #cfcfcf;
-  }
-  
-  .calendarTable .next-month {
-    color: #cfcfcf;
-  }
-  
-  .calendarTable .today {
-    background-color: #83838321;
-  }
-  
-  .calendarTable td.selectable {
-    cursor: pointer;
-  }
-  
-  .calendarTable td.selectable:hover {
-    background-color: rgb(37, 133, 139);
-    color: white;
-  }
-  
-  .calendarTable td.not-selectable {
-    color: rgba(131, 131, 131, 0.5);
-    cursor: not-allowed;
-  }
-
-
+.classtext{
+  letter-spacing: 0.8em;
+  text-align:justify
+}
+.classimg{
+  -webkit-filter: drop-shadow(10px 10px 5px #f58a074b);
+}
 
   /* 手機 */
 
