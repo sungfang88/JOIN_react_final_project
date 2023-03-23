@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom'
 function Navbar() {
   const [path, setpath] = useState('')
   const location = useLocation()
-  console.log('location.pathname', location.pathname)
+  // console.log('location.pathname', location.pathname)
   const getpath = () => {
     const pathArray = location.pathname.split('/')
     const mainPath = pathArray[1]

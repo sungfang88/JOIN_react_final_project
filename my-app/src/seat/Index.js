@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react'
 import '../Public/style'
 import './css/booking.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { PERIOD, SEARCH } from './api_config'
+import { PERIOD, SEARCH, BLACK } from './api_config'
 import axios from 'axios'
 import { usePopup } from '../Public/Popup'
 import AuthContext from '../Context/AuthContext'
@@ -39,11 +39,14 @@ function Index() {
   const formattedToday = `${year}-${month}-${day}`
 
   //查詢用
+  const storedBookingData =
+    JSON.parse(localStorage.getItem('bookingData')) || {}
+  const { reserveDate_lo, period_lo, people_lo } = storedBookingData
+
   const [results, setResults] = useState([])
-  const [reserveDate, setReserveDate] = useState('')
-  const [period, setPeriod] = useState('請選擇...')
-  const [people, setPeople] = useState('')
-  const [searchData, setSearchData] = useState({})
+  const [reserveDate, setReserveDate] = useState(reserveDate_lo || '')
+  const [period, setPeriod] = useState(period_lo || '請選擇...')
+  const [people, setPeople] = useState(people_lo || '')
 
   //popup
   const { Popup, openPopup, closePopup } = usePopup()
@@ -52,15 +55,6 @@ function Index() {
   //下拉選單
   const [options, setOptions] = useState([])
   const [isMenuOpen1, setIsMenuOpen1] = useState(false)
-
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('bookingData'))
-    if (storedData) {
-      setReserveDate(storedData.reserveDate)
-      setPeriod(storedData.period)
-      setPeople(storedData.people)
-    }
-  }, [])
 
   //*下拉式選單
   useEffect(() => {
@@ -92,58 +86,126 @@ function Index() {
   }
 
   const searchForm = document.getElementById('searchForm')
+
+  const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
+  const initialState = useRef(true)
+  const openDefaultPopup = (message, btntext, fn) => {
+    initialState.current = false
+
+    // content 字串 彈窗內容
+    setPopupProps({
+      content: message,
+      btnGroup: [
+        {
+          text: btntext,
+          handle: fn,
+        },
+      ],
+    })
+    // openPopup()
+  }
   //* 查詢
+  const [searchData, setSearchData] = useState(storedBookingData)
   const Search = async (event) => {
     event.preventDefault()
-    if (searchForm.checkValidity() && (period == 1 || 2 || 3)) {
-      // console.log('Form is valid!')
-      setSearchData({
-        reserveDate,
-        period: +document.getElementById('selected1').value,
-        people,
+    if (period == '請選擇...') {
+      console.log('沒有時段')
+      openDefaultPopup('沒有選擇時段', '關閉', closePopup)
+      return
+    }
+
+    //設定localStorage值
+    setSearchData({
+      reserveDate_lo: reserveDate,
+      period_lo: +document.getElementById('selected1').value || period_lo,
+      people_lo: people,
+    })
+    try {
+      // saveSearchData({ reserveDate, period, people })
+      const response = await axios.get(SEARCH, {
+        params: {
+          reserveDate,
+          period: +document.getElementById('selected1').value || period_lo,
+          people,
+        },
       })
-      try {
-        // saveSearchData({ reserveDate, period, people })
-        const response = await axios.get(SEARCH, {
-          params: {
-            reserveDate,
-            period: +document.getElementById('selected1').value,
-            people,
-          },
-        })
-        if (response && response.data) {
-          setResults(response.data)
-        }
-      } catch (error) {
-        console.error(error)
+      if (response && response.data) {
+        setResults(response.data)
       }
-    } else {
-      // console.log('Form is invalid!')
-      // 驗證以後再做...
+    } catch (error) {
+      console.error(error)
     }
   }
 
   //*localStorage
   //TODO 刷新頁面後localStorage會消失
   //讀取local資料
-  useEffect(() => {
-    const storageData = JSON.parse(localStorage.getItem('searchData')) || {}
-    setSearchData(storageData)
-    setReserveDate(storageData.date || '')
-    setPeriod(storageData.period || '')
-    setPeople(storageData.people || '')
-    setResults(JSON.parse(localStorage.getItem('results')) || [])
-  }, [])
 
-  //狀態變化時將其寫入 `localStorage`
   // useEffect(() => {
-  //   localStorage.setItem('queryResult', JSON.stringify(results))
-  // }, [results])
+  //   console.log('讀取localstorage')
+  //   const storageData = JSON.parse(localStorage.getItem('bookingData')) || {}
+  //   if (storageData) {
+  //     const { reserveDate_lo, period_lo, people_lo } = storageData
+
+  //     setSearchData(storageData) //傳到往後端的資料
+
+  //     //設定呈現在input的資料
+
+  //     setReserveDate(reserveDate_lo)
+  //     if (period_lo == 1) {
+  //       setPeriod('8pm-10pm')
+  //     } else if (period_lo == 2) {
+  //       setPeriod('10pm-12am')
+  //     } else if (period_lo == 3) {
+  //       setPeriod('12am-2am')
+  //     }
+  //     setPeople(people_lo)
+  //   }
+  //   // console.log(storageData)
+
+  //   //localStorage 存表格資料
+  //   // setResults(JSON.parse(localStorage.getItem('tableResult')) || [])
+  //   // console.log(results)
+  // }, [])
+
+  useEffect(() => {
+    console.log('讀取localstorage')
+    const storageData = JSON.parse(localStorage.getItem('bookingData')) || {}
+    if (
+      storageData.reserveDate_lo &&
+      storageData.period_lo &&
+      storageData.people_lo
+    ) {
+      const { reserveDate_lo, period_lo, people_lo } = storageData
+
+      setSearchData(storageData) //傳到往後端的資料
+
+      //設定呈現在input的資料
+
+      setReserveDate(reserveDate_lo)
+      if (period_lo == 1) {
+        setPeriod('8pm-10pm')
+      } else if (period_lo == 2) {
+        setPeriod('10pm-12am')
+      } else if (period_lo == 3) {
+        setPeriod('12am-2am')
+      }
+      setPeople(people_lo)
+    }
+    // console.log(storageData)
+
+    //localStorage 存表格資料
+    // setResults(JSON.parse(localStorage.getItem('tableResult')) || [])
+    // console.log(results)
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
-    console.log('刷新')
   }, [searchData])
+
+  // useEffect(() => {
+  //   localStorage.setItem('tableResult', JSON.stringify(results))
+  // }, [results])
 
   return (
     <>

@@ -99,19 +99,19 @@ function Booking() {
   useEffect(() => {
     const bookingData = JSON.parse(localStorage.getItem('bookingData'))
     if (bookingData) {
-      setReserveDate(bookingData.reserveDate)
+      setReserveDate(bookingData.reserveDate_lo)
       // setPeriod(bookingData.period)
-      if (bookingData.period == options1[0].value) {
+      if (bookingData.period_lo == options1[0].value) {
         setPeriod(options1[0].label)
         setPeriodSid(1)
-      } else if (bookingData.period == options1[1].value) {
+      } else if (bookingData.period_lo == options1[1].value) {
         setPeriod(options1[1].label)
         setPeriodSid(2)
-      } else if (bookingData.period == options1[2].value) {
+      } else if (bookingData.period_lo == options1[2].value) {
         setPeriod(options1[2].label)
         setPeriodSid(3)
       }
-      setPeople(bookingData.people)
+      setPeople(bookingData.people_lo)
     }
   }, [])
 
@@ -161,14 +161,8 @@ function Booking() {
   // navigate(`/seat/book-seat`)
   const [check, setCheck] = useState(null)
   useEffect(() => {
-    if (check !== null) {
-      console.log('check 更新了:', check)
-      if (check !== 'ok') {
-        console.log(check)
-        console.log('不ok')
-
-        return
-      }
+    if (check !== null && check !== 'ok') {
+      openDefaultPopup(check, '關閉', closePopup)
     }
   }, [check])
 
@@ -207,10 +201,10 @@ function Booking() {
       console.log(check_response.data)
       if (check_response && check_response.data) {
         setCheck(check_response.data)
-      }
-      if (check !== 'ok') {
-        openDefaultPopup(check, '關閉', closePopup)
-        return // 如果check不是ok，停止handleSubmit的執行
+        if (check_response.data !== 'ok') {
+          openDefaultPopup(check_response.data, '關閉', closePopup)
+          return // 如果check不是ok，停止handleSubmit的執行
+        }
       }
       const response = await axios.post(
         SEAT_ADD,
@@ -233,14 +227,13 @@ function Booking() {
       //解決popup路徑重複問題
       const data = response.data
       const sid = data.result.insertId
+      const handleNavigate = () => {
+        navigate(`/seat/confirm-seat/${sid}`)
+      }
       setSid(sid)
       console.log(data)
       console.log(sid)
-      openDefaultPopup(
-        '訂位成功！',
-        '關閉',
-        navigate(`/seat/confirm-seat/${sid}`)
-      )
+      openDefaultPopup('訂位成功', '關閉', handleNavigate)
     } catch (error) {
       console.log(error)
     }
