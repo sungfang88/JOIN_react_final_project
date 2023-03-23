@@ -11,7 +11,7 @@ function Index() {
 
   const CheckIn = () => {
     const myAuth = localStorage.getItem('myAuth')
-    localStorage.setItem('presentURL', '"http://localhost:3002/class"')
+    localStorage.setItem('presentURL', '"http://localhost:3002/class/Classsec"')
     if (!myAuth) {
       setPopupProps({
         content: '請先登入會員',

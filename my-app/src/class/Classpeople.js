@@ -5,9 +5,9 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 function Classpeople() {
-  const [Classform, setClassform] = useState([])
-  const [student, setstudent] = useState('')
-  const [phone, setphone] = useState('')
+  // const [Classform, setClassform] = useState([])
+  // const [student, setstudent] = useState('')
+  // const [phone, setphone] = useState('')
   const navigate = useNavigate()
 
   const [people, setPeople] = useState([])
@@ -41,6 +41,35 @@ function Classpeople() {
       console.error(error)
     }
   }
+
+  //取會員資料
+  const [memberData, setMember] = useState({})
+  useEffect(() => {
+    const fetchMember = async () => {
+      try {
+        const response = await axios('http://localhost:3008/class/meber/:sid', {
+          withCredentials: true,
+        })
+
+        console.log('response.data', response.data)
+        setMember(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchMember()
+  }, [])
+
+  //同訂購人取會員資料
+  const [userName, setUserName] = useState('')
+  const [phone, setPhone] = useState('')
+  const handleAutoInput = () => {
+    console.log(memberData.name, memberData.phone)
+    userName ? setUserName('') : setUserName(memberData.name)
+    phone ? setPhone('') : setPhone(memberData.phone)
+  }
+
   // 當頁面載入時，從localStorage中讀取人數，並初始化填寫框陣列
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem('key3'))
@@ -109,19 +138,6 @@ function Classpeople() {
     </div>
   ))
 
-  //*帶入會員資料
-  // const [checked, setChecked] = useState(false)
-  // const handleCheckboxChange = (event) => {
-  //   const { checked } = event.target
-  //   setChecked(checked)
-  //   if (checked) {
-  //     // console.log('check')
-  //   } else {
-  //     // console.log('not check')
-  //     setName('')
-  //     setPhone('')
-  //   }
-  // }
   return (
     <>
       <section className="container-fluid">
@@ -161,8 +177,9 @@ function Classpeople() {
               value="1"
               className="j-checkbox"
               // checked={checked}
-              // onChange={handleCheckboxChange}
+              onChange={handleAutoInput}
             />
+
             <span className="text-align-center"> 同訂購人</span>
           </div>
           <div>{inputFields}</div>
