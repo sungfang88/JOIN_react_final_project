@@ -321,13 +321,13 @@ function Orderlist() {
               </h4>
             </div>
             <div className="col-2 d-flex justify-content-center">
-              <h4 className="j-deepGray">X{usersDisplay[i][0].quantity}瓶</h4>
+              <h4 className="j-deepGray">{usersDisplay[i][0].quantity}瓶</h4>
             </div>
 
             {/* <h4 className="j-deepPri">$1500元</h4> */}
             <div className="col-2 d-flex justify-content-end">
               <h4 className="j-deepPri">
-                {+usersDisplay[i][0].price * usersDisplay[i][0].quantity}元
+              ${+usersDisplay[i][0].price * usersDisplay[i][0].quantity}元
               </h4>
             </div>
           </div>
@@ -336,7 +336,7 @@ function Orderlist() {
           <a
             href="#/"
             role="button"
-            className={usersDisplay[i].length===1?"d-none":"j-deepSec"}
+            className={usersDisplay[i].length === 1 ? 'd-none' : 'j-deepSec'}
             onClick={(e) => {
               e.preventDefault()
               toggleProduct(listid)
@@ -376,7 +376,7 @@ function Orderlist() {
                           <h4 className="j-deepGray ps-5">- {v.product_ch}</h4>
                         </div>
                         <div className="col-2 d-flex justify-content-center align-items-center">
-                          <h4 className="j-deepGray">X{v.quantity}瓶</h4>
+                          <h4 className="j-deepGray">{v.quantity}瓶</h4>
                         </div>
                         <div className="col-2 d-flex justify-content-end">
                           <h4 className="j-deepPri">
@@ -898,21 +898,28 @@ function Orderlist() {
                         {usersDisplay[i][0].product_ch}
                       </h4>
                       <h5 className="j-deepGray">
-                        x{usersDisplay[i][0].quantity}瓶
+                        {usersDisplay[i][0].quantity}瓶
                       </h5>
                     </div>
                     <div className="col-12 d-flex justify-content-center mb-3">
-                      <a>
-                        <button className="btn btn-primary g-line-btn btn-phone">
+                      <Link
+                        to="/product/productdetail"
+                        state={{
+                          productId: `${usersDisplay[i][0].product_id}`,
+                        }}
+                      >
+                        <button className="btn btn-primary g-line-btn">
                           再買一次
                         </button>
-                      </a>
+                      </Link>
                     </div>
                     <div className="col-12 d-flex justify-content-center mb-3">
                       <a
                         href="#/"
                         role="button"
-                        className={usersDisplay[i].length===1?"d-none":"j-deepSec"}
+                        className={
+                          usersDisplay[i].length === 1 ? 'd-none' : 'j-deepSec'
+                        }
                         onClick={(e) => {
                           e.preventDefault()
                           toggleProduct(listNameArray[i]['orderId'])

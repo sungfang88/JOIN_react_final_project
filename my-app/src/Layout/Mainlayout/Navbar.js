@@ -84,7 +84,7 @@ function Navbar() {
                   {cartlistnum === 0 ? (
                     <></>
                   ) : (
-                    <span class="cart-count">{cartlistnum}</span>
+                    <span className="cart-count">{cartlistnum}</span>
                   )}
                 </Link>
               </>
@@ -120,8 +120,36 @@ function Navbar() {
           </div>
         </div>
 
-        <button className="o-line-btn col-auto d-block d-md-none j-primary ">
-          <i className="fa-solid fa-cart-shopping"></i>
+        <button className="col-auto d-block d-md-none j-primary custom">
+          {myAuth.authorized ? (
+            <Link
+              className="o-line-btn j-h3 cart-icon"
+              to="/cart"
+              onClick={() => {
+                localStorage.removeItem('presentURL')
+              }}
+            >
+              <i className="fa-solid fa-cart-shopping "></i>
+              {cartlistnum === 0 ? (
+                <></>
+              ) : (
+                <span className="cart-count">{cartlistnum}</span>
+              )}
+            </Link>
+          ) : (
+            <Link
+              className="o-line-btn j-h3"
+              to="/member/login"
+              onClick={() => {
+                localStorage.setItem(
+                  'presentURL',
+                  JSON.stringify(window.location.href)
+                )
+              }}
+            >
+              <i className="fa-solid fa-cart-shopping"></i>
+            </Link>
+          )}
         </button>
 
         {/* 手機版menu */}

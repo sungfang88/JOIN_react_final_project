@@ -581,7 +581,7 @@ function Register() {
                 <div className="input-group mb-2 ">
                   <label
                     className="input-group-text labelinput"
-                    for="registerEmail"
+                    htmlFor="registerEmail"
                   >
                     信箱
                   </label>
@@ -604,7 +604,7 @@ function Register() {
                 <div className="input-group mb-2 ">
                   <label
                     className="input-group-text labelinput"
-                    for="registerPassword"
+                    htmlFor="registerPassword"
                   >
                     密碼
                   </label>
@@ -635,7 +635,7 @@ function Register() {
                 <div className="input-group mb-2 ">
                   <label
                     className="input-group-text labelinput"
-                    for="checkregisterpassword"
+                    htmlFor="checkregisterpassword"
                   >
                     確認密碼
                   </label>
@@ -663,7 +663,7 @@ function Register() {
                 <div className="input-group mb-2 ">
                   <label
                     className="input-group-text labelinput"
-                    for="registerUsername"
+                    htmlFor="registerUsername"
                   >
                     姓名
                   </label>
@@ -685,7 +685,7 @@ function Register() {
                 <div className="input-group mb-2 ">
                   <label
                     className="input-group-text labelinput"
-                    for="registerPhone"
+                    htmlFor="registerPhone"
                   >
                     手機
                   </label>
@@ -708,7 +708,7 @@ function Register() {
                 <div className="input-group mb-2 ">
                   <label
                     className="input-group-text labelinput"
-                    for="registerBrith"
+                    htmlFor="registerBrith"
                   >
                     生日
                   </label>
@@ -729,7 +729,7 @@ function Register() {
                 </div>
                 <div className="input-group mb-2 ">
                   <label
-                    htmlfor="area"
+                    htmlFor="area"
                     className=" labelinput input-group-text"
                   >
                     地區
@@ -756,7 +756,7 @@ function Register() {
                   </select>
                 </div>
                 <div className="input-group mb-2 ">
-                  <label htmlfor="city" className="labelinput input-group-text">
+                  <label htmlFor="city" className="labelinput input-group-text">
                     城市
                   </label>
                   <select
@@ -781,7 +781,7 @@ function Register() {
                 <div className="input-group mb-2 border-bottom border-1 pb-2">
                   <label
                     className="input-group-text labelinput"
-                    for="registerAddress"
+                    htmlFor="registerAddress"
                   >
                     地址
                   </label>
