@@ -74,8 +74,14 @@ function Classpeople() {
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem('key3'))
     if (localData && localData.class_prople) {
+      console.log('localData.class_prople', localData.class_prople)
       const peopleArr = []
-      for (let i = 0; i < localData.class_prople; i++) {
+      if (localData.class_prople > 1) {
+        for (let i = 0; i < localData.class_prople; i++) {
+          peopleArr.push({ student: '', phone: '' })
+        }
+        // setPeople(peopleArr)
+      } else {
         peopleArr.push({ student: '', phone: '' })
       }
       setPeople(peopleArr)
