@@ -242,7 +242,7 @@ function Product() {
 
   return (
     <>
-      {/* {loadingOne ? '' : <Loading />} */}
+      {loadingOne ? '' : <Loading />}
 
       {isLoading ? '' : <Loading />}
       {/* <!-- Sec-navbar 要用nav-space 空出上面的距離 --> */}
