@@ -77,7 +77,7 @@ function Classpeople() {
       console.log('localData.class_prople', localData.class_prople)
       const peopleArr = []
       if (localData.class_prople > 1) {
-        for (let i = 0; i < localData.class_prople; i++) {
+        for (let i = 0; i < localData.class_prople - 1; i++) {
           peopleArr.push({ student: '', phone: '' })
         }
         // setPeople(peopleArr)
