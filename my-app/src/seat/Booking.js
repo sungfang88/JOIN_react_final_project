@@ -238,7 +238,7 @@ function Booking() {
       console.log(error)
     }
     localStorage.removeItem('bookingData')
-    localStorage.removeItem('queryResult')
+    localStorage.removeItem('tableResult')
   }
 
   return (
@@ -398,7 +398,7 @@ function Booking() {
             </div>
 
             <div className="d-flex justify-content-end mt-3">
-              <Link to="#">
+              <Link to="/seat">
                 <button className="gray-line-btn h3 me-2">取消</button>
               </Link>
               {/* <Link to="/seat/confirm-seat"> */}

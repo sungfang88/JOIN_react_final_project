@@ -43,7 +43,9 @@ function Index() {
     JSON.parse(localStorage.getItem('bookingData')) || {}
   const { reserveDate_lo, period_lo, people_lo } = storedBookingData
 
-  const [results, setResults] = useState([])
+  const storedTableData = JSON.parse(localStorage.getItem('tableResult')) || {}
+  const [results, setResults] = useState(storedTableData || [])
+  console.log(results)
   const [reserveDate, setReserveDate] = useState(reserveDate_lo || '')
   const [period, setPeriod] = useState(period_lo || '請選擇...')
   const [people, setPeople] = useState(people_lo || '')
@@ -141,33 +143,6 @@ function Index() {
   //TODO 刷新頁面後localStorage會消失
   //讀取local資料
 
-  // useEffect(() => {
-  //   console.log('讀取localstorage')
-  //   const storageData = JSON.parse(localStorage.getItem('bookingData')) || {}
-  //   if (storageData) {
-  //     const { reserveDate_lo, period_lo, people_lo } = storageData
-
-  //     setSearchData(storageData) //傳到往後端的資料
-
-  //     //設定呈現在input的資料
-
-  //     setReserveDate(reserveDate_lo)
-  //     if (period_lo == 1) {
-  //       setPeriod('8pm-10pm')
-  //     } else if (period_lo == 2) {
-  //       setPeriod('10pm-12am')
-  //     } else if (period_lo == 3) {
-  //       setPeriod('12am-2am')
-  //     }
-  //     setPeople(people_lo)
-  //   }
-  //   // console.log(storageData)
-
-  //   //localStorage 存表格資料
-  //   // setResults(JSON.parse(localStorage.getItem('tableResult')) || [])
-  //   // console.log(results)
-  // }, [])
-
   useEffect(() => {
     console.log('讀取localstorage')
     const storageData = JSON.parse(localStorage.getItem('bookingData')) || {}
@@ -195,17 +170,17 @@ function Index() {
     // console.log(storageData)
 
     //localStorage 存表格資料
-    // setResults(JSON.parse(localStorage.getItem('tableResult')) || [])
-    // console.log(results)
+    setResults(JSON.parse(localStorage.getItem('tableResult')) || [])
+    console.log(results)
   }, [])
 
   useEffect(() => {
     localStorage.setItem('bookingData', JSON.stringify(searchData))
   }, [searchData])
 
-  // useEffect(() => {
-  //   localStorage.setItem('tableResult', JSON.stringify(results))
-  // }, [results])
+  useEffect(() => {
+    localStorage.setItem('tableResult', JSON.stringify(results))
+  }, [results])
 
   return (
     <>
