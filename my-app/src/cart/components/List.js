@@ -3,13 +3,8 @@ import { usePopup } from '../../Public/Popup'
 import { DELETE_DATA } from '../api_comfig'
 
 function List(props) {
-  const {
-    data,
-    setData,
-    handleCheckboxChange,
-    setSidTotalPrice,
-    sidTotalPrice,
-  } = props
+  const { data, setData, handleCheckboxChange, setSelectedSids, selectedSids } =
+    props
   const { Popup, openPopup, closePopup } = usePopup() //必要const
   const [popupProps, setPopupProps] = useState({}) //可用 useState 來做動態更新
   const initialState = useRef(true)
@@ -90,7 +85,7 @@ function List(props) {
                     name="food"
                     value="1"
                     className="j-checkbox me-3"
-                    onChange={(e) => handleCheckboxChange(e, r.sid)}
+                    onChange={(e) => handleCheckboxChange(e, r)}
                   />
                   <img
                     className="orderImg pe-2"
@@ -115,37 +110,58 @@ function List(props) {
                         <i
                           className="fa-solid fa-square-minus"
                           onClick={() => {
-                            const newData = sidTotalPrice.map((item) => {
-                              if (item.sid === r.sid && item.quantity > 1) {
+                            const newData = data.map((v, i) => {
+                              if (v.sid === r.sid && v.quantity > 1) {
                                 return {
-                                  ...item,
-                                  quantity: item.quantity - 1,
-                                  amount: item.amount - item.price,
+                                  ...v,
+                                  quantity: v.quantity - 1,
+                                  amount: v.quantity * v.price,
                                 }
                               }
-                              return { ...item }
+                              return v
                             })
-                            setSidTotalPrice(newData)
+                            setData(newData)
+                            setSelectedSids(
+                              selectedSids.map((item) => {
+                                if (item.sid === r.sid) {
+                                  return {
+                                    ...item,
+                                    quantity: item.quantity - 1,
+                                    amount: item.quantity * item.price,
+                                  }
+                                }
+                                return item
+                              })
+                            )
                           }}
                         ></i>
-                        <span className="px-4">
-                          {sidTotalPrice.find((item) => item.sid === r.sid)
-                            ?.quantity || 0}
-                        </span>
+                        <span className="px-4">{r.quantity}</span>
                         <i
                           className="fa-solid fa-square-plus"
                           onClick={() => {
-                            const newData = sidTotalPrice.map((item) => {
-                              if (item.sid === r.sid) {
+                            const newData = data.map((v, i) => {
+                              if (v.sid === r.sid) {
                                 return {
-                                  ...item,
-                                  quantity: item.quantity + 1,
-                                  amount: item.amount + item.price,
+                                  ...v,
+                                  quantity: v.quantity + 1,
+                                  amount: v.quantity * v.price,
                                 }
                               }
-                              return { ...item }
+                              return v
                             })
-                            setSidTotalPrice(newData)
+                            setData(newData)
+                            setSelectedSids(
+                              selectedSids.map((item) => {
+                                if (item.sid === r.sid) {
+                                  return {
+                                    ...item,
+                                    quantity: item.quantity + 1,
+                                    amount: item.quantity * item.price,
+                                  }
+                                }
+                                return item
+                              })
+                            )
                           }}
                         ></i>
                       </li>

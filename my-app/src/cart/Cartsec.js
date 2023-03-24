@@ -23,9 +23,13 @@ function Cartsec() {
   const getCartData = async () => {
     try {
       const storedSids = JSON.parse(localStorage.getItem('selectedSids')) || []
-      const response = await axios.get(`${CART_DATA}${storedSids.join('/')}`, {
-        withCredentials: true,
-      })
+      const selectedSids = storedSids.map((item) => item.sid)
+      const response = await axios.get(
+        `${CART_DATA}${selectedSids.join('/')}`,
+        {
+          withCredentials: true,
+        }
+      )
       setData(response.data)
       console.log('getcartdata', response.data)
     } catch (error) {
