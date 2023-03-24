@@ -239,6 +239,7 @@
     height: 200px;
     object-fit: contain;}
 .memsticky{position: sticky; top: 6rem;}
+.notallow{cursor:not-allowed}
 
 @media screen and (max-width: 768px) {
     .member-photo img{

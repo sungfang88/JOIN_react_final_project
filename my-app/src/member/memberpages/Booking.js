@@ -305,7 +305,7 @@ function Booking() {
                                     </td>
                                     <td>
                                       <a href="#/">
-                                        <i className="fa-solid fa-trash-can text-secondary"></i>
+                                        <i className="fa-solid fa-trash-can text-secondary notallow"></i>
                                       </a>
                                     </td>
                                   </>

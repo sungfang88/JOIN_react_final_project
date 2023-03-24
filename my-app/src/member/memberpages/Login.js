@@ -4,7 +4,9 @@ import { usePopup } from '../../Public/Popup'
 import { useLocation } from 'react-router-dom'
 import AuthContext from '../../Context/AuthContext'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 import {
   LOGIN,
@@ -512,7 +514,9 @@ function Login() {
                     className="btn btn-lg text-light"
                     onClick={gmaillogin}
                   >
-                    <i className="bi bi-google fs-2"></i>&nbsp;Gmail 快速登入
+                    <FontAwesomeIcon icon={faGoogle} className="h1" />
+                    <i className="bi bi-google fs-2"></i>&nbsp;oogle
+                    快速登入
                   </button>
                 </div>
               </div>
