@@ -14,7 +14,9 @@ function Verify() {
   const [verifyinput, setVerifyinput] = useState(false)
   const [code, setCode] = useState('')
   const [mytoken, setMytoken] = useState('')
-
+  const fastgmail = () => {
+    setGmail('lf2nt0301@gmail.com')
+  }
   const sendGmail = async () => {
     console.log('GMAIL', GMAIL)
     const response = await axios.get(GMAIL + '/' + gmail)
@@ -29,7 +31,6 @@ function Verify() {
       }
 
       openDefaultPopup(response.data.message, '註冊頁', linktoRegister)
-
     }
     //setVerifyinput(true)
   }
@@ -61,7 +62,9 @@ function Verify() {
         navigate('/member/newpassword')
       }
       openDefaultPopup('成功', '設定新密碼頁面', linktoNewpassword)
-    }else{openDefaultPopup('驗證密碼錯誤', '關閉', closePopup)}
+    } else {
+      openDefaultPopup('驗證密碼錯誤', '關閉', closePopup)
+    }
   }
 
   useEffect(() => {
@@ -77,7 +80,13 @@ function Verify() {
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <div className="d-flex justify-content-center mb-2">
               <div className="verifyTopic verifyTopic-phone">
-                <p>喝到斷片。。。</p>
+                <p
+                  onClick={() => {
+                    fastgmail()
+                  }}
+                >
+                  喝到斷片。。。
+                </p>
               </div>
             </div>
             <div className="data mt-3 width-lg width-lg-phone">

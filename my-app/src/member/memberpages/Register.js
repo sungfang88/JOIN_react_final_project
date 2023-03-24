@@ -52,6 +52,23 @@ function Register() {
   //看密碼輸入用
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [isCheckPasswordVisible, setIsCheckPasswordVisible] = useState(false)
+
+ const fastregister =()=>{
+  setRegisterform((prev) => ({
+    ...registerform,
+    email: 'abcd@gmail.com',
+    password:'1234567'
+  }))
+  setCheckpwd('123456')
+ }
+ const maingmail=()=>{
+  setRegisterform((prev) => ({
+    ...registerform,
+    email: 'lf2nt0301@gmail.com',
+  }))}
+
+
+
   //切換看密碼的狀態函式
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState)
@@ -570,7 +587,7 @@ function Register() {
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <div className="d-flex justify-content-center mb-lg-2">
               <div className="registerTopic registerTopic-phone">
-                <p>
+                <p onClick={()=>{fastregister()}}>
                   關於你的故事<i className="bi bi-pencil-square"></i>
                 </p>
               </div>
@@ -582,6 +599,7 @@ function Register() {
                   <label
                     className="input-group-text labelinput"
                     htmlFor="registerEmail"
+                    onClick={()=>{maingmail()}}
                   >
                     信箱
                   </label>
