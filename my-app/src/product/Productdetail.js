@@ -1,25 +1,37 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import AuthContext from '../Context/AuthContext'
 import NavbarContext from '../Context/NavbarContext'
+
+import Loading from '../Public/Loading'
 
 import LikeButton from '../Public/Likebutton'
 import Productinfo from './Productinfo'
 import '../Public/style'
 import './css/product.css'
 
-function Productdetail() {
+function Productdetail(props) {
   const location = useLocation()
 
   let state = location.state
 
+  const params = useParams()
+
+  // const { productId } = useParams()
+
+  const prouctId =
+    (params && params.productId) || (state && state.productId) || 'BD0002FR'
+
+  // console.log('prouctId', prouctId)
+
   // 如果沒有state就走BD0002FR
-  if (!state) {
-    state = {
-      productId: 'BD0002FR',
-    }
-  }
+
+  // if (prouctId === null) {
+  //   state = {
+  //     productId: 'BD0002FR',
+  //   }
+  // }
   // console.log('state.productId', state.productId)
   // console.log('isLiked', state.isLiked)
   // console.log(props)
@@ -66,19 +78,19 @@ function Productdetail() {
   }
   useEffect(() => {
     likeData()
-  }, [state.productId])
+  }, [prouctId])
 
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(
-        `http://localhost:3008/product/api/getProductId/${state.productId}`
+        `http://localhost:3008/product/api/getProductId/${prouctId}`
       )
       const data = await res.json()
       console.log(data)
       setProductData(data.rows[0])
     }
     fetchData()
-  }, [state.productId])
+  }, [prouctId])
 
   useEffect(() => {
     async function fetchData() {
@@ -93,8 +105,10 @@ function Productdetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [state.productId])
+  }, [prouctId])
 
+  // console.log(likedProducts)
+  // console.log('BD0004FR', likedProducts['BD0004FR'])
   // const handleLike = (productId) => {
   //   if (likedProducts.includes(productId)) {
   //     setLikedProducts(likedProducts.filter((id) => id !== productId))
@@ -110,7 +124,7 @@ function Productdetail() {
       {productData.product_id ? (
         <Productinfo
           productId={productData.product_id}
-          isLiked={state.isLiked}
+          isLiked={likedProducts[productData.product_id]}
           // onLike={() => handleLike(productData.product_id)}
           product_ch={productData.product_ch}
           product_eg={productData.product_eg}
@@ -125,7 +139,7 @@ function Productdetail() {
           amount={1}
         />
       ) : (
-        <div>Loading...</div>
+        <Loading />
       )}
 
       <section className="container-fluid mt-4">

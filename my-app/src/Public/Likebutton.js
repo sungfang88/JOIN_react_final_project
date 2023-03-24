@@ -4,6 +4,8 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons'
 
 function LikeButton(props) {
   const { productId, isLiked, onClick, onMouseEnter, onMouseLeave } = props
+
+  console.log('LikeButton', isLiked)
   // console.log(productId)
   const handleMouseEnter = (e) => {
     if (!isLiked) {

@@ -26,7 +26,7 @@ function ProductCard(props) {
 
     setIsLiked((prev) => {
       if (myAuth.authorized) {
-        console.log('Memberlike', Memberlike)
+        // console.log('Memberlike', Memberlike)
         if (prev) {
           fetch(
             `http://localhost:3008/product/api/productlikedelete/${myAuth.sid}/${props.productId}`,
@@ -36,10 +36,7 @@ function ProductCard(props) {
                 'Content-Type': 'application/json',
               },
             }
-          )
-          console.log('刪除')
-          setIsLiked(false)
-          props.likeData()
+          ).then(setIsLiked(false), props.likeData(), console.log('刪除'))
         } else {
           fetch(`http://localhost:3008/product/api/productlikeadd`, {
             method: 'POST',
@@ -50,11 +47,7 @@ function ProductCard(props) {
               member: myAuth.sid,
               productmanage: props.productId,
             }),
-          })
-
-          console.log('新增')
-          setIsLiked(true)
-          props.likeData()
+          }).then(setIsLiked(true), props.likeData(), console.log('新增'))
         }
         return !prev
       } else {
@@ -182,6 +175,7 @@ function ProductCard(props) {
                   event.preventDefault()
                   if (myAuth.authorized) {
                     settomember()
+                    getcartlistnumber()
                   } else {
                     nologin()
                   }
