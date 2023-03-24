@@ -2,56 +2,96 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import LikeButton from '../Public/Likebutton'
 import Counter from './Counter'
+import ShareLink from './ShareLink'
 import AuthContext from '../Context/AuthContext'
 
 function Productinfo(props) {
-  // console.log('propsinfo', props.isLiked)
+  console.log('propsinfoisLiked', props.isLiked)
   const [isLiked, setIsLiked] = useState(props.isLiked)
 
-  const [Memberlike, setMemberlike] = useState([])
+  const [Memberlike, setMemberlike] = useState('[]')
   // 登入判斷設定愛心
   const { myAuth } = useContext(AuthContext)
+
   useEffect(() => {
     setIsLiked(props.isLiked)
   }, [props.productId])
 
+  console.log('props.isLiked', props.isLiked)
   let likedProducts = {}
   const addTolike = (event) => {
     event.preventDefault()
 
+    // if (prev) {
+    //   fetch(
+    //     `http://localhost:3008/product/api/productlikedelete/${myAuth.sid}/${props.productId}`,
+    //     {
+    //       method: 'DELETE',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     }
+    //   ).then(
+    //     console.log('刪除', props.productId),
+    //     setIsLiked(false),
+    //     props.likeData()
+    //   )
+    // } else {
+    //   fetch(`http://localhost:3008/product/api/productlikeadd`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       member: myAuth.sid,
+    //       productmanage: props.productId,
+    //     }),
+    //   }).then(
+    //     console.log('新增', props.productId),
+    //     setIsLiked(true),
+    //     props.likeData()
+    //   )
+    // }
+    // return !prev
+
     setIsLiked((prev) => {
       if (myAuth.authorized) {
-        console.log('Memberlike', Memberlike)
-        if (prev) {
-          fetch(
-            `http://localhost:3008/product/api/productlikedelete/${myAuth.sid}/${props.productId}`,
-            {
-              method: 'DELETE',
+        // console.log('Memberlike', Memberlike)
+        fetch(
+          `http://localhost:3008/product/api/getproductlike/${myAuth.sid}`
+        ).then(() => {
+          if (prev) {
+            fetch(
+              `http://localhost:3008/product/api/productlikedelete/${myAuth.sid}/${props.productId}`,
+              {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              }
+            ).then(
+              console.log('刪除', props.productId),
+              setIsLiked(false),
+              props.likeData()
+            )
+          } else {
+            fetch(`http://localhost:3008/product/api/productlikeadd`, {
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-            }
-          )
-          console.log('刪除')
-          setIsLiked(false)
-          props.likeData()
-        } else {
-          fetch(`http://localhost:3008/product/api/productlikeadd`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              member: myAuth.sid,
-              productmanage: props.productId,
-            }),
-          })
-
-          console.log('新增')
-          setIsLiked(true)
-          props.likeData()
-        }
-        return !prev
+              body: JSON.stringify({
+                member: myAuth.sid,
+                productmanage: props.productId,
+              }),
+            }).then(
+              console.log('新增', props.productId),
+              setIsLiked(true),
+              props.likeData()
+            )
+          }
+          return !prev
+        })
       } else {
         if (localStorage.getItem('likedProducts') !== null) {
           likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
@@ -70,7 +110,7 @@ function Productinfo(props) {
 
     // const likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
   }
-
+  // console.log('Memberlike', Memberlike)
   // useEffect(() => {
   //   if (likedProducts[props.productId]) {
   //     setIsLiked(true)
@@ -169,6 +209,7 @@ function Productinfo(props) {
                                 onMouseLeave={handleMouseLeave}
                                 isLiked={isLiked}
                               />
+                              <ShareLink productId={props.productId} />
                             </button>
                           </div>
                         </div>

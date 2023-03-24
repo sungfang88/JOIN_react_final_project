@@ -19,6 +19,8 @@ function Product() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/productdetail" element={<Productdetail />} />
+        <Route path="/productdetail/:productId" element={<Productdetail />} />
+
         <Route path="/Producttry3" element={<Producttry3 />} />
       </Routes>
     </>
