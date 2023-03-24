@@ -465,7 +465,7 @@ function Register() {
                       useremail: registerform.email,
                       token: response.data.postData.token,
                     })
-                    window.location.href = HOST
+                    window.location.href = 'http://localhost:3002'
                   } else {
                     console.log('lasturlinlinktopresentURL', HOST)
                     localStorage.setItem(
@@ -482,7 +482,7 @@ function Register() {
                       useremail: registerform.email,
                       token: response.data.postData.token,
                     })
-                    window.location.href = HOST
+                    window.location.href = 'http://localhost:3002'
                   }
                 })
               } else {
@@ -501,7 +501,7 @@ function Register() {
                   useremail: registerform.email,
                   token: response.data.postData.token,
                 })
-                window.location.href = HOST
+                window.location.href = 'http://localhost:3002'
               }
             }
             //領取優惠券
