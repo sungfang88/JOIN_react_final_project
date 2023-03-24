@@ -49,7 +49,7 @@ function OrderClass() {
     const targetDate = new Date(datetime)
     console.log('targetDate', targetDate)
     return Array.filter((v, i) => {
-      const orderDate = new Date(v.created_at)
+      const orderDate = new Date(v.class_date)
       console.log('orderDate', orderDate)
       return orderDate.toDateString() === targetDate.toDateString()
     })
@@ -58,7 +58,7 @@ function OrderClass() {
   //拿取該會員課程訂單資料
   const getData = async () => {
     const response = await axios.get(CLASSLIST + '/' + myAuth.sid)
-    console.log(response.data)
+    console.log("response.data",response.data)
     const filtertimeData = filterByDateTime(response.data, keytime)
     console.log('filtertimeData', filtertimeData)
     if (filtertimeData.length === 0) {

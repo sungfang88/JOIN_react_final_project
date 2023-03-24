@@ -253,6 +253,8 @@ function Booking() {
                             {/* <td>姓名</td> */}
                             <td>姓名</td>
                             <td>電話</td>
+                            <td>日期</td>
+
                             <td>時間</td>
                             <td>類型</td>
 
@@ -269,10 +271,9 @@ function Booking() {
                                 <td>{v.name}</td>
                                 <td>{v.phone}</td>
                                 <td>
-                                  {dayjs(v.reserveDate).format(
-                                    'YYYY-MM-DD hh-mm'
-                                  )}
+                                  {dayjs(v.reserveDate).format('YYYY-MM-DD')}
                                 </td>
+                                <td> {v.period}</td>
                                 <td>{v.category}</td>
 
                                 <td>{v.people}</td>
