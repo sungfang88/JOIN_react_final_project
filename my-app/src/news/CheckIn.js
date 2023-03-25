@@ -87,6 +87,9 @@ function CheckIn() {
               {
                 text: '立即登入',
                 handle: () => {
+                  localStorage.setItem(
+                    'presentURL',
+                    JSON.stringify(window.location.href))
                   navigate('/member/login')
                 },
               },
