@@ -7,7 +7,6 @@ import { SEAT_ADD, SEAT_ALL, CHECK } from './api_config'
 import { usePopup } from '../Public/Popup'
 import '../Public/css/popup.css'
 import AuthContext from '../Context/AuthContext'
-import dayjs from 'dayjs'
 
 const options1 = [
   { value: 1, label: '8pm-10pm' },
