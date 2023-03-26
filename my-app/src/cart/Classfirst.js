@@ -212,13 +212,14 @@ function Classfirst() {
       <section className="container-fluid  orderTable">
         <div className="container ">
           <div className="headTitle h3 j-deepSec mb-3">課程訂單明細</div>
+
           <ul className="g-0 mx-3">
             <div className="d-md-flex d-none tableTitle mb-3">
               <li className="col-2 h3"></li>
               <ul className="col-10 g-0 row d-grid d-md-flex text-center ">
                 <li className="col">時間/時段</li>
                 <li className="col">組合</li>
-                <li className="col">Bartender</li>
+                <li className="col">調酒師</li>
                 <li className="col">價錢</li>
                 <li className="col">人數</li>
               </ul>
