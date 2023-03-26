@@ -137,7 +137,7 @@ function Classday() {
           <div className="step-process pb-3">
             <div className="step complete">
               <h1>1</h1>
-              <h3> 選擇課程組合 </h3>
+              <h3> 選擇課程組合</h3>
             </div>
 
             <div className="step complete ">
