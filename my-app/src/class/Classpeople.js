@@ -156,7 +156,7 @@ function Classpeople() {
 
             <div className="step complete ">
               <h1>2</h1>
-              <h3>選擇Bartender</h3>
+              <h3>選擇調酒師</h3>
             </div>
             <div className="step complete">
               <h1>3</h1>

@@ -6,7 +6,6 @@ import axios from 'axios'
 import { usePopup } from '../Public/Popup'
 import { useNavigate } from 'react-router-dom'
 
-
 function Classsec() {
   const [data, setData] = useState('')
   const { Popup, openPopup, closePopup } = usePopup() //必要const
@@ -14,7 +13,6 @@ function Classsec() {
   const [selectname1, setSelectname1] = useState('')
   const [selectname2, setSelectname2] = useState('')
   const navigate = useNavigate()
-
 
   const [ClassNames, setClassNames] = useState([
     {
@@ -48,7 +46,6 @@ function Classsec() {
 
       localStorage.setItem('key1', JSON.stringify(alldata))
       navigate('/class/Classbt')
-
     } else {
       setPopupProps(true)
     }
@@ -84,7 +81,7 @@ function Classsec() {
 
             <div className="step ">
               <h1>2</h1>
-              <h3>選擇Bartender</h3>
+              <h3>選擇調酒師</h3>
             </div>
             <div className="step">
               <h1>3</h1>
@@ -101,7 +98,7 @@ function Classsec() {
           <table action=" ref={this.input}">
             <thead className="j-deepPri">
               <tr>
-                <td>check</td>
+                <td>選擇</td>
                 <td>課程組合</td>
                 <td>課程內容</td>
               </tr>
