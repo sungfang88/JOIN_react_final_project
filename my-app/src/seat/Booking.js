@@ -14,6 +14,10 @@ const options1 = [
   { value: 3, label: '12am-2am' },
 ]
 
+let table1 = { value: '1', label: '吧台' }
+let table2 = { value: '2', label: '方桌' }
+let table3 = { value: '3', label: '包廂' }
+
 // let options2 = [
 //   { value: '1', label: '吧台' },
 //   { value: '2', label: '方桌' },
@@ -23,10 +27,8 @@ const options1 = [
 function Booking() {
   const { myAuth, logout } = useContext(AuthContext)
   // console.log('myAuth', myAuth)
-  const table1 = { value: '1', label: '吧台' }
-  const table2 = { value: '2', label: '方桌' }
-  const table3 = { value: '3', label: '包廂' }
-  const [options2, setOptions2] = useState([table1, table2, table3])
+
+  const [options2, setOptions2] = useState([])
 
   //*popup
   const { Popup, openPopup, closePopup } = usePopup() //必要const
@@ -121,19 +123,19 @@ function Booking() {
   //*偵測人數改變
   useEffect(() => {
     console.log(people)
-
     let newOptions = []
     if (people > 14) {
-      console.log('包廂不可超過14')
-      newOptions = [table2]
+      // console.log('包廂不可超過14')
+      newOptions.push(table2)
     } else if (people > 12) {
-      console.log('吧台不可超過12')
-      newOptions = [table2, table3]
+      // console.log('吧台不可超過12')
+      newOptions.push(table2)
+      newOptions.push(table3)
     } else {
-      newOptions = [table1, table2, table3]
+      newOptions.push(table1)
+      newOptions.push(table2)
+      newOptions.push(table3)
     }
-
-    // 更新選項陣列狀態
     setOptions2(newOptions)
   }, [people, options2])
 
