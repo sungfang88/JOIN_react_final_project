@@ -210,7 +210,7 @@ function Data() {
             </div>
             <div className="col-10 border-start border-2">
               <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
-                <span className="col-2 title j-deepSec">個人資料</span>
+                <span className="col-auto title j-deepSec">個人資料</span>
                 <div className="title-line d-block d-md-none"></div>
                 <button
                   className="o-line-btn j-h3"

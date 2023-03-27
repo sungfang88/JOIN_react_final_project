@@ -594,7 +594,7 @@ function Edit() {
             <div className="col-12 col-md-10">
               <div className="row">
                 <div className="title-box d-flex flex-column flex-md-row align-items-center justify-content-md-between">
-                  <span className="col-md-2 col-12 title j-deepSec">
+                  <span className="title j-deepSec">
                     編輯資料
                   </span>
                   <div className="title-line d-block d-md-none"></div>
