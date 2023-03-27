@@ -57,7 +57,12 @@ function Register() {
   setRegisterform((prev) => ({
     ...registerform,
     email: 'abcd@gmail.com',
-    password:'1234567'
+    password:'1234567',
+    phone:'091234567',
+    name:'王曉明',
+    address:"復興南路100號"
+
+
   }))
   setCheckpwd('123456')
  }

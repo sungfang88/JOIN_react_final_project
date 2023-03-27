@@ -55,7 +55,7 @@ function Login() {
                 navigate('/')
               }
               openDefaultPopup(
-                '您因逾期定位超過兩次，無法登入會員',
+                '您因逾期訂位超過兩次，無法登入會員',
                 '關閉',
                 linktoIndex
               )
@@ -220,7 +220,7 @@ function Login() {
               navigate('/')
             }
             openDefaultPopup(
-              '您因逾期定位超過兩次，無法登入會員',
+              '您因逾期訂位超過兩次，無法登入會員',
               '關閉',
               linktoIndex
             )
