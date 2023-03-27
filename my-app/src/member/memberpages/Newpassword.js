@@ -163,7 +163,7 @@ function Newpassword() {
                     window.location.href = lasturl
                   } else {
                     console.log('沒有presentURL', HOST)
-                    window.location.href = HOST
+                    window.location.href = 'http://localhost:3002'
                   }
                 } else {
                   localStorage.setItem(
@@ -195,7 +195,7 @@ function Newpassword() {
                     window.location.href = lasturl
                   } else {
                     console.log('沒有presentURL', HOST)
-                    window.location.href = HOST
+                    window.location.href = 'http://localhost:3002'
                   }
                 }
               })
@@ -229,7 +229,7 @@ function Newpassword() {
                 window.location.href = lasturl
               } else {
                 console.log('沒有presentURL', HOST)
-                window.location.href = HOST
+                window.location.href = 'http://localhost:3002'
               }
             }
           }
@@ -251,7 +251,7 @@ function Newpassword() {
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <div className="d-flex justify-content-center mb-lg-2">
               <div className="newPasswordTopic newPasswordTopic-phone">
-                <p >來!少喝一點</p>
+                <p>來!少喝一點</p>
               </div>
             </div>
             <div className="data mt-3 width-lg width-lg-phone">
