@@ -7,13 +7,15 @@ import { usePopup } from '../Public/Popup'
 function ShareLink(props) {
   const { Popup, openPopup, closePopup } = usePopup()
   const copylink = `http://localhost:3002/product/productdetail/${props.productId}`
+  const message = `快來一起酒癮！\n${props.productch}\n${copylink}`
   console.log(copylink)
   const clickbooks = () => {
     navigator.clipboard.writeText(copylink)
+    openPopup()
   }
   const charetoline = () => {
     window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(
-      copylink
+      message
     )}`
   }
   const handleClosePopup = () => {
@@ -30,11 +32,11 @@ function ShareLink(props) {
       />
       {/* <div className="pt-3"> */}
       {/* <span>分享到: </span> */}
+
       <button
         className="no-line-btn btn ms-3"
         onClick={() => {
           clickbooks()
-          openPopup()
         }}
       >
         <FontAwesomeIcon icon={faLink} className="j-deepSec h2" />

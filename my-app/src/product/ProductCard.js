@@ -91,10 +91,6 @@ function ProductCard(props) {
   // }, cartAni)
 
   function settomember() {
-    // const cartItem = {
-    //   productId: props.productId,
-    //   amount: count,
-    // }
     fetch(`http://localhost:3008/member/logincart`, {
       method: 'POST',
       headers: {
@@ -107,7 +103,7 @@ function ProductCard(props) {
       }),
     })
     console.log('加入資料庫')
-    getcartlistnumber()
+
     setCartani(true)
   }
   function nologin() {
@@ -130,6 +126,7 @@ function ProductCard(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCartani(false)
+      getcartlistnumber()
     }, 800)
 
     return () => clearTimeout(timer)

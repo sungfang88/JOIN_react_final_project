@@ -6,6 +6,7 @@
 } */
 
 
+
 .productde-img{
     max-width: 90%;
 }
@@ -39,8 +40,24 @@
 
 .selectbox-left button{
     margin-bottom: 1rem;
+   
+}
+
+.selectbox-longbtn{
     width: 9rem;
-    padding: 0.6rem 0.8rem;
+    padding: 0.4rem 0.4rem;
+}
+
+.search-input{
+width: 9rem;
+}
+
+.search-btn{
+    background-color: #25858B;
+    border-radius: 0 5px 5px 0;
+    color: #fff;
+    width: 2rem;
+    padding: 0.4rem 0.6rem;
 }
 
 .minus,.plus{
@@ -203,11 +220,26 @@ min-width: 10%;
         top: 10%;
     
     } */
+
+.control-box{
+    display: flex;
+    justify-content: center;   
+}
+
+.control-border{
+    outline: none;
+    border: none;
+}
+
+
     .product-search .bg{
         background: rgba(173, 244, 236, 0);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
     }
+    .search-input{
+        border-radius: 5px 0px 0px 5px;
+        }
 
     .product-search input{
         width: 100%;
@@ -217,7 +249,7 @@ min-width: 10%;
     }
     .product-search button{
         width: 100%;
-        background: rgba(173, 180, 244, 0);
+        background: #25858B;
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
     }
@@ -234,6 +266,7 @@ min-width: 10%;
 .productdetail .mycard-title{
 
 }
+
 
     /* 按鈕改下拉式選單 */
     .select-bg{
