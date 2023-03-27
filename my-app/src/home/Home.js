@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import './css/Index.css'
 import ProductCard from '../product/ProductCard'
+import AuthContext from '../Context/AuthContext'
 import axios from 'axios'
 import Navbar from '../Layout/Mainlayout/Navbar'
+import NavbarContext from '../Context/NavbarContext'
 
 function Home() {
   //TODO首頁動畫
 
-  const [likedProducts, setLikedProducts] = useState([])
   const [bestProductData, setBestProductData] = useState([])
   const [news, setNews] = useState([])
+  const [Memberlike, setMemberlike] = useState([])
+  const { myAuth } = useContext(AuthContext)
 
   //*最新消息
   useEffect(() => {
@@ -29,6 +32,40 @@ function Home() {
   }, [])
 
   //*商品
+  const { getcartlistnumber } = useContext(NavbarContext)
+
+  let likedProducts = {}
+  if (myAuth.authorized) {
+    getcartlistnumber()
+  }
+
+  if (myAuth.authorized) {
+    const Array = Memberlike.map((v, i) => {
+      return v.productmanage
+    }).map((v, i) => {
+      return { [v]: true }
+    })
+    let obj = {}
+    Array.map((v, i) => {
+      obj = { ...obj, ...v }
+    })
+    likedProducts = obj
+  } else {
+    if (localStorage.getItem('likedProducts') !== null) {
+      likedProducts = JSON.parse(localStorage.getItem('likedProducts'))
+    }
+  }
+  const likeData = async () => {
+    const res = await fetch(
+      `http://localhost:3008/product/api/getproductlike/${myAuth.sid} `
+    )
+    const data = await res.json()
+    // console.log(data.rows)
+    setMemberlike(data.rows)
+  }
+  useEffect(() => {
+    likeData()
+  }, [])
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(
@@ -40,15 +77,6 @@ function Home() {
     fetchData()
   }, [])
 
-  const handleLike = (productId) => {
-    if (likedProducts.includes(productId)) {
-      setLikedProducts(likedProducts.filter((id) => id !== productId))
-      localStorage.removeItem(productId)
-    } else {
-      setLikedProducts([...likedProducts, productId])
-      localStorage.setItem(productId, true)
-    }
-  }
   return (
     <>
       <header className="container-fluid sm-header d-flex d-lg-block align-items-center">
@@ -390,9 +418,9 @@ function Home() {
                 productch={product.product_ch}
                 producteg={product.product_eg}
                 productprice={product.productprice}
-                isLiked={likedProducts.includes(product.product_id)}
+                isLiked={likedProducts[product.product_id]}
                 productimg={product.product_img}
-                onLike={handleLike}
+                likeData={likeData}
               />
             ))}
           </div>

@@ -209,8 +209,11 @@ function Productinfo(props) {
                                 onMouseLeave={handleMouseLeave}
                                 isLiked={isLiked}
                               />
-                              <ShareLink productId={props.productId} />
                             </button>
+                            <ShareLink
+                              productId={props.productId}
+                              productch={props.product_ch}
+                            />
                           </div>
                         </div>
                       </div>

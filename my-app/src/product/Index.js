@@ -5,6 +5,12 @@ import { useContext } from 'react'
 import AuthContext from '../Context/AuthContext'
 import NavbarContext from '../Context/NavbarContext'
 import { usePopup } from '../Public/Popup'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSearch,
+  faChevronDown,
+  faChevronUp,
+} from '@fortawesome/free-solid-svg-icons'
 import '../Public/style'
 import './css/product.css'
 
@@ -30,6 +36,8 @@ function Product() {
   const [pageNumbers, setPageNumbers] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [productsPerPage] = useState(12)
+
+  const [controlBox, setControlbox] = useState('')
 
   // 搜尋功能
   const [inputText, setInputText] = useState('')
@@ -199,6 +207,17 @@ function Product() {
     setKeyword('')
     setfilterKeyword('')
   }
+
+  const controlbox = () => {
+    console.log('按下')
+    if (controlBox === 'd-none') {
+      console.log('set:d-')
+      setControlbox('')
+    } else {
+      console.log('set:d-none')
+      setControlbox('d-none')
+    }
+  }
   useEffect(() => {
     // console.log('filterKeyword', filterKeyword)
     // console.log('filterProductCatagory', filterProductCatagory)
@@ -255,7 +274,7 @@ function Product() {
       />
       <div className="d-md-none totop-box">
         <button className="btn totop" onClick={ScrollToTopButton}>
-          <h2 className="j-deepSec">⬆</h2>
+          <h2 className="j-deepSec">TOP</h2>
         </button>
       </div>
       <div className="container-fluid d-none d-md-block nav-space pb-5 product-nav">
@@ -290,13 +309,50 @@ function Product() {
           <div
             className={`selectbox-left ${
               allProductData.length ? '' : 'd-none'
-            }`}
+            } `}
           >
             {/* <!-- 有側邊欄的大區塊 --> */}
             {/*  搜尋商品 */}
 
+            <div className={`row product-search ${controlBox}`}>
+              <div className="col-9 col-md-8 pe-0 ">
+                <input
+                  name="search"
+                  type="text"
+                  value={inputText}
+                  placeholder="商品查詢"
+                  className="d-inline-block me-1 search-input me-0 me-md-5 bg"
+                  onChange={(e) => {
+                    setInputText(e.target.value)
+                    // 如果使用者清除所有輸入時要回復為原本列表
+                    // 注意：這裡要以e.target.value來判斷，"不可"使用inputText(異步，尚未更動)
+                    if (e.target.value === '') {
+                      setKeyword('')
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setKeyword(inputText)
+                      // setfilterKeyword(inputText)
+                    }
+                  }}
+                />
+              </div>
+              <div className="col-3 col-md-4 ps-0 ps-md-3 ">
+                <button
+                  onClick={() => {
+                    setKeyword(inputText)
+                    // setfilterKeyword(inputText)
+                  }}
+                  className="g-line-btn search-btn btn  pe-4"
+                >
+                  <FontAwesomeIcon icon={faSearch} className="j-white h3 " />
+                </button>
+              </div>
+            </div>
+
             {/*  選擇商品種類 */}
-            <div className="select-row">
+            <div className={`select-row  ${controlBox}`}>
               <div className="select-col">
                 <div className="selectbox select-title">
                   <button
@@ -315,7 +371,7 @@ function Product() {
                   {allProductCatagory.map((catogory) => (
                     <div key={catogory.catagory_id}>
                       <button
-                        className={`g-line-btn h3 d-inline-block ${
+                        className={`g-line-btn h3 d-inline-block selectbox-longbtn ${
                           selectedCategory === catogory.catagory_ch
                             ? 'j-deep'
                             : ''
@@ -334,7 +390,7 @@ function Product() {
                   ))}
                   <button
                     key="Allcatogory"
-                    className={`g-line-btn h3 d-inline-block ${
+                    className={`g-line-btn h3 d-inline-block selectbox-longbtn ${
                       selectedCategory === '全部種類' ? 'j-deep' : ''
                     }`}
                     onClick={() => clickCatagory('', '全部種類')}
@@ -389,53 +445,27 @@ function Product() {
                 </div>
               </div>
             </div>
+            <div className="select-row d-block d-md-none ">
+              <div className="control-box">
+                <button
+                  className="btn j-deep control-border"
+                  onClick={controlbox}
+                >
+                  {controlBox === 'd-none' ? (
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  ) : (
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* <Select /> */}
 
           {/* <!-- section-right --> */}
           <div className="sec-right ps-7 mb-5 pt-0">
-            <div className="row justify-content-end  j-input w-100 ms-0 ms-md-auto">
-              <div className="col-auto px-0">
-                <div className="row product-search">
-                  <div className="col-8 pe-0 ">
-                    <input
-                      name="search"
-                      type="text"
-                      value={inputText}
-                      placeholder="商品查詢"
-                      className="d-inline-block me-1 search-input me-0 me-md-5 bg"
-                      onChange={(e) => {
-                        setInputText(e.target.value)
-                        // 如果使用者清除所有輸入時要回復為原本列表
-                        // 注意：這裡要以e.target.value來判斷，"不可"使用inputText(異步，尚未更動)
-                        if (e.target.value === '') {
-                          setKeyword('')
-                        }
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          setKeyword(inputText)
-                          // setfilterKeyword(inputText)
-                        }
-                      }}
-                    />
-                  </div>
-                  <div className="col-4 ps-1 ">
-                    <button
-                      onClick={() => {
-                        setKeyword(inputText)
-                        // setfilterKeyword(inputText)
-                      }}
-                      className="g-line-btn j-h3 j-white ms-0 ms-md-3 bg"
-                    >
-                      搜尋
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="row row-cols-2 mt-5 mt-xl-4  row-cols-xl-3 g-4 g-lg-5 g-xl-5 product-secright">
+            <div className="row row-cols-2   row-cols-xl-3 g-4 g-lg-5 g-xl-5 product-secright">
               {allProductData
                 .filter((product) =>
                   product.product_id.includes(filterProductCatagory)
