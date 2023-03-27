@@ -10,7 +10,7 @@ function Listopen(props) {
           onClick={toggleTable}
         >
           <p className="m-0">商品訂單明細</p>
-          <img id="toggle-btn" src="../img/Icon/Dropdown.png" alt="" />
+          <i className="fa-solid fa-chevron-down"></i>
         </div>
         {/* isOpen 為一個布林值變數，當其為 true 時，代表要顯示該元素。所以當 isOpen 為 true 時，該元素會被渲染出來 */}
         {isOpen && (

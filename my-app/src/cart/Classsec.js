@@ -73,6 +73,7 @@ function Classsec() {
             onClick={toggleTable}
           >
             <p className="m-0">課程訂單明細</p>
+            <i className="fa-solid fa-chevron-down"></i>
           </div>
           {isOpen && (
             <ul className="g-0 m-auto mx-3">
@@ -81,7 +82,7 @@ function Classsec() {
                 <ul className="col-10 g-0 row d-grid d-md-flex text-center">
                   <li className="col">時間/時段</li>
                   <li className="col">組合</li>
-                  <li className="col">Bartender</li>
+                  <li className="col">調酒師</li>
                   <li className="col">價錢</li>
                   <li className="col">折價卷</li>
                   <li className="col">人數</li>
