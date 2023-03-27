@@ -6,9 +6,29 @@ import AuthContext from '../Context/AuthContext'
 import axios from 'axios'
 import Navbar from '../Layout/Mainlayout/Navbar'
 import NavbarContext from '../Context/NavbarContext'
+import Card from './Card'
 
 function Home() {
   //TODO首頁動畫
+  const [hoveredCardId, setHoveredCardId] = useState(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const cardIds = [1, 2, 3, 4, 5]
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentIndex((currentIndex + 1) % cardIds.length)
+    }, 10000)
+
+    return () => clearInterval(intervalId)
+  }, [currentIndex, cardIds.length])
+
+  const handleHover = (cardId) => {
+    setHoveredCardId(cardId)
+  }
+
+  const handleMouseLeave = () => {
+    setHoveredCardId(null)
+  }
 
   const [bestProductData, setBestProductData] = useState([])
   const [news, setNews] = useState([])
@@ -84,14 +104,16 @@ function Home() {
           <div className="d-none d-md-flex">
             <div className="w-100 text-center d-flex flex-column justify-content-between">
               <div className="card-flip-1">
-                <div className="flip flip-1">
-                  <div className="front-1 cardf-1">
-                    <img src={`/img/index-1.png`} alt="" className="w-75" />
-                  </div>
-                  <div className="back-1 cardb-1">
-                    <img src={`/img/index-5.jpeg`} alt="" />
-                  </div>
-                </div>
+                <Card
+                  id={cardIds[0]}
+                  frontImgUrl="/img/index-1.png"
+                  backImgUrl="/img/index-5.jpeg"
+                  size="1"
+                  onHover={handleHover}
+                  isStopped={hoveredCardId === cardIds[0]}
+                  isFlipped={currentIndex === 0}
+                  onMouseLeave={handleMouseLeave}
+                />
               </div>
               <Link to="/product">
                 <div>
@@ -101,14 +123,16 @@ function Home() {
             </div>
             <div className="w-100">
               <div className="card-flip-2">
-                <div className="flip flip-2">
-                  <div className="front-2 cardf-2">
-                    <img src={`/img/index-1.png`} alt="..." className="w-75" />
-                  </div>
-                  <div className="back-2 cardb-2">
-                    <img src={`/img/seat.jpeg`} alt="" />
-                  </div>
-                </div>
+                <Card
+                  id={cardIds[1]}
+                  frontImgUrl="/img/index-1.png"
+                  backImgUrl="/img/seat.jpeg"
+                  size="2"
+                  onHover={handleHover}
+                  isStopped={hoveredCardId === cardIds[1]}
+                  isFlipped={currentIndex === 1}
+                  onMouseLeave={handleMouseLeave}
+                />
               </div>
             </div>
             <div className="w-100 text-center d-flex flex-column justify-content-between">
@@ -118,34 +142,42 @@ function Home() {
                 </div>
               </Link>
               <div className="card-flip-1">
-                <div className="flip flip-3">
-                  <div className="front-1 cardf-3"></div>
-                  <div className="back-1 cardb-3">
-                    <img src={`img/index-9.jpeg`} alt="" />
-                  </div>
-                </div>
+                <Card
+                  id={cardIds[2]}
+                  backImgUrl="img/index-9.jpeg"
+                  size="1"
+                  onHover={handleHover}
+                  isStopped={hoveredCardId === cardIds[2]}
+                  isFlipped={currentIndex === 2}
+                  onMouseLeave={handleMouseLeave}
+                />
               </div>
             </div>
             <div className="w-100">
               <div className="card-flip-2">
-                <div className="flip flip-4">
-                  <div className="front-2 cardf-4"></div>
-                  <div className="back-2 cardb-4">
-                    <img src={`/img/index-8.jpeg`} alt="" />
-                  </div>
-                </div>
+                <Card
+                  id={cardIds[3]}
+                  backImgUrl="/img/index-8.jpeg"
+                  size="2"
+                  onHover={handleHover}
+                  isStopped={hoveredCardId === cardIds[3]}
+                  isFlipped={currentIndex === 3}
+                  onMouseLeave={handleMouseLeave}
+                />
               </div>
             </div>
             <div className="w-100 text-center d-flex flex-column justify-content-between">
               <div className="card-flip-1">
-                <div className="flip flip-5">
-                  <div className="front-1 cardf-5">
-                    <img src={`/img/index-1.png`} alt="" className="w-75" />
-                  </div>
-                  <div className="back-1 cardb-5">
-                    <img src={`/img/index-7.jpeg`} alt="" />
-                  </div>
-                </div>
+                <Card
+                  id={cardIds[4]}
+                  frontImgUrl="/img/index-1.png"
+                  backImgUrl="/img/index-7.jpeg"
+                  size="1"
+                  onHover={handleHover}
+                  isStopped={hoveredCardId === cardIds[4]}
+                  isFlipped={currentIndex === 4}
+                  onMouseLeave={handleMouseLeave}
+                />
               </div>
               <Link to="/class">
                 <div>
