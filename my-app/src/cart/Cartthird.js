@@ -166,7 +166,7 @@ function Cartthird() {
           </Link>
           <Link
             to="/product"
-            className="gray-line-btn j-h3 title-button me-3"
+            className="g-line-btn j-h3 title-button"
             onClick={async () => {
               await handleDeleteCart()
               localStorage.removeItem('selectedSids')
